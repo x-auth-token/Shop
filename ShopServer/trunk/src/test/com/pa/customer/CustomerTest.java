@@ -6,8 +6,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import junit.framework.*;
-
 public class CustomerTest {
 
 		Customer c;
@@ -17,7 +15,7 @@ public class CustomerTest {
 		String id = "123456789";
 		
 		@Before
-		public void setUp() throws Exception {
+		public void setUp() {
 			c = new Customer(name,sname,gender, id);
 			
 		}
