@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import static org.junit.Assert.*;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.rules.ExpectedException.*;
 
 public class DataBaseConnectorTest {
@@ -18,9 +19,17 @@ public class DataBaseConnectorTest {
 		credentials.setCredentials(username, password);
 		db.setDataBasePath(path);
 		db.setDataBaseCredentials(credentials);
-		db.connect();
+		
 	}
 	
-	@Test
+	@Rule
+	public final ExpectedException thrown = ExpectedException.none();
 	
+	@Test
+	public void testDatabaseConnectionException() {
+		
+		thrown.expect(AuthenticationFailedException.class);
+		thrown.expectMessage("Authentication failed! Unknown username or password");
+		db.connect();
+	}
 }
