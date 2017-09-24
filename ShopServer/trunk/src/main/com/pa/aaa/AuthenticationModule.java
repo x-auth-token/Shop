@@ -1,6 +1,6 @@
 package com.pa.aaa;
 
-import com.pa.dbconnector.*;
+import com.pa.db.*;
 
 public class AuthenticationModule implements Authentication {
 

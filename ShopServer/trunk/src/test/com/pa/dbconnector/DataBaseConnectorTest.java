@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.ExpectedException.*;
 
+import com.pa.db.DataBaseConnector;
+
 public class DataBaseConnectorTest {
 	
 	DataBaseConnector db;
@@ -31,6 +33,6 @@ public class DataBaseConnectorTest {
 //		
 //		thrown.expect(AuthenticationFailedException.class);
 //		thrown.expectMessage("Authentication failed! Unknown username or password");
-//		db.connect();
+//		db.open();
 //	}
 }
