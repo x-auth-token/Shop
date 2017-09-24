@@ -1,6 +1,7 @@
 package com.pa.aaa;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -17,6 +18,7 @@ public class AuthenticationModuleTest {
 		auth = new AuthenticationModule();
 	}
 	
+	@Ignore
 	@Test
 	public void testIfUserAndPasswordValidationWorks() {
 		
