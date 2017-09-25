@@ -1,6 +1,6 @@
-package com.pa.aaa;
+package com.pa.srv.aaa;
 
-import com.pa.db.*;
+import com.pa.srv.db.*;
 
 public class AuthenticationModule implements Authentication {
 

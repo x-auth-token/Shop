@@ -1,10 +1,12 @@
-package com.pa.customer;
+package com.pa.srv.customer;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import com.pa.srv.customer.Customer;
 
 public class CustomerTest {
 

@@ -1,4 +1,4 @@
-package com.pa.logger;
+package com.pa.srv.logger;
 
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;

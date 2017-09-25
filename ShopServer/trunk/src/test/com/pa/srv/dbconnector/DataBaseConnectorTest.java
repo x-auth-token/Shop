@@ -1,4 +1,4 @@
-package com.pa.dbconnector;
+package com.pa.srv.dbconnector;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.ExpectedException.*;
 
-import com.pa.db.DataBaseConnector;
+import com.pa.srv.db.DataBaseConnector;
 
 public class DataBaseConnectorTest {
 	

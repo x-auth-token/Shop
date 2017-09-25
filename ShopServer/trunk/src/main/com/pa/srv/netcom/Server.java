@@ -1,4 +1,4 @@
-package com.pa.netcom;
+package com.pa.srv.netcom;
 
 import java.io.IOException;
 import java.net.*;

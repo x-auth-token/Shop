@@ -1,4 +1,4 @@
-package com.pa.db;
+package com.pa.srv.db;
 
 public class DataBaseConnector {
 	
@@ -22,9 +22,6 @@ public class DataBaseConnector {
 		return dbPath;
 	}
 	
-	public DataBaseFile open() {
-		
-		return 
-	}
+
 
 }

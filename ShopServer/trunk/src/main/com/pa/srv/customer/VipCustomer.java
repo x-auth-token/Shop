@@ -1,4 +1,4 @@
-package com.pa.customer;
+package com.pa.srv.customer;
 
 public class VipCustomer extends Customer {
 

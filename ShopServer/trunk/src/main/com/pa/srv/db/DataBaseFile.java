@@ -1,4 +1,4 @@
-package com.pa.db;
+package com.pa.srv.db;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -1,4 +1,4 @@
-package com.pa.aaa;
+package comp.pa.srv.aaa;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -6,6 +6,9 @@ import org.junit.Rule;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import com.pa.srv.aaa.Authentication;
+import com.pa.srv.aaa.AuthenticationModule;
 
 
 public class AuthenticationModuleTest {

@@ -1,4 +1,4 @@
-package com.pa.logger;
+package com.pa.srv.logger;
 
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
@@ -13,7 +13,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.pa.netcom.Server;
+import com.pa.srv.netcom.Server;
 
 public class LogServerTest {
 	

@@ -1,4 +1,4 @@
-package com.pa.netcom;
+package com.pa.srv.netcom;
 
 import org.junit.Before;
 import org.junit.Rule;
