@@ -1,47 +1,53 @@
 package com.pa.srv.customer;
 
+
+import static com.pa.common.Validators.*;
+import static com.pa.common.Constants.*;
+
 public class Customer {
+	
 	
 	private String customerName;
 	private String customerSurename;
 	private char customerGender;
-	private int customerId;
-	private static final int ID_LENGTH = 9;
+	private String customerId;
+	private String customerPhoneNumber;
+
+
 	
-	public Customer(String cName, String cSName, char cGender, String cId) {
+	
+	public Customer(String cName, String cSName, char cGender, String cId, String pn) {
 		
 		setCustomerName(cName);
 		setCustomerSurename(cSName);
 		setCustomerGender(cGender);
 		setCustomerId(cId);
+		setCustomerPhoneNumber(pn);
+		
 		
 	}
 	
 	// setters
 	public void setCustomerName(String n) throws IllegalArgumentException {
 		
-		for (int i = 0; i < n.length(); i++) {
-				
-			if (!Character.isLetter(n.charAt(i))) {
-					
-				throw new IllegalArgumentException("Wrong input! Name should contain only letters"); 
-			}
+		if (!validateOnlyLettersUsed(n)) {
+			
+			throw new IllegalArgumentException("Wrong input! Name should contain only letters");	
 		}
+		else
+			this.customerName = n; 
 		
-		this.customerName = n;
 	}
 	
 	public void setCustomerSurename(String sn) throws IllegalArgumentException {
 		
-		for (int i = 0; i < sn.length(); i++) {
-				
-			if (!Character.isLetter(sn.charAt(i))) {
-					
-				throw new IllegalArgumentException("Wrong input! Surename should contain only letters"); 
-			}
+		if (!validateOnlyLettersUsed(sn)) {
+			
+			throw new IllegalArgumentException("Wrong input! Surename should contain only letters");	
 		}
+		else
+			this.customerSurename = sn;
 		
-		this.customerSurename = sn;
 	}
 	
 	public void setCustomerGender(char g) throws IllegalArgumentException {
@@ -54,23 +60,34 @@ public class Customer {
 	
 	public void setCustomerId(String id) throws IllegalArgumentException {
 		
-		for (int i = 0; i < id.length(); i++) {
-				
-			if (!Character.isDigit(id.charAt(i)) || id.length() != ID_LENGTH) {
+		if (!validateID(id)) {
 					
-				throw new IllegalArgumentException("Wrong input! ID should contain only numbers and be 9 digits long"); 
-			}
+			throw new IllegalArgumentException("Wrong input! ID should contain only numbers and be " + ID_LENGTH + " digits long"); 
 		}
-		
-		this.customerId = Integer.parseInt(id);
+		else			
+			this.customerId = id;
 	}
 		
+	
+	public void setCustomerPhoneNumber(String phone) throws IllegalArgumentException {
+		
+		if (!validatePhoneNumber(phone)) {
+			
+			throw new IllegalArgumentException("Wrong input! Phone number should be between " + PHONE_LENGTH_MIN + " or " + PHONE_LENGTH_MAX + " digits long");	
+		}
+		else
+			this.customerPhoneNumber = phone;
+		
+	}
+	
 	// getters
 	public String getCustomerName(){ return customerName;}
 	public String getCustomerSurename(){ return this.customerSurename;}
 	public char getCustomerGender(){ return this.customerGender;}
-	public int getCustomerId(){ return this.customerId;}
+	public String getCustomerId(){ return this.customerId;}
+	public String getCustomerPhoneNumber(){return this.customerPhoneNumber;}
 	
+	// toString
 	public String toString() {
 		
 		return "Name: " + getCustomerName() + "\n" + "Surename: " + getCustomerSurename() + 

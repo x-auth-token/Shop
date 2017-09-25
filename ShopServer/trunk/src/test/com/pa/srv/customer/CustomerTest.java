@@ -1,12 +1,14 @@
 package com.pa.srv.customer;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import com.pa.srv.customer.Customer;
+import static com.pa.common.Constants.*;
 
 public class CustomerTest {
 
@@ -15,10 +17,11 @@ public class CustomerTest {
 		String sname = "Schwarzenegger";
 		char gender = 'm';
 		String id = "123456789";
+		String pn = "0549002019";
 		
 		@Before
 		public void setUp() {
-			c = new Customer(name,sname,gender, id);
+			c = new Customer(name,sname,gender, id, pn);
 			
 		}
 		
@@ -84,16 +87,24 @@ public class CustomerTest {
 		public void testCustomerIdSetter() {
 			
 			c.setCustomerId(id);
-			Assert.assertEquals(Integer.parseInt(id), c.getCustomerId());
+			Assert.assertEquals(id, c.getCustomerId());
 		}
 		
 		@Test
 		public void testCustomerIdSetterException() {
 			
 			thrown.expect(IllegalArgumentException.class);
-			thrown.expectMessage("Wrong input! ID should contain only numbers and be 9 digits long");
+			thrown.expectMessage("Wrong input! ID should contain only numbers and be " + ID_LENGTH + " digits long");
 			c.setCustomerId("12345678");
 		}
 		
+		@Ignore
+		@Test
+		public void testCustomerPhoneNumberSetterException() {
+			
+			thrown.expect(IllegalArgumentException.class);
+			thrown.expectMessage("Wrong input! Phone number should be between " + PHONE_LENGTH_MIN + " or " + PHONE_LENGTH_MAX + " digits long");
+			c.setCustomerPhoneNumber("05490020191");
+		}
 
 }
