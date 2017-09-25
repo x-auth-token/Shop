@@ -60,7 +60,7 @@ public class Customer {
 	
 	public void setCustomerId(String id) throws IllegalArgumentException {
 		
-		if (!validateID(id)) {
+		if (!isCorrectIDFormat(id)) {
 					
 			throw new IllegalArgumentException("Wrong input! ID should contain only numbers and be " + ID_LENGTH + " digits long"); 
 		}
@@ -71,13 +71,12 @@ public class Customer {
 	
 	public void setCustomerPhoneNumber(String phone) throws IllegalArgumentException {
 		
-		if (!validatePhoneNumber(phone)) {
+		if (!isCorrectPhoneNumberFormat(phone)) {
 			
 			throw new IllegalArgumentException("Wrong input! Phone number should be between " + PHONE_LENGTH_MIN + " or " + PHONE_LENGTH_MAX + " digits long");	
 		}
 		else
 			this.customerPhoneNumber = phone;
-		
 	}
 	
 	// getters

@@ -98,13 +98,20 @@ public class CustomerTest {
 			c.setCustomerId("12345678");
 		}
 		
-		@Ignore
+		@Test
+		public void testCustomerPhoneNumberSetter() {
+			
+			c.setCustomerPhoneNumber(pn);
+			Assert.assertEquals(pn, c.getCustomerPhoneNumber());
+		}
+		
+		
 		@Test
 		public void testCustomerPhoneNumberSetterException() {
 			
 			thrown.expect(IllegalArgumentException.class);
 			thrown.expectMessage("Wrong input! Phone number should be between " + PHONE_LENGTH_MIN + " or " + PHONE_LENGTH_MAX + " digits long");
-			c.setCustomerPhoneNumber("05490020191");
+			c.setCustomerPhoneNumber("05490020191111111");
 		}
 
 }
