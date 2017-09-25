@@ -17,7 +17,7 @@ public class CustomerTest {
 		String sname = "Schwarzenegger";
 		char gender = 'm';
 		String id = "123456789";
-		String pn = "0549002019";
+		String pn = "+972549002019";
 		
 		@Before
 		public void setUp() {
@@ -111,7 +111,7 @@ public class CustomerTest {
 			
 			thrown.expect(IllegalArgumentException.class);
 			thrown.expectMessage("Wrong input! Phone number should be between " + PHONE_LENGTH_MIN + " or " + PHONE_LENGTH_MAX + " digits long");
-			c.setCustomerPhoneNumber("05490020191111111");
+			c.setCustomerPhoneNumber("+054900201922222");
 		}
 
 }
