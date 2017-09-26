@@ -15,7 +15,7 @@ public class Customer {
 
 
 	
-	
+	// Constructor
 	public Customer(String cName, String cSName, char cGender, String cId, String pn) {
 		
 		setCustomerName(cName);
@@ -28,7 +28,7 @@ public class Customer {
 	}
 	
 	// setters
-	public void setCustomerName(String n) throws IllegalArgumentException {
+	protected void setCustomerName(String n) throws IllegalArgumentException {
 		
 		if (!validateOnlyLettersUsed(n)) {
 			
@@ -39,7 +39,7 @@ public class Customer {
 		
 	}
 	
-	public void setCustomerSurename(String sn) throws IllegalArgumentException {
+	protected void setCustomerSurename(String sn) throws IllegalArgumentException {
 		
 		if (!validateOnlyLettersUsed(sn)) {
 			
@@ -50,7 +50,7 @@ public class Customer {
 		
 	}
 	
-	public void setCustomerGender(char g) throws IllegalArgumentException {
+	protected void setCustomerGender(char g) throws IllegalArgumentException {
 
 		if (g != 'm' && g != 'f')
 			throw new IllegalArgumentException("Wrong input! Gender must be one character 'm' or 'f'"); 
@@ -58,7 +58,7 @@ public class Customer {
 		this.customerGender = g;
 	}
 	
-	public void setCustomerId(String id) throws IllegalArgumentException {
+	protected void setCustomerId(String id) throws IllegalArgumentException {
 		
 		if (!isCorrectIDFormat(id)) {
 					
@@ -69,7 +69,7 @@ public class Customer {
 	}
 		
 	
-	public void setCustomerPhoneNumber(String phone) throws IllegalArgumentException {
+	protected void setCustomerPhoneNumber(String phone) throws IllegalArgumentException {
 		
 		if (!isCorrectPhoneNumberFormat(phone)) {
 			
