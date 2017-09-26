@@ -8,12 +8,10 @@ import java.util.Date;
 import java.util.Formatter;
 import java.util.logging.ErrorManager;
 
-
 public class LogServer {
 
 	static Logger logger;
 	public FileHandler fileHandler;
 	Formatter plainText;
-	
-	
+
 }

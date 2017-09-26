@@ -3,31 +3,26 @@ package com.pa.srv.netcom;
 import java.io.IOException;
 import java.net.*;
 import java.util.Date;
+
+import javax.net.ssl.SSLServerSocket;
+import javax.net.ssl.SSLSocket;
+
 import java.lang.*;
 
+public class Server implements Runnable {
 
-public class Server {
-	
 	public static final int port = 8787;
-	
-	public void listner() throws IOException {
-		
-		try {
-			
+	SSLServerSocket serverSocket;
 
-			final ServerSocket server = new ServerSocket(port);
-			System.out.println(new Date() + "--- Server started on port " + port);
-			
-			while (true) {
-				
-				final Socket socket = server.accept();
-				
-				new Thread() ;
-			}
+	public void run() {
+
+		try {
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
 		}
-		catch (IOException e) {
-			
-			System.out.println(e.getMessage());
-		}
+
 	}
+
 }
