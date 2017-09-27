@@ -18,7 +18,7 @@ public class ServerTest {
 	public final ExpectedException thrown = ExpectedException.none();
 	
 	@Test
-	public void testIOException() {
+	public void testListener() {
 		
 	}
 	
