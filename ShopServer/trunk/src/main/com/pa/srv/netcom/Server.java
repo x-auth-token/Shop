@@ -15,17 +15,17 @@ import java.lang.*;
 
 public class Server implements Runnable {
 
-	public final int port = 8787;
-	public ServerSocketFactory serverSocketFactory;
-	public ServerSocket securedSocket;
-	public Socket sslSocket;
+	public static final int port = 8787;
+	public static ServerSocketFactory serverSocketFactory;
+	public static ServerSocket securedSocket;
+	public static Socket sslSocket;
 
-	public Server(SSLSocket s) {
+	public Server(Socket s) {
 
-		this.sslSocket = s;
+		sslSocket = s;
 	}
 
-	public void main (String args[]) throws IOException {
+	public static void main (String args[]) throws IOException {
 		
 		try {
 			serverSocketFactory = SSLServerSocketFactory.getDefault();
@@ -39,6 +39,10 @@ public class Server implements Runnable {
 		while (true) {
 			
 			sslSocket = securedSocket.accept();
+			System.out.println("Connected");
+			new Thread(new Server(sslSocket)).start();
+			
+			
 		}
 		
 	}
