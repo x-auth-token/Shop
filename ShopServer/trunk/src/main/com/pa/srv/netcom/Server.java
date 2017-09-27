@@ -30,19 +30,20 @@ public class Server implements Runnable {
 		try {
 			serverSocketFactory = SSLServerSocketFactory.getDefault();
 			securedSocket = serverSocketFactory.createServerSocket(port);
+			System.out.println("--- Listening for connections on port " + port);
 			
+		
+		
+			while (true) {
+				
+				sslSocket = securedSocket.accept();
+				System.out.println("--- Client connected from " + sslSocket.getInetAddress());
+				new Thread(new Server(sslSocket)).start();	
+			}
+		
 		} catch (IOException e) {
 			
 			e.printStackTrace();
-		}
-		
-		while (true) {
-			
-			sslSocket = securedSocket.accept();
-			System.out.println("Connected");
-			new Thread(new Server(sslSocket)).start();
-			
-			
 		}
 		
 	}
