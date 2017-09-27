@@ -8,6 +8,11 @@ public class Customer extends Person {
 	private String[] benefit;
 
 	// Constructor
+	
+	public Customer() {
+		super();
+	}
+	
 	public Customer(String cName, String cSName, String cGender, String cId, String pn) {
 		
 		super(cName, cSName, cGender, cId, pn);
@@ -30,5 +35,6 @@ public class Customer extends Person {
 	public String[] getBenefitPlan() {
 		
 		return this.benefit;
+		
 	}
 }

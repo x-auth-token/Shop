@@ -9,11 +9,11 @@ import static com.pa.common.Validators.validateOnlyLettersUsed;
 
 public abstract class Person {
 
-	protected String personName;
-	protected String personSurname;
-	protected String personId;
-	protected String personGender;
-	protected String personPhoneNumber;
+	private String personName;
+	private String personSurname;
+	private String personId;
+	private String personGender;
+	private String personPhoneNumber;
 	
 	public Person() {
 		setPersonName(null);
@@ -108,7 +108,7 @@ public abstract class Person {
 	public String toString() {
 
 		return "Name: " + getPersonName() + "\n" + "Surname: " + getPersonSurname() + "\n" + "Gender: "
-				+ getPersonGender() + "\n" + "ID: " + getPersonId();
+				+ getPersonGender() + "\n" + "ID: " + getPersonId() + "Phone: " + getPersonPhoneNumber();
 	}
 
 }

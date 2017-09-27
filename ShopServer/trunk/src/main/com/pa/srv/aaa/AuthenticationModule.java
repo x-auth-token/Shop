@@ -1,15 +1,13 @@
 package com.pa.srv.aaa;
 
+import java.net.Authenticator;
+
 import com.pa.srv.db.*;
 
-public class AuthenticationModule implements Authentication {
+public class AuthenticationModule extends Authenticator {
 
 	//DataBaseConnetor db = new DataBaseConnector();
 	
-	@Override
-	public boolean authenticate(String username, String password) {
-		
-		return false;
-	}
+	
 
 }
