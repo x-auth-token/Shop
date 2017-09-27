@@ -1,10 +1,12 @@
 package com.pa.srv.customer;
 
 public class ReturningCustomer extends Customer {
-
-	public ReturningCustomer(String cName, String cSName, char cGender, String cId, String pn) {
+	
+	private final double DEFAULT_DISCOUNT = 5.0;
+	
+	public ReturningCustomer(String cName, String cSName, String cGender, String cId, String pn) {
 		super(cName, cSName, cGender, cId, pn);
-		// TODO Auto-generated constructor stub
+		this.setDiscountPercent(DEFAULT_DISCOUNT);
 	}
 
 }

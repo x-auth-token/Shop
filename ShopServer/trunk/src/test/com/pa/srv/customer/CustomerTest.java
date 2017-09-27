@@ -15,7 +15,7 @@ public class CustomerTest {
 		Customer c;
 		String name = "Arnold";
 		String sname = "Schwarzenegger";
-		char gender = 'm';
+		String gender = "male";
 		String id = "123456789";
 		String pn = "+972549002019";
 		
@@ -33,8 +33,9 @@ public class CustomerTest {
 			
 			try {
 				
-				c.setCustomerName("qw");
-				Assert.assertEquals("qw", c.getCustomerName());
+				c.setPersonName("qw");
+				System.out.println(c.getPersonName());
+				Assert.assertEquals("qw", c.getPersonName());
 			
 			} 
 			catch (IllegalArgumentException e) {
@@ -50,44 +51,44 @@ public class CustomerTest {
 			
 			thrown.expect(IllegalArgumentException.class);
 			thrown.expectMessage("Wrong input! Name should contain only letters");
-			c.setCustomerName("qw1");
+			c.setPersonName("qw1");
 		}
 		
 		@Test
 		public void testCustomerSurenameSetter() {
 			
-			c.setCustomerSurename("qw");
-			Assert.assertEquals("qw", c.getCustomerSurename());
+			c.setPersonSurname("qw");
+			Assert.assertEquals("qw", c.getPersonSurname());
 		}
 		
 		@Test
 		public void testCustomerSurenameSetterException() {
 			
 			thrown.expect(IllegalArgumentException.class);
-			thrown.expectMessage("Wrong input! Surename should contain only letters");
-			c.setCustomerSurename("qw1");
+			thrown.expectMessage("Wrong input! Surname should contain only letters");
+			c.setPersonSurname("qw1");
 		}
 		
 		@Test
 		public void testCustomerGenderSetter() {
 			
-			c.setCustomerGender('m');
-			Assert.assertEquals('m', c.getCustomerGender());
+			c.setPersonGender("male");
+			Assert.assertEquals("male", c.getPersonGender());
 		}
 		
 		@Test
 		public void testCustomerGenderSetterException() {
 			
 			thrown.expect(IllegalArgumentException.class);
-			thrown.expectMessage("Wrong input! Gender must be one character 'm' or 'f'");
-			c.setCustomerGender('n');
+			thrown.expectMessage("Wrong input! Gender must be male or female");
+			c.setPersonGender("none");
 		}
 		
 		@Test
 		public void testCustomerIdSetter() {
 			
-			c.setCustomerId(id);
-			Assert.assertEquals(id, c.getCustomerId());
+			c.setPersonId(id);
+			Assert.assertEquals(id, c.getPersonId());
 		}
 		
 		@Test
@@ -95,14 +96,14 @@ public class CustomerTest {
 			
 			thrown.expect(IllegalArgumentException.class);
 			thrown.expectMessage("Wrong input! ID should contain only numbers and be " + ID_LENGTH + " digits long");
-			c.setCustomerId("12345678");
+			c.setPersonId("12345678");
 		}
 		
 		@Test
 		public void testCustomerPhoneNumberSetter() {
 			
-			c.setCustomerPhoneNumber(pn);
-			Assert.assertEquals(pn, c.getCustomerPhoneNumber());
+			c.setPersonPhoneNumber(pn);
+			Assert.assertEquals(pn, c.getPersonPhoneNumber());
 		}
 		
 		
@@ -111,7 +112,7 @@ public class CustomerTest {
 			
 			thrown.expect(IllegalArgumentException.class);
 			thrown.expectMessage("Wrong input! Phone number should be between " + PHONE_LENGTH_MIN + " or " + PHONE_LENGTH_MAX + " digits long");
-			c.setCustomerPhoneNumber("+054900201922222");
+			c.setPersonPhoneNumber("+054900201922222");
 		}
 
 }
