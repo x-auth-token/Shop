@@ -1,33 +1,60 @@
 package com.pa.srv.db;
 
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.nio.file.Paths;
+import java.io.IOException;
 
 public class DataBaseConnector {
 
-	private static String dbPath;
+	private String dbPath;
+	private File dbFolder; 
 	private DataBaseFile dbFile;
 
-	public DataBaseConnector() {
+	public DataBaseConnector() throws IOException, SecurityException {
 
-		dbPath = Paths.get(".").toAbsolutePath().normalize().toString();
+		dbFolder = new File("db");
 		
 		try {
-			dbFile = new DataBaseFile(dbPath + "/db/Inventory.db", "rw");
-		} catch (FileNotFoundException e) {
+			if (!dbFolder.exists()) {
+				
+				dbFolder.mkdirs();
+			}
+			
+			dbPath = dbFolder.getAbsolutePath().toString();
+						
+			dbFile = new DataBaseFile(dbPath + "/Inventory.db", "rw");
+			
+			System.out.println("File created at: " + getDataBasePath());
+		} catch (SecurityException | IOException e) {
 			
 			e.printStackTrace();
 		}
 	}
 
-	public static void setDataBasePath(String path) {
+	public void setDataBasePath(String path) {
 
 		dbPath = path;
 	}
 
-	public static String getDataBasePath() {
+	public final String getDataBasePath() {
 
 		return dbPath;
 	}
+	
+	public DataBaseFile getDataBaseFile() {
+		
+		return this.dbFile;
+	}
+	
+	public static void main (String args[]) throws SecurityException, FileNotFoundException, IOException {
+		
+		DataBaseConnector dbc = new DataBaseConnector();
+		//dbc.getDataBaseFile().write("Hello World".getBytes());
+		dbc.getDataBaseFile().write("Addedd This".getBytes());
+		dbc.getDataBaseFile().close();
+
+	}
+	
+	
 
 }

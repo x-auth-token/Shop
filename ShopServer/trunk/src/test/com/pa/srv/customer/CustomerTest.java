@@ -10,6 +10,7 @@ import org.junit.rules.ExpectedException;
 import com.pa.srv.customer.Customer;
 import static com.pa.common.Constants.*;
 
+@SuppressWarnings("unused")
 public class CustomerTest {
 
 		Customer c;

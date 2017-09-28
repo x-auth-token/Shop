@@ -13,6 +13,7 @@ import javax.net.ssl.SSLSocketFactory;
 
 import java.lang.*;
 
+@SuppressWarnings("unused")
 public class Server implements Runnable {
 
 	public static final int port = 8787;
