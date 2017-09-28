@@ -50,7 +50,12 @@ public class DataBaseConnector {
 		
 		DataBaseConnector dbc = new DataBaseConnector();
 		//dbc.getDataBaseFile().write("Hello World".getBytes());
-		dbc.getDataBaseFile().write("Addedd This".getBytes());
+		try {
+			dbc.getDataBaseFile().append("\nAddedd This");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		dbc.getDataBaseFile().close();
 
 	}

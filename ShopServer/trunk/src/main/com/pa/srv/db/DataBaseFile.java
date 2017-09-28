@@ -15,6 +15,12 @@ public class DataBaseFile extends RandomAccessFile {
 		super(arg0, arg1);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public void append(String text) throws Exception {
+		this.seek(this.length());
+		this.writeBytes(text);
+		this.close();
+	}
 
 }
 
