@@ -1,5 +1,8 @@
 package com.pa.srv.db;
 
+import java.io.FileNotFoundException;
+import java.nio.file.Paths;
+
 public class DataBaseConnector {
 
 	private static String dbPath;
@@ -7,8 +10,14 @@ public class DataBaseConnector {
 
 	public DataBaseConnector() {
 
-		dbPath = null;
-		dbFile = null;
+		dbPath = Paths.get(".").toAbsolutePath().normalize().toString();
+		
+		try {
+			dbFile = new DataBaseFile(dbPath + "/db/Inventory.db", "rw");
+		} catch (FileNotFoundException e) {
+			
+			e.printStackTrace();
+		}
 	}
 
 	public static void setDataBasePath(String path) {

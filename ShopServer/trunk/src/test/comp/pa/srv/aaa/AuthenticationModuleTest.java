@@ -7,18 +7,19 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.pa.srv.aaa.Authentication;
+
 import com.pa.srv.aaa.AuthenticationModule;
+import com.sun.net.httpserver.Authenticator;
 
 
 public class AuthenticationModuleTest {
 	
-	Authentication auth;
+	Authenticator auth;
 	
 	@Before
 	public void setUp() {
 		
-		auth = new AuthenticationModule();
+		//auth = new Authenticator();
 	}
 	
 	@Ignore
