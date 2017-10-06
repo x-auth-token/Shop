@@ -26,6 +26,7 @@ public class register {
 	private JTextField textField_3;
 	private JTextField textField_4;
 	private JTextField textField_5;
+	private JTextField textField_6;
 
 	/**
 	 * Launch the application.
@@ -139,11 +140,21 @@ public class register {
 				String bra_aff=textField_4.getText();
 				String workid=textField_5.getText();
 				String emp_pos=(String)comboBox.getSelectedItem();
+				String pass=textField_6.getText();
 				//TODO update the db with all the info of the new worker
 			}
 		});
 		btnRegister.setBounds(311, 205, 89, 31);
 		frmRegister.getContentPane().add(btnRegister);
+		
+		JLabel lblPassword = new JLabel(" password :");
+		lblPassword.setBounds(10, 206, 79, 14);
+		frmRegister.getContentPane().add(lblPassword);
+		
+		textField_6 = new JTextField();
+		textField_6.setBounds(110, 206, 133, 20);
+		frmRegister.getContentPane().add(textField_6);
+		textField_6.setColumns(10);
 		
 	}
 }
