@@ -37,12 +37,17 @@ public class Server implements Runnable {
 	public static ServerSocket securedSocket;
 	public static Socket sslSocket;
 
-	public Server(Socket s) {
+	public Server() {
+		serverListner();
+	}
+	
+	private Server(Socket s) {
 
 		sslSocket = s;
 	}
 
-	public static void main (String args[]) throws IOException {
+	
+	private void serverListner() {
 		
 		try {
 			serverSocketFactory = SSLServerSocketFactory.getDefault();
@@ -62,7 +67,6 @@ public class Server implements Runnable {
 			
 			e.printStackTrace();
 		}
-		
 	}
 
 	public void run() {
@@ -74,6 +78,12 @@ public class Server implements Runnable {
 			e.printStackTrace();
 		}
 
+	}
+	
+	public static void main (String args[]) throws IOException {
+		
+		Server s = new Server();
+		
 	}
 
 }
