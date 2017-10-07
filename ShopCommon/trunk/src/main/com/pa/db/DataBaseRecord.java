@@ -1,4 +1,4 @@
-package com.pa.srv.db;
+package com.pa.db;
 
 public class DataBaseRecord {
 

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package com.pa.srv.dbconnector;
+package com.pa.db;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -37,8 +37,8 @@ import org.junit.rules.ExpectedException.*;
 import org.junit.runners.MethodSorters;
 import org.junit.rules.TemporaryFolder;
 
-import com.pa.srv.db.DataBase;
-import com.pa.srv.db.DataBaseFile;
+import com.pa.db.DataBase;
+import com.pa.db.DataBaseFile;
 import com.sun.xml.internal.ws.api.pipe.ThrowableContainerPropertySet;
 
 import org.junit.Ignore;
