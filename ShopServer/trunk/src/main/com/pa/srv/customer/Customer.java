@@ -32,6 +32,7 @@ public class Customer extends Person {
 	public Customer(String cName, String cSName, String cGender, String cId, String pn) {
 		
 		super(cName, cSName, cGender, cId, pn);
+	
 	}
 	
 	public void setDiscountPercent(double p) {

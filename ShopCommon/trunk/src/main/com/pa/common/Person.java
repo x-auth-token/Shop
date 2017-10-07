@@ -23,6 +23,7 @@ import static com.pa.common.Validators.isCorrectIDFormat;
 import static com.pa.common.Validators.isCorrectPhoneNumberFormat;
 import static com.pa.common.Validators.validateOnlyLettersUsed;
 
+
 public abstract class Person {
 
 	private String personName;
@@ -122,6 +123,9 @@ public abstract class Person {
 		return this.personPhoneNumber;
 	}
 
+	public DataBaseRecord toDBRecord() {
+		return new DataBaseRecord();
+	}
 	// toString
 	public String toString() {
 

@@ -45,6 +45,7 @@ public class DataBase {
 	}
 
 	protected void indexManager() {};
+	
 	public final void create() throws SecurityException, IOException, FileNotFoundException {
 		
 		File f;

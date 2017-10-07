@@ -32,10 +32,10 @@ import java.lang.*;
 @SuppressWarnings("unused")
 public class Server implements Runnable {
 
-	public static final int port = 8787;
-	public static ServerSocketFactory serverSocketFactory;
-	public static ServerSocket securedSocket;
-	public static Socket sslSocket;
+	private static final int port = 8787;
+	private static ServerSocketFactory serverSocketFactory;
+	private static ServerSocket securedSocket;
+	private static Socket sslSocket;
 
 	public Server() {
 		serverListner();
@@ -52,7 +52,7 @@ public class Server implements Runnable {
 		try {
 			serverSocketFactory = SSLServerSocketFactory.getDefault();
 			securedSocket = serverSocketFactory.createServerSocket(port);
-			System.out.println("--- Listening for connections on port " + port);
+			System.out.println("--- Server started and istening for connections on port " + port);
 			
 		
 		
