@@ -25,11 +25,10 @@ import org.junit.rules.ExpectedException;
 public class ValidatorsTest {
 
 	private String str = "Test";
-	
+
 	@Test
 	public void testValidateOnlyLettersUsed() {
-		
+
 		Assert.assertTrue(Validators.validateOnlyLettersUsed(str));
 	}
 }
-
