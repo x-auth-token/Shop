@@ -54,4 +54,6 @@ public class Customer extends Person {
 		return this.benefit;
 		
 	}
+	
+	
 }
