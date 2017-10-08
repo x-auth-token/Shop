@@ -9,3 +9,5 @@ public interface IDataBase <T> {
 	void delete(T item);
 	List<T> select(String str);
 }
+
+
