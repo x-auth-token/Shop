@@ -2,7 +2,7 @@ package com.pa.common;
 
 import java.util.List;
 import java.util.UUID;
-import java.security.SecureRandom;
+
 
 
 public abstract class User {
@@ -30,7 +30,6 @@ public abstract class User {
 	}
 	protected void setPassword(String password) {
 		
-		SecureRandom sr = new SecureRandom();
 		this.password = password;
 	}
 	protected List<Permission> getPermissions() {
@@ -44,6 +43,14 @@ public abstract class User {
 	}
 	public void setUuid(UUID uuid) {
 		this.uuid = uuid;
+	}
+
+	public byte[] getSalt() {
+		return salt;
+	}
+
+	public void setSalt(byte[] salt) {
+		this.salt = salt;
 	}
 	
 	

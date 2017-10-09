@@ -57,7 +57,7 @@ public class CustomerTest {
 			} 
 			catch (IllegalArgumentException e) {
 				
-				System.out.println(e.getMessage());
+				e.printStackTrace();
 			}
 			
 			
