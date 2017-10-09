@@ -4,6 +4,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
+import java.util.Base64;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -21,20 +22,15 @@ public class PasswordHasher {
 		
 	}
 	
-	public static byte[] generateHashedPassword(String pass) throws NoSuchAlgorithmException, InvalidKeySpecException {
+	public static String generateHashedPassword(String pass) throws NoSuchAlgorithmException, InvalidKeySpecException {
 		
 		final char[] password = pass.toCharArray();
 		final byte[] salt = getSalt();
 		
-		PBEKeySpec spec = new PBEKeySpec(password, salt, ITERATIONS, KEY_LENGTH);
-		SecretKeyFactory secretKeyFactory = SecretKeyFactory.getInstance(ALGO_NAME);
-		byte[] hashedPassword = secretKeyFactory.generateSecret(spec).getEncoded();
+		final byte[] hashedPassword = getHash(password, salt, ITERATIONS, KEY_LENGTH);
 		
-		//byte[] hashedPassword = getHash(password, salt, ITERATIONS, KEY_LENGTH);
+		return ITERATIONS + ":" + Hex.encodeHexString(salt) + ":" + Hex.encodeHexString(hashedPassword);
 		
-		
-		//return new String(ITERATIONS + ":" + Hex.encodeHexString(salt) + ":" + Hex.encodeHexString(hashedPassword));
-		return hashedPassword;
 	}
 	
 	private static byte[] getSalt() throws NoSuchAlgorithmException {
@@ -42,7 +38,6 @@ public class PasswordHasher {
 		byte[] salt = new byte[512];
 		sRandom.nextBytes(salt);
 		
-		System.out.println(sRandom.nextDouble());
 		return salt;
 	}
 	
@@ -64,27 +59,28 @@ public class PasswordHasher {
 		
 		byte[] testPass = getHash(origPass.toCharArray(), salt, iter, KEY_LENGTH);
 		
-		
-		if (!hashedPass.equals(testPass))
-			return false;
-		return true;
+			
+		if (Arrays.equals(hashedPass, testPass))
+			return true;
+		return false;
 	}
 	
 	public static void main(String[] args) {
 		String pass = "password";
 		
 		try {
-			byte[] hash = generateHashedPassword(pass);
-			byte[] hash2 = getHash();
-
-			System.out.println(Arrays.equals(hash,hash2));
+			String hash = generateHashedPassword(pass);
+			System.out.println(validateHashedPassword(pass, hash));
+		
 			
-			
-			
+		
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvalidKeySpecException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (DecoderException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
