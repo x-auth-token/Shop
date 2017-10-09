@@ -3,7 +3,7 @@ package com.pa.db;
 import java.util.List;
 
 import com.pa.common.Item;
-public class ItemsDataBase implements IDataBase<Item> {
+public class ItemsDataBase implements DataBase<Item> {
 
 	@Override
 	public void insert(Item item) {

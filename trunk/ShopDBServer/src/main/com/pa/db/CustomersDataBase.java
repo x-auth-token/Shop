@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.pa.common.Person;
 
-public class CustomersDataBase implements IDataBase<Person> {
+public class CustomersDataBase implements DataBase<Person> {
 
 	@Override
 	public void insert(Person item) {

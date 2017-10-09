@@ -2,7 +2,7 @@ package com.pa.db;
 
 import java.util.List;
 
-public interface IDataBase <T> {
+public interface DataBase <T> {
 	
 	void insert(T item);
 	void update(T item);
