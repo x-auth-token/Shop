@@ -2,6 +2,7 @@ package com.pa.common;
 
 import java.util.List;
 import java.util.UUID;
+import com.pa.common.crypto.*;
 
 
 
@@ -9,10 +10,13 @@ public abstract class User {
 	
 	private String username;
 	private String password;
-	private byte[] salt;
 	private UUID uuid;
 	private List<Permission> permissions;
 	
+	
+	public User(String un) {
+		setUuid(UUID.randomUUID());
+	}
 	public User(String un, String pass) {
 		setUuid(UUID.randomUUID());
 		setUsername(un);
@@ -29,7 +33,6 @@ public abstract class User {
 		return password;
 	}
 	protected void setPassword(String password) {
-		
 		this.password = password;
 	}
 	protected List<Permission> getPermissions() {
@@ -45,13 +48,6 @@ public abstract class User {
 		this.uuid = uuid;
 	}
 
-	public byte[] getSalt() {
-		return salt;
-	}
-
-	public void setSalt(byte[] salt) {
-		this.salt = salt;
-	}
 	
 	
 	
