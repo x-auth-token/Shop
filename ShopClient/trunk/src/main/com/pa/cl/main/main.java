@@ -22,7 +22,8 @@ public class main {
 	
 	public static void main (String args[])
 	{
-		Login llf=new Login();
+		login lg=new login();
+		
 	}
 	
 
