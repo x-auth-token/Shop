@@ -71,9 +71,7 @@ public class PasswordHasher {
 		try {
 			String hash = generateHashedPassword(pass);
 			System.out.println(hash);
-			System.out.println(validateHashedPassword(pass, hash));
-		
-			
+			System.out.println(validateHashedPassword("password", hash));
 			
 		
 		} catch (NoSuchAlgorithmException e) {

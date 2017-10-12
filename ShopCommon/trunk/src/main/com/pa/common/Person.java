@@ -23,18 +23,22 @@ import static com.pa.common.Validators.isCorrectIDFormat;
 import static com.pa.common.Validators.isCorrectPhoneNumberFormat;
 import static com.pa.common.Validators.validateOnlyLettersUsed;
 
+import java.util.UUID;
+
 
 
 public abstract class Person {
 
-	private String personName;
-	private String personSurname;
-	private String personId;
-	private String personGender;
-	private String personPhoneNumber;
+	private String name;
+	private String surname;
+	private String id;
+	private String gender;
+	private String phoneNumber;
+	private UUID uuid;
 	
 	
 	public Person() {
+		this.uuid = UUID.randomUUID();
 		setPersonName(null);
 		setPersonSurname(null);
 		setPersonId(null);
@@ -44,6 +48,7 @@ public abstract class Person {
 	
 	
 	public Person(String name, String sName, String gender, String id, String pn) {
+		this.uuid = UUID.randomUUID();
 		setPersonName(name);
 		setPersonSurname(sName);
 		setPersonId(id);
@@ -57,7 +62,7 @@ public abstract class Person {
 
 			throw new IllegalArgumentException("Wrong input! Name should contain only letters");
 		} else {
-			this.personName = n;
+			this.name = n;
 		}
 
 	}
@@ -68,7 +73,7 @@ public abstract class Person {
 
 			throw new IllegalArgumentException("Wrong input! Surname should contain only letters");
 		} else {
-			this.personSurname = sn;
+			this.surname = sn;
 		}
 	}
 	
@@ -77,7 +82,7 @@ public abstract class Person {
 		if (!g.equalsIgnoreCase("male") && !g.equalsIgnoreCase("female")) {
 			throw new IllegalArgumentException("Wrong input! Gender must be male or female");
 		} else {
-			this.personGender = g;
+			this.gender = g;
 		}
 	}
 
@@ -88,7 +93,7 @@ public abstract class Person {
 			throw new IllegalArgumentException(
 					"Wrong input! ID should contain only numbers and be " + ID_LENGTH + " digits long");
 		} else {
-			this.personId = id;
+			this.id = id;
 		}
 	}
 
@@ -99,29 +104,29 @@ public abstract class Person {
 			throw new IllegalArgumentException("Wrong input! Phone number should be between " + PHONE_LENGTH_MIN
 					+ " or " + PHONE_LENGTH_MAX + " digits long");
 		} else {
-			this.personPhoneNumber = phone;
+			this.phoneNumber = phone;
 		}
 	}
 
 	// getters
 	public String getPersonName() {
-		return this.personName;
+		return this.name;
 	}
 
 	public String getPersonSurname() {
-		return this.personSurname;
+		return this.surname;
 	}
 
 	public String getPersonGender() {
-		return this.personGender;
+		return this.gender;
 	}
 
 	public String getPersonId() {
-		return this.personId;
+		return this.id;
 	}
 
 	public String getPersonPhoneNumber() {
-		return this.personPhoneNumber;
+		return this.phoneNumber;
 	}
 
 	

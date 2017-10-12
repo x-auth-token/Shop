@@ -22,16 +22,19 @@ public class Customer extends Person {
 
 	private double discountPercent;
 	private String[] benefit;
+	private int customerNumber;
 
 	// Constructor
 	
 	public Customer() {
 		super();
+		this.customerNumber = assignNumber();
 	}
 	
 	public Customer(String cName, String cSName, String cGender, String cId, String pn) {
 		
 		super(cName, cSName, cGender, cId, pn);
+		this.customerNumber = assignNumber();
 	
 	}
 	
@@ -53,6 +56,11 @@ public class Customer extends Person {
 		
 		return this.benefit;
 		
+	}
+	
+	protected int assignNumber() {
+		int number = 0;
+		return  number; 
 	}
 	
 	

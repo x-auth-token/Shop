@@ -8,5 +8,7 @@ public abstract class Item {
 	private int itemSize;
 	private String itemVendor;
 	private int itemQuantity;
+	private boolean inStock;
+	private int[] inBranch;
 	
 }

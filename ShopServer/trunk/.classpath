@@ -6,5 +6,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ShopCommon"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.10.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ShopDBServer"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
