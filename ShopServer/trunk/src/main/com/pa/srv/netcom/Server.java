@@ -38,7 +38,7 @@ public class Server implements Runnable {
 	private static Socket sslSocket;
 
 	public Server() {
-		serverListner();
+		serverListnerStart();
 	}
 	
 	private Server(Socket s) {
@@ -47,15 +47,13 @@ public class Server implements Runnable {
 	}
 
 	
-	private void serverListner() {
+	private void serverListnerStart() {
 		
 		try {
 			serverSocketFactory = SSLServerSocketFactory.getDefault();
 			securedSocket = serverSocketFactory.createServerSocket(port);
-			System.out.println("--- Server started and istening for connections on port " + port);
+			System.out.println("--- Server started and listening for connections on port " + port);
 			
-		
-		
 			while (true) {
 				
 				sslSocket = securedSocket.accept();
@@ -68,22 +66,18 @@ public class Server implements Runnable {
 			e.printStackTrace();
 		}
 	}
-
+	
+		
 	public void run() {
 
 		try {
-
+			System.out.println("Test");
+			
 		} catch (Exception e) {
 
 			e.printStackTrace();
 		}
 
-	}
-	
-	public static void main (String args[]) throws IOException {
-		
-		Server s = new Server();
-		
 	}
 
 }
