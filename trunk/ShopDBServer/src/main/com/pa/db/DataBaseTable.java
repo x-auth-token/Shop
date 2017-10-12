@@ -28,11 +28,43 @@ public class DataBaseTable<T> implements DataBase<T> {
 	
 	public DataBaseTable(String tName) {
 		this.folder = new File("db");
-		
 		this.tableName = tName + ".db";
-		System.out.println(tableName);
 	}
 	
+	public DataBaseTable(String tName, String dPath) {
+		this.tableName = tName + ".db";
+		this.folder = new File(dPath);
+		
+	}
+	public File getFolder() {
+		return folder;
+	}
+
+	public void setFolder(File folder) {
+		this.folder = folder;
+	}
+
+	public File getTable() {
+		return table;
+	}
+
+	public void setTable(File table) {
+		this.table = table;
+	}
+
+
+	public void setDBPath(String dbPath) {
+		this.dbPath = dbPath;
+	}
+
+	public String getTableName() {
+		return tableName;
+	}
+
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
+	}
+
 	public final void create() throws SecurityException, IOException, FileNotFoundException {
 		
 		File f;
@@ -40,18 +72,19 @@ public class DataBaseTable<T> implements DataBase<T> {
 		if (!folder.exists())
 			folder.mkdirs();
 		
-		dbPath = folder.getAbsolutePath().toString() + "\\";
+		dbPath = folder.getAbsolutePath() + "\\";
+		
 			
-		f  = new File(dbPath + tableName);
+		f  = new File(dbPath + this.getTableName());
 			
 		if (f.exists())
-			throw new FileAlreadyExistsException(f.getAbsolutePath().toString(), "", "File already exists!");
+			throw new FileAlreadyExistsException(f.getAbsolutePath(), "", "File already exists!");
 		
-		table = new File(dbPath + tableName);
+		table = new File(dbPath + this.getTableName());
 		
-		System.out.println("File created at: " + getDBPath());
+		System.out.println("File created at: " + this.getDBPath());
 		
-		
+		table.createNewFile();
 	}
 
 	@Override
@@ -88,46 +121,10 @@ public class DataBaseTable<T> implements DataBase<T> {
 		return null;
 	}
 	
-	public final String getDBPath() {
-		return this.dbPath;
-	}
-	public static class Test extends Person {
-		
-		public Test() {
-			super();
-		}
-		
-		public Test(String name, String sName, String gender, String id, String pn) {
-			super(name, sName, gender, id, pn);
-		}
-		
+	public String getDBPath() {
+		return dbPath;
 	}
 	
-	public static void main(String[] args) {
-		
-		Person p = new Test("asd", "asdasd", "male", "123456789", "0549002019");
-		Person p2 = new Test("asd", "asdasd", "male", "123456789", "0549002018");
-		
-		DataBaseTable<Person> dbt = new DataBaseTable<Person>("Customer");
-		
-		try {
-			dbt.create();
-		} catch (SecurityException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		try {
-			dbt.insert(p);
-			dbt.insert(p2);
-		
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-
 		
 }
 
