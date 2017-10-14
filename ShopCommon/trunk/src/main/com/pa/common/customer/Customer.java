@@ -63,5 +63,11 @@ public class Customer extends Person {
 		return  number; 
 	}
 	
+	@Override
+	public String toString() {
+
+		return "Name: " + getPersonName() + "\n" + "Surname: " + getPersonSurname() + "\n" + "Gender: "
+				+ getPersonGender() + "\n" + "ID: " + getPersonId() + "\n" + "Phone: " + getPersonPhoneNumber() + "\n" + "Discount: " + getDiscountPlan() + "%";
+	}
 	
 }

@@ -2,39 +2,50 @@ package com.pa.db;
 
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.AfterClass;
 import org.junit.Assert;
 
+import java.nio.file.Path;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runners.MethodSorters;
+
+import com.google.gson.reflect.TypeToken;
 import com.pa.common.customer.*;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class DataBaseTableTest {
 
 	static DataBaseTable<NewCustomer> db;
+	static String currentWorkingPath = Paths.get(".").toAbsolutePath().normalize().toString();
+	static String testDatabasePath = Paths.get(currentWorkingPath, "db", "db_test_folder").toString();
+	
 
 	@BeforeClass
 	public static void setUPClass() throws SecurityException, IOException {
 
 		String tblName = "db_test";
-
-		db = new DataBaseTable<NewCustomer>(tblName,
-				"C:\\Users\\merka\\Dropbox\\1 Degree\\HIT\\2nd year\\Java\\ShopDBServer\\db\\db_test_folder");
+		
+		
+		db = new DataBaseTable<NewCustomer>(tblName,testDatabasePath, new TypeToken<NewCustomer>() {});
+				//"C:\\Users\\merka\\Dropbox\\1 Degree\\HIT\\2nd year\\Java\\ShopDBServer\\db\\db_test_folder");
 
 	}
 
 	@AfterClass
 	public static void tearDownClass() throws Exception {
 
-		File dir = new File(
-				"C:\\Users\\merka\\Dropbox\\1 Degree\\HIT\\2nd year\\Java\\ShopDBServer\\db\\db_test_folder");
+		File dir = new File(testDatabasePath);
 
 		for (File file : dir.listFiles()) {
 			file.delete();
@@ -44,7 +55,7 @@ public class DataBaseTableTest {
 
 	@Rule
 	public final ExpectedException thrown = ExpectedException.none();
-
+	
 	@Test
 	public void testDataBaseTableCreate() throws SecurityException, IOException {
 		db.create();
@@ -56,7 +67,7 @@ public class DataBaseTableTest {
 
 		thrown.expect(FileAlreadyExistsException.class);
 		thrown.expectMessage(
-				"C:\\Users\\merka\\Dropbox\\1 Degree\\HIT\\2nd year\\Java\\ShopDBServer\\db\\db_test_folder\\db_test.db -> : File already exists!");
+				testDatabasePath + File.separator + db.getTableName() + " -> : File already exists!");
 		db.create();
 	}
 
@@ -64,7 +75,7 @@ public class DataBaseTableTest {
 	public void testDataBaseTableInsertMethod() {
 
 		NewCustomer p = new NewCustomer("asd", "asdasd", "male", "123456789", "0549002019");
-		NewCustomer p2 = new NewCustomer("asd", "asdasd", "male", "123456789", "0549002018");
+		NewCustomer p2 = new NewCustomer("asd", "asdasd", "male", "123456788", "0549002018");
 
 		try {
 			db.insert(p);
@@ -76,19 +87,23 @@ public class DataBaseTableTest {
 		}
 	}
 
-	@Test
-	public void testDataBaseUpdate() {
-		NewCustomer p = new NewCustomer("asd", "asdasd", "female", "123456789", "0549002019");
-		//db.update(p);
-		Assert.assertEquals("female", db.select("gender"));
-	}
+//	@Test
+//	public void testDataBaseUpdate() {
+//		NewCustomer p = new NewCustomer("asd", "asdasd", "female", "123456789", "0549002019");
+//		db.update(p);
+//		Assert.assertEquals("female", db.select("gender"));
+//	}
 
-	// @Test
-	// public void testDataBaseSelectMethod() {
-	// db.select("1000");
-	// }
+	 @Test
+	 public void testDataBaseTableSelectMethod() throws IOException {
+	
+		 NewCustomer p2 = new NewCustomer("asd", "asdasd", "male", "123456788", "0549002018");
+		 NewCustomer p3 = db.select("123456788");
+		 System.out.println(p3);
+		 Assert.assertEquals(p2.toString(), p3.toString());
+	 }
 
-	//
+	
 
 	//
 	// @Test

@@ -16,6 +16,8 @@
  ******************************************************************************/
 package com.pa.common.customer;
 
+import java.lang.reflect.Type;
+
 public class NewCustomer extends Customer {
 
 	private final double DEFAULT_DISCOUNT = 10.0;
@@ -24,6 +26,5 @@ public class NewCustomer extends Customer {
 		super(cName, cSName, cGender, cId, pn);
 		this.setDiscountPercent(DEFAULT_DISCOUNT);
 	}
-
-	
+		// TODO Auto-generated constructor stub
 }

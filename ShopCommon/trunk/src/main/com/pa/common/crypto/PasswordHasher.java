@@ -64,25 +64,5 @@ public class PasswordHasher {
 			return true;
 		return false;
 	}
-	
-	public static void main(String[] args) {
-		String pass = "password";
-		
-		try {
-			String hash = generateHashedPassword(pass);
-			System.out.println(hash);
-			System.out.println(validateHashedPassword("password", hash));
-			
-		
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidKeySpecException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (DecoderException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 }
+
