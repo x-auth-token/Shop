@@ -12,10 +12,12 @@ import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 import java.awt.ComponentOrientation;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 import com.pa.gui.netcom.*;
 
@@ -124,7 +126,12 @@ public class LoginDialog extends JDialog {
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent okButtonClicked) {
 						if (okButton.getActionCommand().equals(okButtonClicked.getActionCommand()))
-							cl = new Client(txtServerIP.getText(), 8787);
+							try {
+								cl = new Client(txtServerIP.getText(), 8787);
+							} catch (IOException e) {
+								JOptionPane.showMessageDialog(null, e.getMessage());
+							}
+						
 						dispose();
 					}
 				});

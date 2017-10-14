@@ -3,6 +3,7 @@ package com.pa.gui.netcom;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.rmi.ConnectException;
 
 import javax.net.ServerSocketFactory;
 import javax.net.SocketFactory;
@@ -38,7 +39,7 @@ public class Client implements Runnable {
 	}
 
 	
-	public Client(String hostName, int port) {
+	public Client(String hostName, int port) throws IOException {
 		
 		Client.serverHostname = hostName;
 		Client.serverPort = port;
@@ -51,19 +52,14 @@ public class Client implements Runnable {
 		Client.clientSecuredSocket = s;
 	}
 	
-	private void startClient() {
-		try {
-						
+	private void startClient() throws IOException {
+		
 			clientSecuredSocketFactory = SSLSocketFactory.getDefault();
 			clientSecuredSocket = clientSecuredSocketFactory.createSocket(serverHostname, serverPort);
 			System.out.println("--- Client connected to " + serverHostname + " on port " + serverPort);
 			
 			new Thread(new Client(clientSecuredSocket)).start();
-					
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
+		
 	}
 	
 	@Override
