@@ -10,7 +10,9 @@ import org.junit.Assert;
 import java.nio.file.Path;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Paths;
 import java.util.Collection;
@@ -21,6 +23,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runners.MethodSorters;
 
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 import com.pa.common.customer.*;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -87,19 +90,20 @@ public class DataBaseTableTest {
 		}
 	}
 
-//	@Test
-//	public void testDataBaseUpdate() {
-//		NewCustomer p = new NewCustomer("asd", "asdasd", "female", "123456789", "0549002019");
-//		db.update(p);
-//		Assert.assertEquals("female", db.select("gender"));
-//	}
+	@Test
+	public void testDataBaseUpdate() throws IOException {
+		NewCustomer newC = new NewCustomer("asd", "asdasd", "male", "123456787", "0549002018");
+		
+		db.update("123456789","phoneNumber","0549144667" );
+		
+		//Assert.assertEquals("female", db.select("gender"));
+	}
 
 	 @Test
 	 public void testDataBaseTableSelectMethod() throws IOException {
-	
-		 NewCustomer p2 = new NewCustomer("asd", "asdasd", "male", "123456788", "0549002018");
-		 NewCustomer p3 = db.select("123456788");
-		 System.out.println(p3);
+		 NewCustomer p2 = new NewCustomer("asd", "asdasd", "male", "123456789", "0549002019");
+		 NewCustomer p3 = db.select("123456789");
+		 //System.out.println(p3);
 		 Assert.assertEquals(p2.toString(), p3.toString());
 	 }
 

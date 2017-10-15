@@ -20,7 +20,7 @@ import java.lang.reflect.Type;
 
 public class NewCustomer extends Customer {
 
-	private final double DEFAULT_DISCOUNT = 10.0;
+	private double DEFAULT_DISCOUNT = 10.0;
 	
 	public NewCustomer(String cName, String cSName, String cGender, String cId, String pn) {
 		super(cName, cSName, cGender, cId, pn);

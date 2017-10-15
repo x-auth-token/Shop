@@ -18,7 +18,7 @@ package com.pa.common.customer;
 
 public class VipCustomer extends Customer {
 	
-	private final double DEFAULT_DISCOUNT = 10.0;
+	private double DEFAULT_DISCOUNT = 10.0;
 	
 	public VipCustomer(String cName, String cSName, String cGender, String cId, String pn) {
 		super(cName, cSName, cGender, cId, pn);

@@ -9,21 +9,29 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.lang.reflect.Array;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.swing.text.html.HTMLDocument.Iterator;
 
+import org.junit.rules.TemporaryFolder;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import com.pa.common.Person;
 import com.pa.common.customer.NewCustomer;
 
@@ -53,8 +61,7 @@ public class DataBaseTable<T> implements DataBase<T> {
 		this.response = response;
 	}
 
-	
-	//Type type = new TypeToken<T>() {}.getType();
+
 	
 	public DataBaseTable(String tName, TypeToken<T> dataBaseType) {
 		setDataBaseType(dataBaseType);
@@ -133,17 +140,37 @@ public class DataBaseTable<T> implements DataBase<T> {
 	}
 
 	@Override
-	public void update(T item, String field) throws IOException {
-		try (Writer writer = new FileWriter(table, true)) {
-			
-			Gson gson = new GsonBuilder().create();
-			gson.serializeNulls();
-			String json = gson.toJson(item);
-			writer.append(json).close();
-		}
+	public void update(String key, String property, String value) throws IOException {
 		
-	}
-
+		try (JsonReader reader = new JsonReader(new FileReader(table))) {
+			reader.setLenient(true);
+		
+			try (Writer writer = new FileWriter(File.createTempFile("tempdb", ".db"),true)) {
+				
+				GsonBuilder gson = new GsonBuilder();
+			
+				while (reader.hasNext()) {
+					
+					JsonObject jsonObject = gson.create().fromJson(reader, JsonObject.class);
+					
+					if (jsonObject.get("id").getAsString().equals(key)) {
+						
+						jsonObject.remove(property);
+						jsonObject.addProperty(property, value);
+						
+					}
+					
+					gson.create().toJson(jsonObject);
+					
+					writer.write(gson.toString());
+				}
+				writer.close();				
+			}
+			reader.close();
+			
+		}
+}
+	
 	@Override
 	public void delete(T item) {
 		// TODO Auto-generated method stub
@@ -151,24 +178,22 @@ public class DataBaseTable<T> implements DataBase<T> {
 	}
 
 	@Override
-	public T select(String str) throws IOException {
+	public T select(String key) throws IOException {
 		
 		try (JsonReader reader = new JsonReader(new FileReader(table))) {
 			
 			reader.setLenient(true);
 			GsonBuilder gson = new GsonBuilder();
-			
-			
-			T elements;
+
 			while (reader.hasNext()) {
-				elements = gson.create().fromJson(reader, this.getDataBaseType().getType());
 				
-				if (elements.toString().contains(str)) {
-					//System.out.println(elements.toString());
-					return elements;
+				JsonObject obj = gson.create().fromJson(reader, JsonObject.class);
+				
+				if(obj.has("id") && obj.get("id").getAsString().equals(key)) {
+					return gson.create().fromJson(obj, this.getDataBaseType().getType());
 				}
 			}
-			//System.out.println(elements.toString());
+			
 			return null;
 		}
 		
