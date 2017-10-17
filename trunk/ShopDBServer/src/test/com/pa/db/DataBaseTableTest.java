@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runners.MethodSorters;
@@ -41,22 +43,22 @@ public class DataBaseTableTest {
 		Assert.assertTrue(new File(db.getDBPath() + db.getTableName()).exists());
 	}
 
-	
 	@Test
 	public void testDataBaseTableInsertMethod() {
 
 		NewCustomer p = new NewCustomer("asd", "asdasd", "male", "123456789", "0549002019");
 		NewCustomer p2 = new NewCustomer("asd", "asdasd", "male", "123456788", "0549002018");
 		NewCustomer p3 = new NewCustomer("asd", "asdasd", "male", "123456787", "0549002020");
-
-		try {
-			db.insert(p.getPersonId(), p);
-			db.insert(p2.getPersonId(), p2);
-			db.insert(p3.getPersonId(), p3);
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			System.out.println("duplicate");
+		ArrayList<NewCustomer> arr = new ArrayList<>();
+		arr.add(p);
+		arr.add(p2);
+		arr.add(p3);
+		for (NewCustomer n : arr) {
+			try {
+				db.insert(n.getPersonId(), n);
+			} catch (Exception e) {
+				e.getMessage();
+			}
 		}
 	}
 
@@ -74,32 +76,30 @@ public class DataBaseTableTest {
 	public void testDataBaseTableUpdateMethod() throws IOException {
 		db.update("123456789", "phoneNumber", "0549144667");
 		NewCustomer c = db.select("123456789");
-		Assert.assertEquals(c.getPersonPhoneNumber(),"0549144667");
+		Assert.assertEquals(c.getPersonPhoneNumber(), "0549144667");
 	}
 
 	@Test
 	public void testDataBaseTableSelectMethod() throws IOException {
 		Assert.assertNotNull(db.select("123456789"));
 	}
-	
+
 	@Test
 	public void testDataBaseTableSelectMethodNonExistentObjectException() throws FileNotFoundException, IOException {
 		Assert.assertNull(db.select("123456777"));
 
+	}
+
+	@Test
+	public void testDataBaseTableRemoveObjectedMethod() throws FileNotFoundException, IOException {
+		NewCustomer p3 = new NewCustomer("asd", "asdasd", "male", "123456787", "0549002020");
+		Assert.assertTrue(db.delete("123456787", p3));
 
 	}
 
-	
-	 @Test
-	 public void testDataBaseTableRemoveObjectedMethod() throws FileNotFoundException, IOException {
-		 NewCustomer p3 = new NewCustomer("asd", "asdasd", "male", "123456787", "0549002020");
-		 Assert.assertTrue(db.delete("123456787", p3));
-		
-	 }
-	
-//	 @Test
-//	 public void testDataBaseOpenDataBase() {
-//	
-//	 }
+	// @Test
+	// public void testDataBaseOpenDataBase() {
+	//
+	// }
 
 }
