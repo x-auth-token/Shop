@@ -21,6 +21,7 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runners.MethodSorters;
+import org.omg.CORBA.OBJECT_NOT_EXIST;
 import org.omg.PortableInterceptor.ORBInitInfoPackage.DuplicateName;
 
 import com.google.gson.reflect.TypeToken;
@@ -64,26 +65,18 @@ public class DataBaseTableTest {
 		Assert.assertTrue(new File(db.getDBPath() + db.getTableName()).exists());
 	}
 
-	// @Test
-	// public void testDataBaseTableCreateException() throws
-	// FileNotFoundException, IOException, SecurityException {
-	//
-	// thrown.expect(FileAlreadyExistsException.class);
-	// thrown.expectMessage(
-	// testDatabasePath + File.separator + db.getTableName() + " -> : File
-	// already exists!");
-	// db.create();
-	// }
-
+	
 	@Test
 	public void testDataBaseTableInsertMethod() {
 
 		NewCustomer p = new NewCustomer("asd", "asdasd", "male", "123456789", "0549002019");
 		NewCustomer p2 = new NewCustomer("asd", "asdasd", "male", "123456788", "0549002018");
+		NewCustomer p3 = new NewCustomer("asd", "asdasd", "male", "123456787", "0549002020");
 
 		try {
 			db.insert(p.getPersonId(), p);
 			db.insert(p2.getPersonId(), p2);
+			db.insert(p3.getPersonId(), p3);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -110,21 +103,27 @@ public class DataBaseTableTest {
 
 	@Test
 	public void testDataBaseTableSelectMethod() throws IOException {
-		NewCustomer p2 = new NewCustomer("asd", "asdasd", "male", "123456789", "0549002019");
+		Assert.assertNotNull(db.select("123456789"));
+	}
+	
+	@Test
+	public void testDataBaseTableSelectMethodNonExistentObjectException() throws FileNotFoundException, IOException {
 		Assert.assertNull(db.select("123456777"));
 
 
 	}
 
-	//
-	// @Test
-	// public void testDataBaseDelete() {
-	//
-	// }
-	//
-	// @Test
-	// public void testDataBaseOpenDataBase() {
-	//
-	// }
+	
+	 @Test
+	 public void testDataBaseTableRemoveObjectedMethod() throws FileNotFoundException, IOException {
+		 NewCustomer p3 = new NewCustomer("asd", "asdasd", "male", "123456787", "0549002020");
+		 Assert.assertTrue(db.delete("123456787", p3));
+		
+	 }
+	
+//	 @Test
+//	 public void testDataBaseOpenDataBase() {
+//	
+//	 }
 
 }

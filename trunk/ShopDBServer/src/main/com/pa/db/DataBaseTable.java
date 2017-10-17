@@ -1,7 +1,6 @@
 package com.pa.db;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.awt.SecondaryLoop;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -9,23 +8,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import java.lang.reflect.Array;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.nio.file.FileAlreadyExistsException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import javax.management.OperationsException;
-
 import java.util.Iterator;
 
-import org.junit.rules.TemporaryFolder;
-import org.omg.PortableInterceptor.ORBInitInfoPackage.DuplicateName;
+import org.omg.CORBA.OBJECT_NOT_EXIST;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -34,12 +20,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonToken;
-import com.google.gson.stream.JsonWriter;
-import com.pa.common.Person;
-import com.pa.common.User;
-import com.pa.common.customer.NewCustomer;
 
 public class DataBaseTable<T> implements DataBase<T> {
 
@@ -191,15 +171,25 @@ public class DataBaseTable<T> implements DataBase<T> {
 	}
 
 	@Override
-	public void delete(T object) {
-
+	public boolean delete(String key, T object) throws FileNotFoundException, IOException {
+		ArrayList<String> collectionOfObjects = new ArrayList<>();
+		copyCurrentCollectionOfObjects(collectionOfObjects);
+		if (collectionOfObjects.remove(findObjectByKey(key).toString())) {
+			try (Writer writer = new FileWriter(table, false)) {
+				writer.write(collectionOfObjects.toString());
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
 	public T select(String key) throws IOException, NullPointerException {
 
 		Gson gson = new Gson();
-		return gson.fromJson(findObjectByKey(key), getDataBaseType().getType());
+		T object = null;
+		object = gson.fromJson(findObjectByKey(key), getDataBaseType().getType());
+		return object;
 
 	}
 
@@ -219,6 +209,7 @@ public class DataBaseTable<T> implements DataBase<T> {
 		}
 
 		return null;
+
 	}
 
 	public String getDBPath() {
