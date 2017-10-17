@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component inheritJdk="true">
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$">
+		<testFolder url="file://$MODULE_DIR$/src/test"/>
+	</contentEntry>
+	<lib name="gson-2.8.2-javadoc.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/ShopDBServer/lib/gson-2.8.2-javadoc.jar!/"/>
+	</lib>
+	<lib name="gson-2.8.2-sources.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/ShopDBServer/lib/gson-2.8.2-sources.jar!/"/>
+	</lib>
+	<lib name="gson-2.8.2.jar" scope="COMPILE">
+		<srcroot url="jar://$MODULE_DIR$/lib/gson-2.8.2-sources.jar!/"/>
+		<relative-module-src project-related="jar://$PROJECT_DIR$/ShopDBServer/lib/gson-2.8.2-sources.jar!/"/>
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/ShopDBServer/lib/gson-2.8.2.jar!/"/>
+		<relative-module-javadoc project-related="jar://$PROJECT_DIR$/ShopDBServer/lib/gson-2.8.2-javadoc.jar!/"/>
+	</lib>
+</component>

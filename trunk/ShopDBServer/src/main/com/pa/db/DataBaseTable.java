@@ -19,8 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import javax.swing.text.html.HTMLDocument.Iterator;
+import java.util.Iterator;
 
 import org.junit.rules.TemporaryFolder;
 
@@ -29,8 +28,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import com.pa.common.Person;
 import com.pa.common.customer.NewCustomer;
@@ -115,48 +116,46 @@ public class DataBaseTable<T> implements DataBase<T> {
 		if (!table.exists()) {
 			table.createNewFile();
 			System.out.println("File created at: " + this.getDBPath());
-			
+
 		}
-	
+
 	}
 
 	@Override
 	public void insert(T item) throws IOException {
 
-		//JsonObject itemInJsonFormat = new JsonObject();
 		ArrayList<String> collectionOfItems = new ArrayList<>();
 		GsonBuilder gson = new GsonBuilder();
+
 		if (table.length() == 0) {
 			try (Writer writer = new FileWriter(table, true)) {
-				
 				collectionOfItems.add(gson.create().toJson(item, this.getDataBaseType().getType()));
-				writer.append(collectionOfItems.toString());
+				writer.write(collectionOfItems.toString());
 			}
 		} else {
-		
-			try (JsonReader reader = new JsonReader(new FileReader(table))) {
-				
-				JsonArray currentItemsInDataBase = new JsonArray();
-				while (reader.hasNext()) {
-					currentItemsInDataBase.add(gson.create().fromJson(reader, currentItemsInDataBase.getClass()).toString());
+
+			try (Reader reader = new FileReader(table)) {
+				JsonElement json = new JsonParser().parse(reader);
+				JsonArray jsonArray = json.getAsJsonArray();
+				Iterator<JsonElement> iterator = jsonArray.iterator();
+				while (iterator.hasNext()) {
+					JsonElement temp = (JsonElement) iterator.next();
+					collectionOfItems.add(temp.toString());
+
 				}
-				System.out.println(currentItemsInDataBase.toString());
-				
+
+				if (!collectionOfItems.contains(item)) {
+					collectionOfItems.add(gson.create().toJson(item, this.getDataBaseType().getType()));
+					try (Writer writer = new FileWriter(table, false)) {
+						writer.write(collectionOfItems.toString());
+
+					}
+				}
+
 			}
-			
-			
+
 		}
-		
-//		try (Writer writer = new FileWriter(table, true)) {
-//			
-//			collectionOfItems.add(gson.create().toJson(item, this.getDataBaseType().getType()));
-//			
-////			String jsoned = gson.create().toJson(item, this.getDataBaseType().getType());
-////			collectionOfItems.add(jsoned);
-////			System.out.println(collectionOfItems.getAsString());
-////			writer.write(collectionOfItems.getAsString()+"\n");
-//			writer.append(collectionOfItems.toString());
-//		}
+
 	}
 
 	@Override
