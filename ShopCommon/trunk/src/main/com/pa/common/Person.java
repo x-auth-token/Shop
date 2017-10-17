@@ -23,8 +23,6 @@ import static com.pa.common.Validators.isCorrectIDFormat;
 import static com.pa.common.Validators.isCorrectPhoneNumberFormat;
 import static com.pa.common.Validators.validateOnlyLettersUsed;
 
-import java.util.UUID;
-
 
 
 public abstract class Person {

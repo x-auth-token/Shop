@@ -1,6 +1,5 @@
 package com.pa.db;
 
-import java.awt.SecondaryLoop;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -10,8 +9,6 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import org.omg.CORBA.OBJECT_NOT_EXIST;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

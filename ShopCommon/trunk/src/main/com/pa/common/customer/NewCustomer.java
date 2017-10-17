@@ -16,8 +16,6 @@
  ******************************************************************************/
 package com.pa.common.customer;
 
-import java.lang.reflect.Type;
-
 public class NewCustomer extends Customer {
 
 	private final double DEFAULT_DISCOUNT = 10.0;

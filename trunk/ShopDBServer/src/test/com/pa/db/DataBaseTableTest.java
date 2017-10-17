@@ -2,30 +2,17 @@ package com.pa.db;
 
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Rule;
-import org.junit.AfterClass;
 import org.junit.Assert;
 
-import java.nio.file.Path;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runners.MethodSorters;
-import org.omg.CORBA.OBJECT_NOT_EXIST;
-import org.omg.PortableInterceptor.ORBInitInfoPackage.DuplicateName;
-
 import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
 import com.pa.common.customer.*;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -42,17 +29,6 @@ public class DataBaseTableTest {
 
 		db = new DataBaseTable<NewCustomer>(tblName, testDatabasePath, new TypeToken<NewCustomer>() {
 		});
-
-	}
-
-	@AfterClass
-	public static void tearDownClass() throws Exception {
-
-		File dir = new File(testDatabasePath);
-
-		for (File file : dir.listFiles()) {
-			// file.delete();
-		}
 
 	}
 
