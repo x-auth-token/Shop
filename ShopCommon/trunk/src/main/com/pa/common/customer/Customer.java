@@ -16,12 +16,15 @@
  ******************************************************************************/
 package com.pa.common.customer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.pa.common.Person;
 
 public class Customer extends Person {
 
 	private double discountPercent;
-	private String[] benefit;
+	private List<String> benefit;
 	private int customerNumber;
 
 	// Constructor
@@ -35,6 +38,8 @@ public class Customer extends Person {
 		
 		super(cName, cSName, cGender, cId, pn);
 		this.customerNumber = assignNumber();
+		this.benefit = new ArrayList<String>();
+		this.discountPercent = 0.0;
 	
 	}
 	
@@ -52,7 +57,7 @@ public class Customer extends Person {
 		;
 	}
 	
-	public String[] getBenefitPlan() {
+	public List<String> getBenefitPlan() {
 		
 		return this.benefit;
 		

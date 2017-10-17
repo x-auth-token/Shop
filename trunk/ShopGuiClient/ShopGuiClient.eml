@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component inheritJdk="true">
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$">
+		<testFolder url="file://$MODULE_DIR$/src/test"/>
+	</contentEntry>
+	<lib name="miglayout15-swing.jar" scope="COMPILE">
+		<srcroot url="jar://$MODULE_DIR$/miglayout-src.zip!/"/>
+		<relative-module-src project-related="jar://$PROJECT_DIR$/ShopGuiClient/miglayout-src.zip!/"/>
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/ShopGuiClient/miglayout15-swing.jar!/"/>
+	</lib>
+	<lib name="jgoodies-forms-1.8.0.jar" scope="COMPILE">
+		<srcroot url="jar://$MODULE_DIR$/jgoodies-forms-1.8.0-sources.jar!/"/>
+		<relative-module-src project-related="jar://$PROJECT_DIR$/ShopGuiClient/jgoodies-forms-1.8.0-sources.jar!/"/>
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/ShopGuiClient/jgoodies-forms-1.8.0.jar!/"/>
+	</lib>
+</component>

@@ -34,11 +34,11 @@ public abstract class Person {
 	private String id;
 	private String gender;
 	private String phoneNumber;
-	private UUID uuid;
+	//private UUID uuid;
 	
 	
 	public Person() {
-		this.uuid = UUID.randomUUID();
+		//this.uuid = UUID.randomUUID();
 		setPersonName(null);
 		setPersonSurname(null);
 		setPersonId(null);
@@ -48,7 +48,7 @@ public abstract class Person {
 	
 	
 	public Person(String name, String sName, String gender, String id, String pn) {
-		this.uuid = UUID.randomUUID();
+		//this.uuid = UUID.randomUUID();
 		setPersonName(name);
 		setPersonSurname(sName);
 		setPersonId(id);

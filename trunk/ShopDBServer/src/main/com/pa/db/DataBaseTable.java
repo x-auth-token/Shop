@@ -19,9 +19,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import javax.management.OperationsException;
+
 import java.util.Iterator;
 
 import org.junit.rules.TemporaryFolder;
+import org.omg.PortableInterceptor.ORBInitInfoPackage.DuplicateName;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -34,6 +38,7 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import com.pa.common.Person;
+import com.pa.common.User;
 import com.pa.common.customer.NewCustomer;
 
 public class DataBaseTable<T> implements DataBase<T> {
@@ -122,101 +127,98 @@ public class DataBaseTable<T> implements DataBase<T> {
 	}
 
 	@Override
-	public void insert(T item) throws IOException {
+	public void insert(String key, T object) throws Exception {
 
-		ArrayList<String> collectionOfItems = new ArrayList<>();
+		ArrayList<String> collectionOfObjects = new ArrayList<>();
 		GsonBuilder gson = new GsonBuilder();
+		String serializedObject = gson.create().toJson(object, this.getDataBaseType().getType());
 
 		if (table.length() == 0) {
-			try (Writer writer = new FileWriter(table, true)) {
-				collectionOfItems.add(gson.create().toJson(item, this.getDataBaseType().getType()));
-				writer.write(collectionOfItems.toString());
+			try (Writer writer = new FileWriter(table, false)) {
+				collectionOfObjects.add(serializedObject);
+				writer.write(collectionOfObjects.toString());
 			}
+		} else if (this.select(key) == null) {
+			copyCurrentCollectionOfObjects(collectionOfObjects);
+			collectionOfObjects.add(serializedObject);
+			try (Writer writer = new FileWriter(table, false)) {
+				writer.write(collectionOfObjects.toString());
+			}
+
 		} else {
-
-			try (Reader reader = new FileReader(table)) {
-				JsonElement json = new JsonParser().parse(reader);
-				JsonArray jsonArray = json.getAsJsonArray();
-				Iterator<JsonElement> iterator = jsonArray.iterator();
-				while (iterator.hasNext()) {
-					JsonElement temp = (JsonElement) iterator.next();
-					collectionOfItems.add(temp.toString());
-
-				}
-
-				if (!collectionOfItems.contains(item)) {
-					collectionOfItems.add(gson.create().toJson(item, this.getDataBaseType().getType()));
-					try (Writer writer = new FileWriter(table, false)) {
-						writer.write(collectionOfItems.toString());
-
-					}
-				}
-
-			}
-
+			throw new Exception("Duplicate Key Has Been Found!");
 		}
+	}
 
+	private void copyCurrentCollectionOfObjects(ArrayList<String> collection)
+			throws FileNotFoundException, IOException {
+		try (Reader reader = new FileReader(table)) {
+			JsonElement json = new JsonParser().parse(reader);
+			JsonArray jsonArray = json.getAsJsonArray();
+			Iterator<JsonElement> iterator = jsonArray.iterator();
+			while (iterator.hasNext()) {
+				JsonElement temp = (JsonElement) iterator.next();
+				collection.add(temp.toString());
+			}
+		}
 	}
 
 	@Override
 	public void update(String key, String property, String value) throws IOException {
+		ArrayList<String> collectionOfObjects = new ArrayList<>();
+		if (findObjectByKey(key) != null) {
+			try (Reader reader = new FileReader(table)) {
+				JsonElement json = new JsonParser().parse(reader);
+				JsonArray jsonArray = json.getAsJsonArray();
+				Iterator<JsonElement> iterator = jsonArray.iterator();
+				JsonObject temp;
 
-		try (JsonReader reader = new JsonReader(new FileReader(table))) {
-			reader.setLenient(true);
-
-			try (Writer writer = new FileWriter(table, true)) {
-
-				GsonBuilder gson = new GsonBuilder();
-
-				while (reader.hasNext()) {
-
-					JsonObject jsonObject = gson.create().fromJson(reader, JsonObject.class);
-
-					if (jsonObject.get("id").getAsString().equals(key)) {
-
-						jsonObject.remove(property);
-						jsonObject.addProperty(property, value);
-
+				while (iterator.hasNext()) {
+					temp = (JsonObject) iterator.next();
+					if (temp.has("id") && temp.get("id").getAsString().equals(key)) {
+						temp.remove(property);
+						temp.addProperty(property, value);
 					}
-
-					gson.setPrettyPrinting().create().toJson(jsonObject);
-
-					System.out.println(gson.setPrettyPrinting().create().toJson(jsonObject));
-
+					collectionOfObjects.add(temp.toString());
 				}
-				writer.close();
 			}
-			reader.close();
 
+			try (Writer writer = new FileWriter(table, false)) {
+				writer.write(collectionOfObjects.toString());
+
+			}
 		}
 	}
 
 	@Override
-	public void delete(T item) {
-		// TODO Auto-generated method stub
+	public void delete(T object) {
 
 	}
 
 	@Override
-	public T select(String key) throws IOException {
+	public T select(String key) throws IOException, NullPointerException {
 
-		try (JsonReader reader = new JsonReader(new FileReader(table))) {
+		Gson gson = new Gson();
+		return gson.fromJson(findObjectByKey(key), getDataBaseType().getType());
 
-			reader.setLenient(true);
-			GsonBuilder gson = new GsonBuilder();
+	}
 
-			while (reader.hasNext()) {
+	private JsonObject findObjectByKey(String key) throws FileNotFoundException, IOException {
+		try (Reader reader = new FileReader(table)) {
+			JsonElement json = new JsonParser().parse(reader);
+			JsonArray jsonArray = json.getAsJsonArray();
+			Iterator<JsonElement> iterator = jsonArray.iterator();
+			JsonObject temp;
+			while (iterator.hasNext()) {
+				temp = (JsonObject) iterator.next();
 
-				JsonObject obj = gson.create().fromJson(reader, JsonObject.class);
-
-				if (obj.has("id") && obj.get("id").getAsString().equals(key)) {
-					return gson.create().fromJson(obj, this.getDataBaseType().getType());
+				if (temp.has("id") && temp.get("id").getAsString().equals(key)) {
+					return temp;
 				}
 			}
-
-			return null;
 		}
 
+		return null;
 	}
 
 	public String getDBPath() {

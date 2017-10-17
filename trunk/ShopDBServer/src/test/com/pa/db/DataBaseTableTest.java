@@ -21,6 +21,7 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runners.MethodSorters;
+import org.omg.PortableInterceptor.ORBInitInfoPackage.DuplicateName;
 
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
@@ -32,16 +33,14 @@ public class DataBaseTableTest {
 	static DataBaseTable<NewCustomer> db;
 	static String currentWorkingPath = Paths.get(".").toAbsolutePath().normalize().toString();
 	static String testDatabasePath = Paths.get(currentWorkingPath, "db", "db_test_folder").toString();
-	
 
 	@BeforeClass
 	public static void setUPClass() throws SecurityException, IOException {
 
 		String tblName = "db_test";
-		
-		
-		db = new DataBaseTable<NewCustomer>(tblName,testDatabasePath, new TypeToken<NewCustomer>() {});
-				
+
+		db = new DataBaseTable<NewCustomer>(tblName, testDatabasePath, new TypeToken<NewCustomer>() {
+		});
 
 	}
 
@@ -51,28 +50,30 @@ public class DataBaseTableTest {
 		File dir = new File(testDatabasePath);
 
 		for (File file : dir.listFiles()) {
-			//file.delete();
+			// file.delete();
 		}
 
 	}
 
 	@Rule
 	public final ExpectedException thrown = ExpectedException.none();
-	
+
 	@Test
 	public void testDataBaseTableCreate() throws SecurityException, IOException {
 		db.create();
 		Assert.assertTrue(new File(db.getDBPath() + db.getTableName()).exists());
 	}
 
-//	@Test
-//	public void testDataBaseTableCreateException() throws FileNotFoundException, IOException, SecurityException {
-//
-//		thrown.expect(FileAlreadyExistsException.class);
-//		thrown.expectMessage(
-//				testDatabasePath + File.separator + db.getTableName() + " -> : File already exists!");
-//		db.create();
-//	}
+	// @Test
+	// public void testDataBaseTableCreateException() throws
+	// FileNotFoundException, IOException, SecurityException {
+	//
+	// thrown.expect(FileAlreadyExistsException.class);
+	// thrown.expectMessage(
+	// testDatabasePath + File.separator + db.getTableName() + " -> : File
+	// already exists!");
+	// db.create();
+	// }
 
 	@Test
 	public void testDataBaseTableInsertMethod() {
@@ -81,33 +82,39 @@ public class DataBaseTableTest {
 		NewCustomer p2 = new NewCustomer("asd", "asdasd", "male", "123456788", "0549002018");
 
 		try {
-			db.insert(p);
-			db.insert(p2);
+			db.insert(p.getPersonId(), p);
+			db.insert(p2.getPersonId(), p2);
 
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("duplicate");
 		}
 	}
 
-//	@Test
-//	public void testDataBaseTableUpdateMethod() throws IOException {
-//		//NewCustomer newC = new NewCustomer("asd", "asdasd", "male", "123456787", "0549002018");
-//		
-//		db.update("123456789","phoneNumber","0549144667" );
-//		
-//		//Assert.assertEquals("male", db.select("gender"));
-//	}
+	@Test
+	public void testDataBaseTableInsertMethodDuplicateNameException() throws Exception, IOException {
 
-//	 @Test
-//	 public void testDataBaseTableSelectMethod() throws IOException {
-//		 NewCustomer p2 = new NewCustomer("asd", "asdasd", "male", "123456789", "0549002019");
-//		 NewCustomer p3 = db.select("123456789");
-//		 //System.out.println(p3);
-//		 Assert.assertEquals(p2.toString(), p3.toString());
-//	 }
+		NewCustomer p = new NewCustomer("asd", "asdasd", "male", "123456789", "0549002019");
+		thrown.expect(Exception.class);
+		thrown.expectMessage("Duplicate Key Has Been Found!");
+		db.insert(p.getPersonId(), p);
 
-	
+	}
+
+	@Test
+	public void testDataBaseTableUpdateMethod() throws IOException {
+		db.update("123456789", "phoneNumber", "0549144667");
+		NewCustomer c = db.select("123456789");
+		Assert.assertEquals(c.getPersonPhoneNumber(),"0549144667");
+	}
+
+	@Test
+	public void testDataBaseTableSelectMethod() throws IOException {
+		NewCustomer p2 = new NewCustomer("asd", "asdasd", "male", "123456789", "0549002019");
+		Assert.assertNull(db.select("123456777"));
+
+
+	}
 
 	//
 	// @Test
