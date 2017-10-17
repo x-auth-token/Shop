@@ -105,79 +105,89 @@ public class DataBaseTable<T> implements DataBase<T> {
 
 	public final void create() throws SecurityException, IOException, FileNotFoundException {
 
-		File f;
-
 		if (!folder.exists())
 			folder.mkdirs();
 
 		dbPath = folder.getAbsolutePath() + File.separator;
 
-		f = new File(dbPath + this.getTableName());
+		table = new File(dbPath + this.getTableName());
 
-		if (!f.exists()) {
-			// throw new FileAlreadyExistsException(f.getAbsolutePath(), "",
-			// "File already exists!");
-
-			table = new File(dbPath + this.getTableName());
-
-			System.out.println("File created at: " + this.getDBPath());
-
+		if (!table.exists()) {
 			table.createNewFile();
+			System.out.println("File created at: " + this.getDBPath());
+			
 		}
-		
+	
 	}
 
 	@Override
 	public void insert(T item) throws IOException {
-		
 
-		try (Writer writer = new FileWriter(table, true)) {
+		//JsonObject itemInJsonFormat = new JsonObject();
+		ArrayList<String> collectionOfItems = new ArrayList<>();
+		GsonBuilder gson = new GsonBuilder();
+		if (table.length() == 0) {
+			try (Writer writer = new FileWriter(table, true)) {
+				
+				collectionOfItems.add(gson.create().toJson(item, this.getDataBaseType().getType()));
+				writer.append(collectionOfItems.toString());
+			}
+		} else {
+		
+			try (JsonReader reader = new JsonReader(new FileReader(table))) {
+				
+				JsonArray currentItemsInDataBase = new JsonArray();
+				while (reader.hasNext()) {
+					currentItemsInDataBase.add(gson.create().fromJson(reader, currentItemsInDataBase.getClass()).toString());
+				}
+				System.out.println(currentItemsInDataBase.toString());
+				
+			}
 			
-			GsonBuilder gson = new GsonBuilder();
 			
-			String json = gson.create().toJson(item, this.getDataBaseType().getType());
-			writer.append(json + "\n");
 		}
+		
+//		try (Writer writer = new FileWriter(table, true)) {
+//			
+//			collectionOfItems.add(gson.create().toJson(item, this.getDataBaseType().getType()));
+//			
+////			String jsoned = gson.create().toJson(item, this.getDataBaseType().getType());
+////			collectionOfItems.add(jsoned);
+////			System.out.println(collectionOfItems.getAsString());
+////			writer.write(collectionOfItems.getAsString()+"\n");
+//			writer.append(collectionOfItems.toString());
+//		}
 	}
 
 	@Override
 	public void update(String key, String property, String value) throws IOException {
-		
-		try (FileReader fReader = new FileReader(table))
-//		try (JsonReader reader = new JsonReader(new FileReader(table))) {
-//			reader.setLenient(true);
-//			GsonBuilder gson = new GsonBuilder();
-//			while (reader.hasNext()) {
-//				String str = gson.create().fromJson(reader, JsonObject.class).toString();
-//				System.out.println(str);
-//			}
 
-			// try (Writer writer = new FileWriter(table,true)) {
-			//
-			// GsonBuilder gson = new GsonBuilder();
-			//
-			// gson.serializeNulls();
-			//
-			// while (reader.hasNext()) {
-			//
-			// JsonObject jsonObject = gson.create().fromJson(reader,
-			// JsonObject.class);
-			//
-			// if (jsonObject.get("id").getAsString().equals(key)) {
-			//
-			// jsonObject.remove(property);
-			// jsonObject.addProperty(property, value);
-			//
-			// }
-			//
-			// String obj = gson.create().toJson(jsonObject);
-			// System.out.println("111");
-			// writer.write(obj);
-			// System.out.println("112");
-			// }
-			// System.out.println("113");
-			// }
-			// System.out.println("114");
+		try (JsonReader reader = new JsonReader(new FileReader(table))) {
+			reader.setLenient(true);
+
+			try (Writer writer = new FileWriter(table, true)) {
+
+				GsonBuilder gson = new GsonBuilder();
+
+				while (reader.hasNext()) {
+
+					JsonObject jsonObject = gson.create().fromJson(reader, JsonObject.class);
+
+					if (jsonObject.get("id").getAsString().equals(key)) {
+
+						jsonObject.remove(property);
+						jsonObject.addProperty(property, value);
+
+					}
+
+					gson.setPrettyPrinting().create().toJson(jsonObject);
+
+					System.out.println(gson.setPrettyPrinting().create().toJson(jsonObject));
+
+				}
+				writer.close();
+			}
+			reader.close();
 
 		}
 	}
@@ -201,15 +211,13 @@ public class DataBaseTable<T> implements DataBase<T> {
 				JsonObject obj = gson.create().fromJson(reader, JsonObject.class);
 
 				if (obj.has("id") && obj.get("id").getAsString().equals(key)) {
-					// return gson.create().fromJson(obj,
-					// this.getDataBaseType().getType());
-					;
+					return gson.create().fromJson(obj, this.getDataBaseType().getType());
 				}
 			}
 
+			return null;
 		}
 
-		return null;
 	}
 
 	public String getDBPath() {
@@ -217,4 +225,3 @@ public class DataBaseTable<T> implements DataBase<T> {
 	}
 
 }
-
