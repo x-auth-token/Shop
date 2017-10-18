@@ -29,7 +29,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.pa.srv.netcom.Server;
+import com.pa.srv.net.ssl.Server;
 
 public class LogServerTest {
 	

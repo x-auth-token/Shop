@@ -1,4 +1,4 @@
-package com.pa.gui.netcom;
+package com.pa.gui.net.ssl;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -17,8 +17,8 @@ public class Client implements Runnable {
 	
 	private static int serverPort = 8787;
 	private static String serverHostname = "localhost";
-	private static SocketFactory clientSecuredSocketFactory;
-	private static Socket clientSecuredSocket;
+	private static SSLSocketFactory clientSecuredSocketFactory;
+	private static SSLSocket clientSecuredSocket;
 	private boolean connectionStatus = true;
 	
 
@@ -48,14 +48,14 @@ public class Client implements Runnable {
 		
 	}
 	
-	public Client(Socket s) {
+	public Client(SSLSocket s) {
 		Client.clientSecuredSocket = s;
 	}
 	
 	private void startClient() throws IOException {
-		
-			clientSecuredSocketFactory = SSLSocketFactory.getDefault();
-			clientSecuredSocket = clientSecuredSocketFactory.createSocket(serverHostname, serverPort);
+			
+			clientSecuredSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+			clientSecuredSocket = (SSLSocket) clientSecuredSocketFactory.createSocket(serverHostname, serverPort);
 			System.out.println("--- Client connected to " + serverHostname + " on port " + serverPort);
 			
 			new Thread(new Client(clientSecuredSocket)).start();
