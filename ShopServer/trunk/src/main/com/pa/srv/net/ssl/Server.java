@@ -45,54 +45,51 @@ public class Server implements Runnable {
 	public Server() throws SSLException {
 		serverListnerStart();
 	}
-	
+
 	private Server(SSLSocket s) {
 
 		sslSocket = s;
 	}
 
-	
 	private void serverListnerStart() throws SSLException {
-		String currentWorkDir = Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "security" + File.separator + "cert" + File.separator;
+		String currentWorkDir = Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "security"
+				+ File.separator + "cert" + File.separator;
 		String certificateStore = "keystore.jks";
 		try {
 			System.setProperty("javax.net.ssl.keyStore", currentWorkDir + certificateStore);
-			System.setProperty("javax.net.ssl.keyStorePassword", "guessmeifyoucan" );
+			System.setProperty("javax.net.ssl.keyStorePassword", "guessmeifyoucan");
 			serverSocketFactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
-			
+
 			securedSocket = (SSLServerSocket) serverSocketFactory.createServerSocket(port);
 			System.out.println("--- Server started and listening for connections on port " + port);
-			
+
 			while (true) {
-				
-				
+
 				sslSocket = (SSLSocket) securedSocket.accept();
-				sslSocket.setEnableSessionCreation(true);
-				sslSocket.setNeedClientAuth(true);
-				SSLSession session  = sslSocket.getSession();
+				//sslSocket.setEnableSessionCreation(true);
+				// sslSocket.setNeedClientAuth(true);
+				SSLSession session = sslSocket.getSession();
 				Certificate[] chain = session.getLocalCertificates();
-				
+			
 				for (Certificate cert : chain) {
 					System.out.println(((X509Certificate) cert).getSubjectDN());
 				}
-				
+
 				System.out.println("--- Client connected from " + sslSocket.getInetAddress());
-				
-				new Thread(new Server(sslSocket)).start();	
+
+				new Thread(new Server(sslSocket)).start();
 			}
-		
+
 		} catch (IOException e) {
+
 			
-			e.printStackTrace();
 		}
 	}
-	
-		
+
 	public void run() {
 
 		try {
-			
-			
+
 		} catch (Exception e) {
 
 			e.printStackTrace();
