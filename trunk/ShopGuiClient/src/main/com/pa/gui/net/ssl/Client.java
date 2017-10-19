@@ -60,10 +60,10 @@ public class Client implements Runnable {
 
 		System.setProperty("javax.net.ssl.trustStore", currentWorkDir + trustedCertificateStore);
 		System.setProperty("javax.net.ssl.trustStorePassword", "guessmeifyoucan");
+		
 		clientSecuredSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
 		clientSecuredSocket = (SSLSocket) clientSecuredSocketFactory.createSocket(serverHostname, serverPort);
-		System.out.println("asd");
-		clientSecuredSocket.getSupportedCipherSuites();
+		//clientSecuredSocket.getSupportedCipherSuites();
 		SSLSession session = clientSecuredSocket.getSession();
 		Certificate[] chain = session.getPeerCertificates();
 
@@ -82,5 +82,7 @@ public class Client implements Runnable {
 			System.out.println("Still working");
 
 	}
+	
 
+		
 }

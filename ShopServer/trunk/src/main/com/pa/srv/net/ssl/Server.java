@@ -16,6 +16,7 @@
  ******************************************************************************/
 package com.pa.srv.net.ssl;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.*;
@@ -59,14 +60,15 @@ public class Server implements Runnable {
 			System.setProperty("javax.net.ssl.keyStore", currentWorkDir + certificateStore);
 			System.setProperty("javax.net.ssl.keyStorePassword", "guessmeifyoucan");
 			serverSocketFactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
-
+			
 			securedSocket = (SSLServerSocket) serverSocketFactory.createServerSocket(port);
 			System.out.println("--- Server started and listening for connections on port " + port);
 
 			while (true) {
 
 				sslSocket = (SSLSocket) securedSocket.accept();
-				//sslSocket.setEnableSessionCreation(true);
+				sslSocket.setEnableSessionCreation(true);
+				sslSocket.setSoTimeout(600);
 				// sslSocket.setNeedClientAuth(true);
 				SSLSession session = sslSocket.getSession();
 				Certificate[] chain = session.getLocalCertificates();
@@ -82,13 +84,15 @@ public class Server implements Runnable {
 
 		} catch (IOException e) {
 
-			
+			e.printStackTrace();
 		}
 	}
 
 	public void run() {
 
 		try {
+			
+			
 
 		} catch (Exception e) {
 
