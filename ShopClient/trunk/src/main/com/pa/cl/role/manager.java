@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 import com.pa.cl.register.*;
+import com.pa.cl.items.*;
 
 
 
@@ -66,6 +67,14 @@ public class manager extends JFrame {
 		cpManager.add(btnRegister);
 		
 		JButton btnstoreINventory = new JButton("store inventory");
+		btnstoreINventory.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0)
+			{
+				Items itm=new Items();
+				itm.setVisible(true);
+				close();
+			}
+		});
 		btnstoreINventory.setBounds(114, 76, 215, 23);
 		cpManager.add(btnstoreINventory);
 		
