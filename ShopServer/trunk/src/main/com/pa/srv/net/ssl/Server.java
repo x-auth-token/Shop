@@ -43,7 +43,7 @@ public class Server implements Runnable {
 	private static SSLServerSocket securedSocket;
 	private static SSLSocket sslSocket;
 
-	public Server() throws SSLException {
+	public Server() throws IOException {
 		serverListnerStart();
 	}
 
@@ -52,13 +52,17 @@ public class Server implements Runnable {
 		sslSocket = s;
 	}
 
-	private void serverListnerStart() throws SSLException {
+	private void serverListnerStart() throws IOException {
 		String currentWorkDir = Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "security"
 				+ File.separator + "cert" + File.separator;
-		String certificateStore = "keystore.jks";
+		String certificateStore = "keystore-server.jks";
+		String trustedCertificateStore = "cacerts.jks";
+		
 		try {
 			System.setProperty("javax.net.ssl.keyStore", currentWorkDir + certificateStore);
 			System.setProperty("javax.net.ssl.keyStorePassword", "guessmeifyoucan");
+			System.setProperty("javax.net.ssl.trustStore", currentWorkDir + trustedCertificateStore);
+			System.setProperty("javax.net.ssl.trustStorePassword", "guessmeifyoucan");
 			serverSocketFactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
 			
 			securedSocket = (SSLServerSocket) serverSocketFactory.createServerSocket(port);
@@ -69,7 +73,7 @@ public class Server implements Runnable {
 				sslSocket = (SSLSocket) securedSocket.accept();
 				sslSocket.setEnableSessionCreation(true);
 				sslSocket.setSoTimeout(600);
-				// sslSocket.setNeedClientAuth(true);
+				sslSocket.setNeedClientAuth(true);
 				SSLSession session = sslSocket.getSession();
 				Certificate[] chain = session.getLocalCertificates();
 			
@@ -85,6 +89,9 @@ public class Server implements Runnable {
 		} catch (IOException e) {
 
 			e.printStackTrace();
+		} 
+			finally {
+			sslSocket.close();
 		}
 	}
 
