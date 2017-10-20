@@ -1,13 +1,11 @@
 package com.pa.common.branch;
 
 import static com.pa.common.Validators.validateOnlyLettersUsed;
+import static com.pa.common.Constants.*;
 
-enum Clothes {
-	JEANS, LONG_SLEEVE_SHIRT, SHORT_PANTS, SWEATER, TAILORED_PANTS, TSHIRT, COAT 
-}
 
 public class Stock {
-	private int	   itemId;
+	private Id itemId;
 	private String itemType;
 	private String itemSize;
 	private double itemPrice;
@@ -21,8 +19,27 @@ public class Stock {
 		super();
 	}
 
-	public Stock(int id, String iType, String iSize, String colour, String iVendor, int Quantity) {
-		setItemID();
+	public Stock(Id id, String iType, String iSize, String colour, String iVendor, int Quantity) {
+//		switch (id){
+//		case JEANS: 
+//			setItemType("Jeans"));
+//			break;
+//		case COAT:
+//			break;
+//		case LONG_SLEEVE_SHIRT:
+//			break;
+//		case SHORT_PANTS:
+//			break;
+//		case SWEATER:
+//			break;
+//		case TAILORED_PANTS:
+//			break;
+//		case TSHIRT:
+//			break;
+//		default:
+//			break;
+//		}
+		setItemID(id);
 		setItemType(iType);
 		setItemSize(iSize);
 		setColour(colour);
@@ -33,9 +50,9 @@ public class Stock {
 
 	}
 
-	private void setItemID() {
+	private void setItemID(Id id) {
 		// TODO Auto-generated method stub
-
+		this.itemId = id;
 	}
 
 	public String getItemSize() {
@@ -91,6 +108,22 @@ public class Stock {
 
 	public void setItemType(String itemType) {
 		this.itemType = itemType;
+	}
+
+	public double getItemPrice() {
+		return itemPrice;
+	}
+
+	public void setItemPrice(double itemPrice) {
+		this.itemPrice = itemPrice;
+	}
+
+	public Id getItemId() {
+		return itemId;
+	}
+
+	public void setItemId(Id itemId) {
+		this.itemId = itemId;
 	}
 
 }
