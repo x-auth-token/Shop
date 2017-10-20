@@ -68,8 +68,7 @@ public class Employee extends Person {
 	
 	public void setInventoryStore(Stock t)
 	{
-		String iType=t.getItemType();
-		
+		String iType="insert into " +t.getItemType()+" values ";
 		
 	}
 	
