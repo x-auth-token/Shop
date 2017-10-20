@@ -57,14 +57,18 @@ public class Client implements Runnable {
 		String currentWorkDir = Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "security"
 				+ File.separator + "cert" + File.separator;
 		String trustedCertificateStore = "cacerts.jks";
-
+		String certificateStore = "keystore-client.jks";
+		
+		System.setProperty("javax.net.ssl.keyStore", currentWorkDir + certificateStore);
+		System.setProperty("javax.net.ssl.keyStorePassword", "guessmeifyoucan");
 		System.setProperty("javax.net.ssl.trustStore", currentWorkDir + trustedCertificateStore);
 		System.setProperty("javax.net.ssl.trustStorePassword", "guessmeifyoucan");
-		
+
 		clientSecuredSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
 		clientSecuredSocket = (SSLSocket) clientSecuredSocketFactory.createSocket(serverHostname, serverPort);
-		//clientSecuredSocket.getSupportedCipherSuites();
+	
 		SSLSession session = clientSecuredSocket.getSession();
+	
 		Certificate[] chain = session.getPeerCertificates();
 
 		System.out.println("--- Client connected to " + serverHostname + " on port " + serverPort);
@@ -78,11 +82,8 @@ public class Client implements Runnable {
 
 	@Override
 	public void run() {
-		while (connectionStatus)
-			System.out.println("Still working");
-
-	}
-	
-
 		
+		
+	}
+
 }

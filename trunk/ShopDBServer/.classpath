@@ -11,6 +11,7 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/ShopDBServer/lib/gson-2.8.2-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/mockito-core-2.11.0.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ShopCommon"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
