@@ -133,7 +133,7 @@ public abstract class Person {
 	public String toString() {
 
 		return "Name: " + getPersonName() + "\n" + "Surname: " + getPersonSurname() + "\n" + "Gender: "
-				+ getPersonGender() + "\n" + "ID: " + getPersonId() + "Phone: " + getPersonPhoneNumber();
+				+ getPersonGender() + "\n" + "ID: " + getPersonId() +"\n"+ "Phone: " + getPersonPhoneNumber();
 	}
 
 }

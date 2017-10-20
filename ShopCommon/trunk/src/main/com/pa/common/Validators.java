@@ -58,5 +58,18 @@ public abstract class Validators {
 
 		return true;
 	}
+	
+	public static boolean validateOnlyNumbersUsed(String n)
+	{
+		for(int i=0;i<n.length();i++)
+			if(!Character.isDigit(n.charAt(i)))
+				return false;
+		return true;
+					
+	}
+	
+
+
+
 
 }
