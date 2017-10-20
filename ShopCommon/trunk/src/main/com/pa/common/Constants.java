@@ -26,4 +26,8 @@ public final class Constants {
 	public static final int PHONE_LENGTH_MIN = 10;
 	public static final int PHONE_LENGTH_MAX = 14;
 	
+	public static enum Id {
+		JEANS, LONG_SLEEVE_SHIRT, SHORT_PANTS, SWEATER, TAILORED_PANTS, TSHIRT, COAT 
+	}
+	
 }
