@@ -7,9 +7,9 @@ public class Tshirt extends Shirt
 		super();
 	}
 
-	public Tshirt(String iType,String iSize,String Colour,String iVendor,int Quantity,boolean Stock,int[] Branch)
+	public Tshirt(String iSize,String Colour,String iVendor,int Quantity,boolean Stock,int[] Branch)
 	{
-		setItemType(iType);
+		setItemType("Tshirt");
 		setItemSize(iSize);
 		setColour(Colour);
 		setItemVendor(iVendor);

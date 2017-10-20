@@ -32,19 +32,7 @@ public abstract class Item {
 	
 	
 
-	public String getItemType() {
-		return itemType;
-	}
-
-	public void setItemType(String itemType) throws IllegalArgumentException
-	{
-		if (!validateOnlyLettersUsed(itemType))
-			throw new IllegalArgumentException("Wrong input! itemType should contain only letters like : short pents..");
-	else {
-		
-		this.itemType = itemType;
-	}
-	}
+	
 
 	public String getItemSize() {
 		return itemSize;
@@ -107,6 +95,14 @@ public abstract class Item {
 			throw new IllegalArgumentException("Wrong input! colour should contain only letters like : blue");
 		else 
 		Colour = colour;
+	}
+
+	public String getItemType() {
+		return itemType;
+	}
+
+	public void setItemType(String itemType) {
+		this.itemType = itemType;
 	}
 	
 	}

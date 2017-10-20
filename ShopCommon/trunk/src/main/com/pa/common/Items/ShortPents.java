@@ -8,9 +8,9 @@ public class ShortPents extends Pents
 		
 	}
 
-	public ShortPents(String iType,String iSize,String Colour,String iVendor,int Quantity,boolean Stock,int[] Branch)
+	public ShortPents(String iSize,String Colour,String iVendor,int Quantity,boolean Stock,int[] Branch)
 	{
-		setItemType(iType);
+		setItemType("ShortPents");
 		setItemSize(iSize);
 		setColour(Colour);
 		setItemVendor(iVendor);

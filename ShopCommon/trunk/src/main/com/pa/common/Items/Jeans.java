@@ -7,9 +7,9 @@ public class Jeans extends Item {
 		super();
 	}
 	
-	public Jeans(String iType,String iSize,String Colour,String iVendor,int Quantity,boolean Stock,int[] Branch)
+	public Jeans(String iSize,String Colour,String iVendor,int Quantity,boolean Stock,int[] Branch)
 	{
-		setItemType(iType);
+		setItemType("Jeans");
 		setItemSize(iSize);
 		setColour(Colour);
 		setItemVendor(iVendor);

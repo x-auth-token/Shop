@@ -6,9 +6,9 @@ public class LongSleeveShirt extends Shirt
 	{
 		super();
 	}
-	public LongSleeveShirt(String iType,String iSize,String Colour,String iVendor,int Quantity,boolean Stock,int[] Branch)
+	public LongSleeveShirt(String iSize,String Colour,String iVendor,int Quantity,boolean Stock,int[] Branch)
 	{
-		setItemType(iType);
+		setItemType("LongSleeveShirt");
 		setItemSize(iSize);
 		setColour(Colour);
 		setItemVendor(iVendor);

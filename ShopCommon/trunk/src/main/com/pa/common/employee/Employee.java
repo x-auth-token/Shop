@@ -17,7 +17,7 @@
 package com.pa.common.employee;
 
 import com.pa.common.Person;
-
+import com.pa.common.Items.*;
 public class Employee extends Person {
 
 	private String accountNumber;
@@ -59,6 +59,21 @@ public class Employee extends Person {
 	public void setRole(String role) {
 		this.role = role;
 	}
+	
+	public void getInventoryStore ()
+	{
+	 String quary="select * from inventoryStore";
+	 
+	}
+	
+	public void setInventoryStore(Item t)
+	{
+		String iType=t.getItemType();
+		
+		
+	}
+	
+	
 
 	
 

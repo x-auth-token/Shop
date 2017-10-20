@@ -6,9 +6,9 @@ public class Sweater extends Shirt
 	{
 		super();
 	}
-	public Sweater(String iType,String iSize,String Colour,String iVendor,int Quantity,boolean Stock,int[] Branch)
+	public Sweater(String iSize,String Colour,String iVendor,int Quantity,boolean Stock,int[] Branch)
 	{
-		setItemType(iType);
+		setItemType("Sweater");
 		setItemSize(iSize);
 		setColour(Colour);
 		setItemVendor(iVendor);

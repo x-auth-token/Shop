@@ -6,9 +6,9 @@ public class TailoredPents extends Item
 	{
 		super();
 	}
-	public TailoredPents(String iType,String iSize,String Colour,String iVendor,int Quantity,boolean Stock,int[] Branch)
+	public TailoredPents(String iSize,String Colour,String iVendor,int Quantity,boolean Stock,int[] Branch)
 	{
-		setItemType(iType);
+		setItemType("TailoredPents");
 		setItemSize(iSize);
 		setColour(Colour);
 		setItemVendor(iVendor);
