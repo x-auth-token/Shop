@@ -63,10 +63,10 @@ public class manager extends JFrame {
 			}
 		});
 
-		btnRegister.setBounds(114, 41, 215, 23);
+		btnRegister.setBounds(100, 24, 215, 23);
 		cpManager.add(btnRegister);
 		
-		JButton btnstoreINventory = new JButton("store inventory");
+		JButton btnstoreINventory = new JButton("update inventory");
 		btnstoreINventory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0)
 			{
@@ -75,20 +75,31 @@ public class manager extends JFrame {
 				close();
 			}
 		});
-		btnstoreINventory.setBounds(114, 76, 215, 23);
+		btnstoreINventory.setBounds(100, 58, 215, 23);
 		cpManager.add(btnstoreINventory);
 		
 		JButton btnReports = new JButton("reports");
-		btnReports.setBounds(114, 112, 215, 23);
+		btnReports.setBounds(100, 125, 215, 23);
 		cpManager.add(btnReports);
 		
 		JButton btnCustomerInfo = new JButton("customer info");
-		btnCustomerInfo.setBounds(114, 148, 215, 23);
+		btnCustomerInfo.setBounds(100, 161, 215, 23);
 		cpManager.add(btnCustomerInfo);
 		
 		JButton btncashRegister = new JButton("cash register");
-		btncashRegister.setBounds(114, 182, 215, 23);
+		btncashRegister.setBounds(100, 195, 215, 23);
 		cpManager.add(btncashRegister);
+		
+		JButton btnGetInventory = new JButton("get inventory");
+		btnGetInventory.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				stokeInStore stk=new stokeInStore();
+				stk.setVisible(true);
+			}
+		});
+		btnGetInventory.setBounds(100, 92, 215, 23);
+		cpManager.add(btnGetInventory);
 	}
 
 }

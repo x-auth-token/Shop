@@ -16,36 +16,29 @@
  ******************************************************************************/
 package com.pa.cl.login;
 
-import com.pa.common.*;
+
 import java.awt.EventQueue;
-
-
 import javax.swing.JFrame;
 import javax.swing.JTextField;
-import java.awt.BorderLayout;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextPane;
-import javax.swing.JRadioButton;
 import java.awt.Font;
-import org.eclipse.wb.swing.FocusTraversalOnArray;
-import java.awt.Component;
 import java.awt.Color;
 import javax.swing.JPasswordField;
-import java.awt.event.InputMethodListener;
-import java.awt.event.InputMethodEvent;
+//import com.pa.common.Validators.validateOnlyNumbersUsed;
+
+import com.pa.cl.role.*;
 
 public class Login {
 
 	private JFrame frmLogin;
 	private JPasswordField passwordField;
-	private JTextField txtDfsd;
-	private JTextField txtOnlyLaters;
-//
+	private JTextField txtworkID;
+	private JTextField txtuserName;
+
 	/**
 	 * Launch the application.
 	 */
@@ -71,38 +64,39 @@ public class Login {
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @param <frmRegister>
 	 */
-	private void initialize()
+	private <frmLogin> void initialize()
 	{
 		frmLogin = new JFrame();
 		frmLogin.setFont(new Font("Arial Narrow", Font.BOLD, 12));
 		frmLogin.setForeground(Color.DARK_GRAY);
-		frmLogin.setTitle("Login");
+		frmLogin.setTitle("login");
 		frmLogin.getContentPane().setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
 		frmLogin.setBounds(100, 100, 450, 300);
-		frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmLogin.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		JButton x = new JButton("Login");
 		x.setBounds(241, 152, 85, 35);
 		x.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
-				//validate that the input is correct
-				String workid= txtDfsd.getText();
-				String username= txtOnlyLaters.getText();
-				String pass= passwordField.getText();
+//				if(!validateOnlyNumbersUsed(txtworkID.getText()))
+//				{
+//					JOptionPane.showMessageDialog(frmLogin,"worker id : use only numbers");
+//				}
+//				
+//				else if(!validateOnlyLettersUsed(txtuserName.getText()))
+//				{
+//					JOptionPane.showMessageDialog(frmLogin,"user name : use only in letters");
+//				}
 				
-			// TODO validate the input with the db
-				if(workid.equals("4499")&&username.equals("amosr")&&pass.equals("1111"))
-				{	
-				JOptionPane.showMessageDialog(frmLogin,"you are Login");
-				}
-				else
-				{
-					
-					JOptionPane.showMessageDialog(frmLogin,"your pass/username is invalid");
-				}
-				//TODO options of worker in the system
+				// TODO validate the input with the db
+				// TODO attract info from db on the role position
+				manager mng = new manager();
+				mng.setVisible(true);
+				frmLogin.dispose();//close the login menu  
+			
 			}
 		});
 		frmLogin.getContentPane().setLayout(null);
@@ -124,14 +118,14 @@ public class Login {
 		passwordField.setBounds(83, 122, 109, 25);
 		frmLogin.getContentPane().add(passwordField);
 		
-		txtDfsd = new JTextField();
-		txtDfsd.setBounds(83, 53, 109, 25);
-		frmLogin.getContentPane().add(txtDfsd);
-		txtDfsd.setColumns(10);
+		txtworkID = new JTextField();
+		txtworkID.setBounds(83, 53, 109, 25);
+		frmLogin.getContentPane().add(txtworkID);
+		txtworkID.setColumns(10);
 		
-		txtOnlyLaters = new JTextField();
-		txtOnlyLaters.setBounds(83, 90, 109, 23);
-		frmLogin.getContentPane().add(txtOnlyLaters);
-		txtOnlyLaters.setColumns(10);
+		txtuserName = new JTextField();
+		txtuserName.setBounds(83, 90, 109, 23);
+		frmLogin.getContentPane().add(txtuserName);
+		txtuserName.setColumns(10);
 	}
 }

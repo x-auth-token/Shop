@@ -6,6 +6,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.pa.cl.role.manager;
+import com.pa.common.Constants.Id;
+import com.pa.common.branch.*;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
@@ -14,15 +18,14 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import com.pa.common.Items.*;
+import java.awt.Window.Type;
 public class Items extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textVendor;
 	private JTextField textColour;
 	private JTextField textQuantity;
-	private JTextField textBranch;
-	private JTextField textInStok;
+	private JTextField textPrice;
 
 	/**
 	 * Launch the application.
@@ -44,6 +47,7 @@ public class Items extends JFrame {
 	 * Create the frame.
 	 */
 	public Items() {
+		setType(Type.POPUP);
 		setTitle("items");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -53,90 +57,94 @@ public class Items extends JFrame {
 		contentPane.setLayout(null);
 		
 		JComboBox cmbItems = new JComboBox();
-		cmbItems.addItem("ShortPents");
+		cmbItems.addItem("ShortPants");
 		cmbItems.addItem("Jeans");
-		cmbItems.addItem("TailoredPents");
+		cmbItems.addItem("TailoredPants");
 		cmbItems.addItem("Tshirt");
 		cmbItems.addItem("LongSleeveShirt");
 		cmbItems.addItem("Coat");
 		cmbItems.addItem("Sweater");
-		cmbItems.setBounds(127, 31, 165, 20);
+		cmbItems.setBounds(158, 13, 165, 20);
 		contentPane.add(cmbItems);
 		
 		textVendor = new JTextField();
 		textVendor.setColumns(10);
-		textVendor.setBounds(127, 93, 165, 20);
+		textVendor.setBounds(158, 75, 165, 20);
 		contentPane.add(textVendor);
 		
 		textColour = new JTextField();
 		textColour.setColumns(10);
-		textColour.setBounds(127, 124, 165, 20);
+		textColour.setBounds(158, 106, 165, 20);
 		contentPane.add(textColour);
 		
 		textQuantity = new JTextField();
 		textQuantity.setColumns(10);
-		textQuantity.setBounds(127, 155, 165, 20);
+		textQuantity.setBounds(158, 137, 165, 20);
 		contentPane.add(textQuantity);
 		
-		textBranch = new JTextField();
-		textBranch.setColumns(10);
-		textBranch.setBounds(127, 217, 165, 20);
-		contentPane.add(textBranch);
-		
-		textInStok = new JTextField();
-		textInStok.setColumns(10);
-		textInStok.setBounds(127, 186, 165, 20);
-		contentPane.add(textInStok);
-		
-		JLabel lblNewLabel = new JLabel(" type :");
-		lblNewLabel.setBounds(10, 34, 107, 14);
+		JLabel lblNewLabel = new JLabel("type :");
+		lblNewLabel.setBounds(77, 13, 107, 17);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblSize = new JLabel("size :");
-		lblSize.setBounds(10, 65, 107, 14);
+		lblSize.setBounds(77, 44, 107, 20);
 		contentPane.add(lblSize);
 		
 		JLabel lblVendor = new JLabel("vendor :");
-		lblVendor.setBounds(10, 96, 107, 14);
+		lblVendor.setBounds(77, 78, 107, 14);
 		contentPane.add(lblVendor);
 		
 		JLabel lblColour = new JLabel("colour :");
-		lblColour.setBounds(10, 127, 107, 14);
+		lblColour.setBounds(77, 109, 107, 14);
 		contentPane.add(lblColour);
 		
 		JLabel lblQuantity = new JLabel("quantity :");
-		lblQuantity.setBounds(10, 158, 107, 14);
+		lblQuantity.setBounds(77, 140, 107, 14);
 		contentPane.add(lblQuantity);
-		
-		JLabel lblInStock = new JLabel("in stock :");
-		lblInStock.setBounds(10, 189, 107, 14);
-		contentPane.add(lblInStock);
-		
-		JLabel lblInBranch = new JLabel("in branch :");
-		lblInBranch.setBounds(10, 220, 107, 14);
-		contentPane.add(lblInBranch);
 		
 		JComboBox cmbSize = new JComboBox();
 		cmbSize.addItem("small");
 		cmbSize.addItem("medium");
 		cmbSize.addItem("large");
 		cmbSize.addItem("extraLarge");
-		cmbSize.setBounds(127, 62, 165, 20);
+		cmbSize.setBounds(158, 44, 165, 20);
 		contentPane.add(cmbSize);
 		
 		JButton btnUpdat = new JButton("Update");
 		btnUpdat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
+		
 				String iType=(String) cmbItems.getSelectedItem();
 				String iSize=(String) cmbSize.getSelectedItem();
+				int quntity = Integer.parseInt(textQuantity.getText());
+				double price = Double.parseDouble(textPrice.getText());
+				Stock st=new Stock(iType,iSize,textColour.getText(),textVendor.getText(),quntity,price);
+				JOptionPane.showMessageDialog(contentPane,st.toString());
+				
 			}
 		});
-		btnUpdat.setBounds(335, 155, 89, 37);
+		btnUpdat.setBounds(110, 215, 89, 37);
 		contentPane.add(btnUpdat);
 		
 		JButton btnCancel = new JButton("Cancel");
-		btnCancel.setBounds(335, 203, 89, 37);
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent btnCancel)
+			
+			{
+				dispose();
+			}
+		});
+		btnCancel.setBounds(261, 213, 89, 37);
 		contentPane.add(btnCancel);
+		
+		JLabel lblPrice = new JLabel("price :");
+		lblPrice.setBounds(78, 170, 107, 14);
+		contentPane.add(lblPrice);
+		
+		textPrice = new JTextField();
+		textPrice.setColumns(10);
+		textPrice.setBounds(157, 169, 165, 20);
+		contentPane.add(textPrice);
 	}
 }
