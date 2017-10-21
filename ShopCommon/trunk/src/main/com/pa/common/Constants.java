@@ -29,5 +29,6 @@ public final class Constants {
 	public static enum Id {
 		JEANS, LONG_SLEEVE_SHIRT, SHORT_PANTS, SWEATER, TAILORED_PANTS, TSHIRT, COAT 
 	}
+
 	
 }

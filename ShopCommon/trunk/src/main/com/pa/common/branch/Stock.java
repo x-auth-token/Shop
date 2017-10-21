@@ -1,5 +1,6 @@
 package com.pa.common.branch;
 
+
 import static com.pa.common.Validators.validateOnlyLettersUsed;
 import static com.pa.common.Constants.*;
 
@@ -12,39 +13,44 @@ public class Stock {
 	private String itemVendor;
 	private String colour;
 	private int quantity;
-	private int blabla;
 	
 
 	public Stock() {
 		super();
 	}
 
-	public Stock(Id id, String iType, String iSize, String colour, String iVendor, int Quantity) {
-//		switch (id){
-//		case JEANS: 
-//			setItemType("Jeans"));
-//			break;
-//		case COAT:
-//			break;
-//		case LONG_SLEEVE_SHIRT:
-//			break;
-//		case SHORT_PANTS:
-//			break;
-//		case SWEATER:
-//			break;
-//		case TAILORED_PANTS:
-//			break;
-//		case TSHIRT:
-//			break;
-//		default:
-//			break;
-//		}
-		setItemID(id);
+	public Stock(String iType, String iSize, String colour,String iVendor, int Quantity,double price) {
+		switch (iType){
+		case "Jeans": 
+			setItemID(Id.JEANS);
+			break;
+		case "ShortPants":
+			setItemID(Id.SHORT_PANTS);
+			break;
+		case "TailoredPants" :
+			setItemID(Id.TAILORED_PANTS);
+			break;
+		case "Tshirt":
+			setItemID(Id.TSHIRT);
+			break;
+		case "LongSleeveShirt":
+			setItemID(Id.LONG_SLEEVE_SHIRT);
+			break;
+		case "Coat":
+			setItemID(Id.COAT);
+			break;
+		case "Sweater":
+			setItemID(Id.SWEATER);
+			break;
+		default:
+			break;
+		}
 		setItemType(iType);
 		setItemSize(iSize);
 		setColour(colour);
 		setItemVendor(iVendor);
 		setItemQuantity(Quantity);
+		setItemPrice(price);
 	
 		
 
@@ -99,7 +105,7 @@ public class Stock {
 		if (!validateOnlyLettersUsed(colour))
 			throw new IllegalArgumentException("Wrong input! colour should contain only letters like : blue");
 		else
-			colour = colour;
+			this.colour = colour;
 	}
 
 	public String getItemType() {
@@ -124,6 +130,13 @@ public class Stock {
 
 	public void setItemId(Id itemId) {
 		this.itemId = itemId;
+	}
+	@Override
+	public String toString() 
+	{
+		// TODO Auto-generated method stub
+		return "itemId: "+getItemId()+" itemSize: "+getItemSize()+" itemPrice:"+getItemPrice()+
+				" itemVendor: "+getItemVendor()+" itemcolour:"+getColour()+" itemQuantity:"+getItemQuantity();
 	}
 
 }
