@@ -1,7 +1,17 @@
 package com.pa.gui.net.ssl;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Paths;
@@ -15,6 +25,8 @@ import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
+
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 public class Client implements Runnable {
 
@@ -58,7 +70,7 @@ public class Client implements Runnable {
 				+ File.separator + "cert" + File.separator;
 		String trustedCertificateStore = "cacerts.jks";
 		String certificateStore = "keystore-client.jks";
-		
+
 		System.setProperty("javax.net.ssl.keyStore", currentWorkDir + certificateStore);
 		System.setProperty("javax.net.ssl.keyStorePassword", "guessmeifyoucan");
 		System.setProperty("javax.net.ssl.trustStore", currentWorkDir + trustedCertificateStore);
@@ -66,24 +78,48 @@ public class Client implements Runnable {
 
 		clientSecuredSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
 		clientSecuredSocket = (SSLSocket) clientSecuredSocketFactory.createSocket(serverHostname, serverPort);
-	
+
 		SSLSession session = clientSecuredSocket.getSession();
-	
+
 		Certificate[] chain = session.getPeerCertificates();
 
-		System.out.println("--- Client connected to " + serverHostname + " on port " + serverPort);
 		System.out.println("The Certificates used by peer");
 		for (Certificate cert : chain) {
 			System.out.println(((X509Certificate) cert).getSubjectDN());
 		}
 		new Thread(new Client(clientSecuredSocket)).start();
+		System.out.println("--- Client connected to " + serverHostname + " on port " + serverPort);
 
 	}
 
 	@Override
 	public void run() {
+		try (
+			PrintWriter out = new PrintWriter(clientSecuredSocket.getOutputStream(), true);
+			BufferedReader in = new BufferedReader(new InputStreamReader(clientSecuredSocket.getInputStream()));
+			BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+			)
+			{
+			String userInput;
+			while ((userInput = stdIn.readLine()) != null) {
+				out.println(userInput);
+				System.out.println("echo:" + in.readLine());
+			}
 		
+			} catch (Exception e) {
+				
+				
+
+				e.printStackTrace();
+
+			}
 		
+
+	}
+
+	public static void main(String[] args) throws IOException {
+		Client c = new Client("localhost", 8787);
+
 	}
 
 }
