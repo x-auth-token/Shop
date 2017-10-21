@@ -1,3 +1,5 @@
+package com.pa.cl.cashRegister;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 

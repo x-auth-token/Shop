@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 import com.pa.cl.register.*;
+import com.pa.cl.cashRegister.cashRegister;
 import com.pa.cl.items.*;
 
 
@@ -78,7 +79,7 @@ public class manager extends JFrame {
 		cpManager.add(btnstoreINventory);
 		
 		JButton btnReports = new JButton("reports");
-		btnReports.setBounds(100, 125, 215, 23);
+		btnReports.setBounds(100, 199, 215, 23);
 		cpManager.add(btnReports);
 		
 		JButton btnCustomerInfo = new JButton("customer info");
@@ -86,7 +87,14 @@ public class manager extends JFrame {
 		cpManager.add(btnCustomerInfo);
 		
 		JButton btncashRegister = new JButton("cash register");
-		btncashRegister.setBounds(100, 195, 215, 23);
+		btncashRegister.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				cashRegister cr=new cashRegister();
+				cr.setVisible(true);
+			}
+		});
+		btncashRegister.setBounds(100, 126, 215, 23);
 		cpManager.add(btncashRegister);
 		
 		JButton btnGetInventory = new JButton("get inventory");

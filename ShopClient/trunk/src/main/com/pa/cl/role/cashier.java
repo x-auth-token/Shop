@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.pa.common.branch.Stock;
+import com.pa.cl.cashRegister.cashRegister;
 import com.pa.cl.items.*;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -49,7 +50,8 @@ public class cashier extends JFrame {
 		btncashRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0)
 			{
-				
+				cashRegister cr=new cashRegister();
+				cr.setVisible(true);
 			}
 		});
 		btncashRegister.setBounds(108, 46, 223, 23);
