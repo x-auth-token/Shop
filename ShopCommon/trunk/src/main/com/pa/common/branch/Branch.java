@@ -22,7 +22,7 @@ public class Branch {
 		setId(0);
 		address="bla bla";
 		branchPhoneNumber = "0544001258";
-		stock = new ArrayList();
+		stock = new ArrayList<Stock>();
 		
 		
 	}
