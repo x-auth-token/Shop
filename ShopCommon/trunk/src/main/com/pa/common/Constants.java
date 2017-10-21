@@ -16,6 +16,8 @@
  ******************************************************************************/
 package com.pa.common;
 
+
+
 public final class Constants {
 
 	private Constants() {
@@ -30,5 +32,4 @@ public final class Constants {
 		JEANS, LONG_SLEEVE_SHIRT, SHORT_PANTS, SWEATER, TAILORED_PANTS, TSHIRT, COAT 
 	}
 
-	
 }
