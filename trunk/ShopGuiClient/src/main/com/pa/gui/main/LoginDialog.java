@@ -19,9 +19,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 import java.awt.ComponentOrientation;
+import java.awt.EventQueue;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.NetworkInterface;
 import java.awt.event.ActionEvent;
+import java.awt.Component;
+import javax.swing.Box;
 
 public class LoginDialog extends JDialog {
 
@@ -31,8 +35,11 @@ public class LoginDialog extends JDialog {
 	private JTextField txtBranch;
 	private JTextField txtServerIP;
 	private Client cl;
+	private boolean cancelButtonPressed = false;
 
 	public LoginDialog() {
+		setResizable(false);
+		setModal(true);
 		getContentPane().setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -44,6 +51,30 @@ public class LoginDialog extends JDialog {
 		gbl_contentPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		contentPanel.setLayout(gbl_contentPanel);
+		{
+			Component verticalStrut = Box.createVerticalStrut(20);
+			GridBagConstraints gbc_verticalStrut = new GridBagConstraints();
+			gbc_verticalStrut.insets = new Insets(0, 0, 5, 5);
+			gbc_verticalStrut.gridx = 4;
+			gbc_verticalStrut.gridy = 0;
+			contentPanel.add(verticalStrut, gbc_verticalStrut);
+		}
+		{
+			Component horizontalStrut = Box.createHorizontalStrut(20);
+			GridBagConstraints gbc_horizontalStrut = new GridBagConstraints();
+			gbc_horizontalStrut.insets = new Insets(0, 0, 5, 5);
+			gbc_horizontalStrut.gridx = 0;
+			gbc_horizontalStrut.gridy = 1;
+			contentPanel.add(horizontalStrut, gbc_horizontalStrut);
+		}
+		{
+			Component horizontalStrut = Box.createHorizontalStrut(20);
+			GridBagConstraints gbc_horizontalStrut = new GridBagConstraints();
+			gbc_horizontalStrut.insets = new Insets(0, 0, 5, 5);
+			gbc_horizontalStrut.gridx = 1;
+			gbc_horizontalStrut.gridy = 1;
+			contentPanel.add(horizontalStrut, gbc_horizontalStrut);
+		}
 		{
 			JLabel lblServerIp = new JLabel("Server IP");
 			GridBagConstraints gbc_lblServerIp = new GridBagConstraints();
@@ -129,12 +160,20 @@ public class LoginDialog extends JDialog {
 					public void actionPerformed(ActionEvent okButtonClicked) {
 						if (okButton.getActionCommand().equals(okButtonClicked.getActionCommand()))
 							try {
-								cl = new Client(txtServerIP.getText(), 8787);
+								
+								if (!txtServerIP.getText().isEmpty()) {
+									cl = new Client(txtServerIP.getText(), 8787);
+									dispose();
+								} else {
+									JOptionPane.showMessageDialog(null, "Please provide Server IP or Name");
+								}
+								
+								
 							} catch (IOException e) {
-								JOptionPane.showMessageDialog(null, e.getMessage());
+								JOptionPane.showMessageDialog(null, "Invalid Server Address!");
 							}
 						
-						dispose();
+						
 					}
 				});
 				buttonPane.add(okButton);
@@ -148,6 +187,7 @@ public class LoginDialog extends JDialog {
 					public void actionPerformed(ActionEvent cancelButtonClicked) {
 						//Object event  = cancelButtonClicked.getSource();
 						if (cancelButton.getActionCommand().equals(cancelButton.getActionCommand())) {
+							cancelButtonPressed = true;
 							dispose();
 						}
 					}
@@ -156,6 +196,10 @@ public class LoginDialog extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+	}
+
+	public boolean isCanceled() {
+		return cancelButtonPressed;
 	}
 
 }
