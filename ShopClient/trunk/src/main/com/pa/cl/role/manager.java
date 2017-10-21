@@ -60,7 +60,6 @@ public class manager extends JFrame {
 			{
 				register reg=new register();
 				reg.setVisible(true);
-				close();
 			}
 		});
 

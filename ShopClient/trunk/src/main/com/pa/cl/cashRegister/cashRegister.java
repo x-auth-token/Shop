@@ -2,6 +2,7 @@ package com.pa.cl.cashRegister;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Frame;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -12,6 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
@@ -74,6 +76,8 @@ public class cashRegister extends JFrame {
 		cmbCtype.addItem("ReturningCustomer");
 		cmbCtype.addItem("VipCustomer");
 		
+	
+		
 		JLabel lblCustomerType = new JLabel("Customer Type :");
 		
 		textQuantity = new JTextField();
@@ -83,8 +87,8 @@ public class cashRegister extends JFrame {
 		
 		JLabel lblQuantity = new JLabel("Quantity :");
 		
-		JButton btnNewButton = new JButton("Enter");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnAdd = new JButton("Add");
+		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
 				int numC=table.getModel().getColumnCount();
@@ -95,22 +99,56 @@ public class cashRegister extends JFrame {
 				fill[3]=textQuantity.getText();
 				fill[4]=cmbCtype.getSelectedItem();
 			
-				((DefaultTableModel)table.getModel()).addRow(fill);}
+				((DefaultTableModel)table.getModel()).addRow(fill);
+			}
 			
 		});
+		
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				int i=table.getSelectedRow();
+				if(i>=0)
+				((DefaultTableModel)table.getModel()).removeRow(i);
+				else
+					JOptionPane.showMessageDialog(null,"unable to delete");
+			}
+		});
+		
+		JButton btnCommit = new JButton("Commit");
+		btnCommit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+			}
+		});
+		
+		
 		
 		
 		
 		JLabel lblSize = new JLabel("Size :");
 		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				dispose();
+			}
+		});
 		
+	
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 1344, Short.MAX_VALUE)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(31)
-					.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 104, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnCommit, GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
+						.addComponent(btnCancel, GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
+						.addComponent(btnDelete, GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
+						.addComponent(btnAdd, GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE))
 					.addGap(124)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
@@ -124,7 +162,7 @@ public class cashRegister extends JFrame {
 							.addComponent(cmbSize, 0, 156, Short.MAX_VALUE)
 							.addComponent(cmbItems, 0, 156, Short.MAX_VALUE)
 							.addComponent(cmbCtype, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-					.addContainerGap(858, Short.MAX_VALUE))
+					.addGap(830))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -134,24 +172,33 @@ public class cashRegister extends JFrame {
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(28)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-								.addComponent(btnNewButton, GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+								.addComponent(btnAdd, GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
 								.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE))
 							.addGap(18)
-							.addComponent(lblSize, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE))
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblSize, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(cmbItems, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
 							.addGap(18)
 							.addComponent(cmbSize, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(39)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(cmbCtype, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblCustomerType, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(18)
+							.addComponent(btnCommit, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)))
 					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(cmbCtype, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblCustomerType, GroupLayout.PREFERRED_SIZE, 21, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblQuantity, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textQuantity, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
-					.addGap(76))
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+							.addComponent(lblQuantity, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE)
+							.addComponent(textQuantity, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
+						.addComponent(btnCancel, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
+					.addGap(33))
 		);
 		
 		table = new JTable();
