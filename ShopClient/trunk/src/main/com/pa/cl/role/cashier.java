@@ -6,7 +6,12 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.pa.common.branch.Stock;
+import com.pa.cl.items.*;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class cashier extends JFrame {
 
@@ -41,16 +46,39 @@ public class cashier extends JFrame {
 		contentPane.setLayout(null);
 		
 		JButton btncashRegister = new JButton("cash register");
+		btncashRegister.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0)
+			{
+				
+			}
+		});
 		btncashRegister.setBounds(108, 46, 223, 23);
 		contentPane.add(btncashRegister);
 		
 		JButton btnCustomerInfo = new JButton("customer info");
-		btnCustomerInfo.setBounds(108, 90, 223, 23);
+		btnCustomerInfo.setBounds(108, 176, 223, 23);
 		contentPane.add(btnCustomerInfo);
 		
-		JButton btnStoreInventory = new JButton("store inventory");
-		btnStoreInventory.setBounds(108, 135, 223, 23);
+		JButton btnStoreInventory = new JButton("update inventory");
+		btnStoreInventory.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				updateItems uit=new updateItems();
+				uit.setVisible(true);
+			}
+		});
+		btnStoreInventory.setBounds(108, 90, 223, 23);
 		contentPane.add(btnStoreInventory);
+		
+		JButton btnGetInventory = new JButton("get inventory");
+		btnGetInventory.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				productInStock pis=new productInStock();
+				pis.setVisible(true);
+			}
+		});
+		btnGetInventory.setBounds(108, 134, 223, 23);
+		contentPane.add(btnGetInventory);
 	}
-
 }

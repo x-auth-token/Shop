@@ -38,6 +38,7 @@ public class Login {
 	private JPasswordField passwordField;
 	private JTextField txtworkID;
 	private JTextField txtuserName;
+	
 
 	/**
 	 * Launch the application.
@@ -92,9 +93,29 @@ public class Login {
 //				}
 				
 				// TODO validate the input with the db
-				// TODO attract info from db on the role position
-				manager mng = new manager();
-				mng.setVisible(true);
+				
+				String employeeRole="shiftManager";// TODO attract info from db on the role position
+				switch (employeeRole)
+				{
+				case "shiftManager" :
+				{
+						manager mng=new manager();
+						mng.setVisible(true);
+				}break;	
+				case "cashier" :
+				{
+					cashier cash=new cashier();
+					cash.setVisible(true);
+				}break;
+				case "salesMan" :
+				{
+					salesman slm=new salesman();
+					slm.setVisible(true);
+				}break;
+				
+				default:
+					break;
+				}
 				frmLogin.dispose();//close the login menu  
 			
 			}

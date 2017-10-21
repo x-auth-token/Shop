@@ -46,7 +46,7 @@ public class salesman extends JFrame {
 		btnInventory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				Items item=new Items();
+				updateItems item=new updateItems();
 				item.setVisible(true);
 				dispose();
 				
@@ -59,7 +59,7 @@ public class salesman extends JFrame {
 		btnGetInventory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				stokeInStore st=new stokeInStore();
+				productInStock st=new productInStock();
 				st.setVisible(true);
 				
 			}

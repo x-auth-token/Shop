@@ -16,7 +16,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class stokeInStore extends JFrame {
+public class productInStock extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
@@ -30,7 +30,7 @@ public class stokeInStore extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					stokeInStore frame = new stokeInStore();
+					productInStock frame = new productInStock();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -42,7 +42,7 @@ public class stokeInStore extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public stokeInStore() {
+	public productInStock() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //		setBounds(100, 100, 450, 300);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);

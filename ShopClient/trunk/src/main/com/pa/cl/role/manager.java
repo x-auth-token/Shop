@@ -70,9 +70,8 @@ public class manager extends JFrame {
 		btnstoreINventory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0)
 			{
-				Items itm=new Items();
+				updateItems itm=new updateItems();
 				itm.setVisible(true);
-				close();
 			}
 		});
 		btnstoreINventory.setBounds(100, 58, 215, 23);
@@ -94,7 +93,7 @@ public class manager extends JFrame {
 		btnGetInventory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
-				stokeInStore stk=new stokeInStore();
+				productInStock stk=new productInStock();
 				stk.setVisible(true);
 			}
 		});

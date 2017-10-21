@@ -19,7 +19,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Window.Type;
-public class Items extends JFrame {
+public class updateItems extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textVendor;
@@ -34,7 +34,7 @@ public class Items extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Items frame = new Items();
+					updateItems frame = new updateItems();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -46,7 +46,7 @@ public class Items extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Items() {
+	public updateItems() {
 		setType(Type.POPUP);
 		setTitle("items");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
