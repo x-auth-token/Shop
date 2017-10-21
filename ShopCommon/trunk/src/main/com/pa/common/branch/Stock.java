@@ -12,7 +12,7 @@ public class Stock {
 	private String itemVendor;
 	private String colour;
 	private int quantity;
-
+	private int blabla;
 	
 
 	public Stock() {
