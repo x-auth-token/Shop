@@ -44,11 +44,6 @@ public class register extends JFrame {
 			}
 		});
 	}
-	public void close()
-	{
-		WindowEvent winClosingEvent=new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
-		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
-	};
 	/**
 	 * Create the frame.
 	 */
@@ -60,6 +55,7 @@ public class register extends JFrame {
 		cpRegister.setToolTipText("");
 		cpRegister.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(cpRegister);
+		setLocationRelativeTo(null);
 		cpRegister.setLayout(null);
 		
 		JLabel lblFullName = new JLabel("full name :");
@@ -156,9 +152,7 @@ public class register extends JFrame {
 				//TODO generate worker id 
 				
 				//TODO update the db with all the info of the new worker
-				manager mng = new manager();
-				mng.setVisible(true);
-				close();
+				
 			}
 		});
 		btnRegister.setBounds(95, 220, 89, 30);
@@ -168,9 +162,7 @@ public class register extends JFrame {
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
-				manager mng = new manager();
-				mng.setVisible(true);
-				close();
+				dispose();
 			}
 		});
 		btnCancel.setBounds(240, 220, 89, 27);

@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 import com.pa.cl.register.*;
+import com.sun.glass.ui.Screen;
 import com.pa.cl.cashRegister.cashRegister;
 import com.pa.cl.items.*;
 
@@ -47,11 +48,13 @@ public class manager extends JFrame {
 	 */
 	public manager() {
 		setTitle("manager");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setBounds(100, 100, 450, 300);
+		setSize(700, 500);
 		cpManager = new JPanel();
 		cpManager.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(cpManager);
+		setLocationRelativeTo(null);
 		cpManager.setLayout(null);
 		
 		JButton btnRegister = new JButton("new employee register");
@@ -63,7 +66,7 @@ public class manager extends JFrame {
 			}
 		});
 
-		btnRegister.setBounds(100, 24, 215, 23);
+		btnRegister.setBounds(229, 41, 215, 39);
 		cpManager.add(btnRegister);
 		
 		JButton btnstoreINventory = new JButton("update inventory");
@@ -74,15 +77,15 @@ public class manager extends JFrame {
 				itm.setVisible(true);
 			}
 		});
-		btnstoreINventory.setBounds(100, 58, 215, 23);
+		btnstoreINventory.setBounds(229, 91, 215, 39);
 		cpManager.add(btnstoreINventory);
 		
 		JButton btnReports = new JButton("reports");
-		btnReports.setBounds(100, 227, 215, 23);
+		btnReports.setBounds(229, 321, 215, 33);
 		cpManager.add(btnReports);
 		
 		JButton btnCustomerInfo = new JButton("customer info");
-		btnCustomerInfo.setBounds(100, 161, 215, 23);
+		btnCustomerInfo.setBounds(229, 229, 215, 33);
 		cpManager.add(btnCustomerInfo);
 		
 		JButton btncashRegister = new JButton("cash register");
@@ -93,7 +96,7 @@ public class manager extends JFrame {
 				cr.setVisible(true);
 			}
 		});
-		btncashRegister.setBounds(100, 126, 215, 23);
+		btncashRegister.setBounds(229, 185, 215, 33);
 		cpManager.add(btncashRegister);
 		
 		JButton btnGetInventory = new JButton("get inventory");
@@ -104,12 +107,22 @@ public class manager extends JFrame {
 				stk.setVisible(true);
 			}
 		});
-		btnGetInventory.setBounds(100, 92, 215, 23);
+		btnGetInventory.setBounds(229, 141, 215, 33);
 		cpManager.add(btnGetInventory);
 		
 		JButton btnEmployeeInfo = new JButton("employee info");
-		btnEmployeeInfo.setBounds(100, 193, 215, 23);
+		btnEmployeeInfo.setBounds(229, 273, 215, 33);
 		cpManager.add(btnEmployeeInfo);
+		
+		JButton btnExit = new JButton("Exit");
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				dispose();
+			}
+		});
+		btnExit.setBounds(291, 399, 89, 33);
+		cpManager.add(btnExit);
 	}
 
 }

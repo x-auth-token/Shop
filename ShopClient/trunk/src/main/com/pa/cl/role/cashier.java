@@ -44,6 +44,7 @@ public class cashier extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+		setLocationRelativeTo(null);
 		contentPane.setLayout(null);
 		
 		JButton btncashRegister = new JButton("cash register");
@@ -54,11 +55,11 @@ public class cashier extends JFrame {
 				cr.setVisible(true);
 			}
 		});
-		btncashRegister.setBounds(108, 46, 223, 23);
+		btncashRegister.setBounds(106, 33, 223, 30);
 		contentPane.add(btncashRegister);
 		
 		JButton btnCustomerInfo = new JButton("customer info");
-		btnCustomerInfo.setBounds(108, 176, 223, 23);
+		btnCustomerInfo.setBounds(106, 162, 223, 31);
 		contentPane.add(btnCustomerInfo);
 		
 		JButton btnStoreInventory = new JButton("update inventory");
@@ -69,7 +70,7 @@ public class cashier extends JFrame {
 				uit.setVisible(true);
 			}
 		});
-		btnStoreInventory.setBounds(108, 90, 223, 23);
+		btnStoreInventory.setBounds(106, 74, 223, 33);
 		contentPane.add(btnStoreInventory);
 		
 		JButton btnGetInventory = new JButton("get inventory");
@@ -80,7 +81,17 @@ public class cashier extends JFrame {
 				pis.setVisible(true);
 			}
 		});
-		btnGetInventory.setBounds(108, 134, 223, 23);
+		btnGetInventory.setBounds(106, 118, 223, 33);
 		contentPane.add(btnGetInventory);
+		
+		JButton btnExit = new JButton("Exit");
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				dispose();
+			}
+		});
+		btnExit.setBounds(171, 220, 89, 30);
+		contentPane.add(btnExit);
 	}
 }

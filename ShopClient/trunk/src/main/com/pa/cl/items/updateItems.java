@@ -54,6 +54,7 @@ public class updateItems extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+		setLocationRelativeTo(null);
 		contentPane.setLayout(null);
 		
 		JComboBox cmbItems = new JComboBox();

@@ -40,6 +40,7 @@ public class salesman extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+		setLocationRelativeTo(null);
 		contentPane.setLayout(null);
 		
 		JButton btnInventory = new JButton("update inventory");
@@ -52,7 +53,7 @@ public class salesman extends JFrame {
 				
 			}
 		});
-		btnInventory.setBounds(102, 25, 220, 33);
+		btnInventory.setBounds(98, 43, 220, 33);
 		contentPane.add(btnInventory);
 		
 		JButton btnGetInventory = new JButton("get inventory");
@@ -64,8 +65,18 @@ public class salesman extends JFrame {
 				
 			}
 		});
-		btnGetInventory.setBounds(102, 69, 220, 33);
+		btnGetInventory.setBounds(98, 106, 220, 33);
 		contentPane.add(btnGetInventory);
+		
+		JButton btnNewButton = new JButton("Exit");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				dispose();
+			}
+		});
+		btnNewButton.setBounds(165, 193, 89, 33);
+		contentPane.add(btnNewButton);
 	}
 }
 

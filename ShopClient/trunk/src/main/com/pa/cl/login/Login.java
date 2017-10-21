@@ -75,6 +75,7 @@ public class Login {
 		frmLogin.setTitle("login");
 		frmLogin.getContentPane().setFont(new Font("Arial Rounded MT Bold", Font.PLAIN, 13));
 		frmLogin.setBounds(100, 100, 450, 300);
+		frmLogin.setLocationRelativeTo(null);
 		frmLogin.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		JButton x = new JButton("Login");
