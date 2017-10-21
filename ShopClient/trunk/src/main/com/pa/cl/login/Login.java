@@ -94,7 +94,7 @@ public class Login {
 				
 				// TODO validate the input with the db
 				
-				String employeeRole="shiftManager";// TODO attract info from db on the role position
+				String employeeRole="cashier";// TODO attract info from db on the role position
 				switch (employeeRole)
 				{
 				case "shiftManager" :

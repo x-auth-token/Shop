@@ -56,11 +56,6 @@ public class productInStock extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
-				int numC=table.getModel().getColumnCount();
-				Object [] fill= new Object[numC];
-				for(int i=0;i<numC;i++)
-					fill[i]="sad";
-				((DefaultTableModel)table.getModel()).addRow(fill);
 			}
 		});
 		
@@ -107,5 +102,10 @@ public class productInStock extends JFrame {
 		table.getColumnModel().getColumn(0).setPreferredWidth(136);
 		scrollPane.setViewportView(table);
 		contentPane.setLayout(gl_contentPane);
+		int numC=table.getModel().getColumnCount();
+		Object [] fill= new Object[numC];
+		for(int i=0;i<numC;i++)
+			{fill[i]="sad";
+		((DefaultTableModel)table.getModel()).addRow(fill);}
 	}
 }
