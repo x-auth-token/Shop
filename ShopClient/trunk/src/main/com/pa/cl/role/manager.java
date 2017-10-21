@@ -78,7 +78,7 @@ public class manager extends JFrame {
 		cpManager.add(btnstoreINventory);
 		
 		JButton btnReports = new JButton("reports");
-		btnReports.setBounds(100, 199, 215, 23);
+		btnReports.setBounds(100, 227, 215, 23);
 		cpManager.add(btnReports);
 		
 		JButton btnCustomerInfo = new JButton("customer info");
@@ -106,6 +106,10 @@ public class manager extends JFrame {
 		});
 		btnGetInventory.setBounds(100, 92, 215, 23);
 		cpManager.add(btnGetInventory);
+		
+		JButton btnEmployeeInfo = new JButton("employee info");
+		btnEmployeeInfo.setBounds(100, 193, 215, 23);
+		cpManager.add(btnEmployeeInfo);
 	}
 
 }
