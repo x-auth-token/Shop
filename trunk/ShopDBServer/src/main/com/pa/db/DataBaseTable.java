@@ -44,18 +44,18 @@ public class DataBaseTable<T> implements DataBase<T> {
 		this.response = response;
 	}
 
-	public DataBaseTable(String tName, TypeToken<T> dataBaseType) {
+	public DataBaseTable(TypeToken<T> dataBaseType) {
 		setDataBaseType(dataBaseType);
 		this.folder = new File("db");
-		// this.tableName = tName + ".db";
+	
 
 		this.tableName = buildTableNameFromType(dataBaseType) + ".db";
 	}
 
-	public DataBaseTable(String tName, String dPath, TypeToken<T> dataBaseType) {
+	public DataBaseTable(String dPath, TypeToken<T> dataBaseType) {
 		setDataBaseType(dataBaseType);
 		this.folder = new File("db");
-		// this.tableName = tName + ".db";
+		
 		this.tableName = buildTableNameFromType(dataBaseType) + ".db";
 		this.folder = new File(dPath);
 
@@ -184,35 +184,6 @@ public class DataBaseTable<T> implements DataBase<T> {
 		}
 	}
 
-	// public void update(T oldObject, T newObject) throws IOException {
-	// JsonObject jsonedOld = new
-	// Gson().toJsonTree(oldObject).getAsJsonObject();
-	// JsonObject jsonedNew = new
-	// Gson().toJsonTree(newObject).getAsJsonObject();
-	//
-	// ArrayList<String> collectionOfObjects = new ArrayList<>();
-	// try (Reader reader = new FileReader(table)) {
-	// JsonElement json = new JsonParser().parse(reader);
-	// JsonArray jsonArray = json.getAsJsonArray();
-	// Iterator<JsonElement> iterator = jsonArray.iterator();
-	// JsonObject temp;
-	//
-	// while (iterator.hasNext()) {
-	// temp = (JsonObject) iterator.next();
-	// if (temp.equals(jsonedOld)) {
-	//
-	// delete(oldObject);
-	//
-	// }
-	// collectionOfObjects.add(jsonedNew.toString());
-	// }
-	//
-	// try (Writer writer = new FileWriter(table, false)) {
-	// writer.write(collectionOfObjects.toString());
-	//
-	// }
-	// }
-	// }
 
 	@Override
 	public boolean delete(String key, T object) throws FileNotFoundException, IOException {
@@ -227,19 +198,6 @@ public class DataBaseTable<T> implements DataBase<T> {
 		return false;
 	}
 
-	// @Override
-	// public boolean delete(T object) throws FileNotFoundException, IOException
-	// {
-	// ArrayList<String> collectionOfObjects = new ArrayList<>();
-	// copyCurrentCollectionOfObjects(collectionOfObjects);
-	// if (collectionOfObjects.remove(findObject(object).toString())) {
-	// try (Writer writer = new FileWriter(table, false)) {
-	// writer.write(collectionOfObjects.toString());
-	// return true;
-	// }
-	// }
-	// return false;
-	// }
 
 	@Override
 	public T select(String key) throws IOException, NullPointerException {

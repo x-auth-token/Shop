@@ -16,15 +16,9 @@
  ******************************************************************************/
 package com.pa.srv.aaa;
 
-import java.net.Authenticator;
-
-import com.pa.db.*;
-
-@SuppressWarnings("unused")
-public class AuthenticationModule extends Authenticator {
-
-	//DataBaseConnetor db = new DataBaseConnector();
+import com.pa.common.Permission;
+public interface AuthorizationModule {
 	
-
-
+	Permission getUserPermissionSet();
+	void setUserPermissionSet();
 }

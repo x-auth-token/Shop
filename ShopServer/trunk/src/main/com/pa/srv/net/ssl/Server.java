@@ -22,32 +22,42 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.*;
 import java.nio.file.Paths;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLServerSocket;
 import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocket;
 
+import org.apache.commons.codec.DecoderException;
+
 import com.google.gson.Gson;
+import com.pa.common.Permission;
+import com.pa.common.crypto.*;
+import com.pa.srv.aaa.AuthenticationModule;
+import com.pa.srv.aaa.AuthorizationModule;
 
+public class Server implements Runnable, AuthenticationModule, AuthorizationModule {
+	enum ConnectionState {
+		LOGIN, COMMAND, LOGOUT
+	};
 
-
-public class Server implements Runnable {
-	enum ConnectionState { LOGIN, COMMAND, LOGOUT };
-	
 	private static final int port = 8787;
 	private static SSLServerSocketFactory serverSocketFactory;
 	private static SSLServerSocket securedSocket;
 	private static SSLSocket sslSocket;
-	private  ConnectionState connectionState;
-	
+	private ConnectionState connectionState;
+
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
 	private String message;
-	public  ConnectionState getConnectionState() {
+
+	public ConnectionState getConnectionState() {
 		return connectionState;
 	}
 
-	public  void setConnectionState(ConnectionState state) {
+	public void setConnectionState(ConnectionState state) {
 		connectionState = state;
 	}
 
@@ -58,7 +68,7 @@ public class Server implements Runnable {
 	private Server(SSLSocket s) {
 
 		sslSocket = s;
-		this.setConnectionState(ConnectionState.LOGIN);
+		// this.setConnectionState(ConnectionState.LOGIN);
 	}
 
 	private void serverListnerStart() throws IOException, SSLException, SocketException {
@@ -91,67 +101,100 @@ public class Server implements Runnable {
 		} catch (SSLException | SocketException e) {
 
 			e.printStackTrace();
-		} finally {
-			sslSocket.close();
 		}
+		// } finally {
+		// sslSocket.close();
+		// }
 	}
 
 	@Override
 	public void run() {
 		try {
-				
-				out = new ObjectOutputStream(sslSocket.getOutputStream());
-				out.flush();
-				in = new ObjectInputStream(sslSocket.getInputStream());
-				sendMessage("--- Connection Successfull ---");
-				String json = "{\"username\":\"s\",\"password\":\"abc\"}";
-				while (this.getConnectionState() != ConnectionState.LOGOUT) {
-					System.out.println(this.getConnectionState().toString());
+			in = new ObjectInputStream(sslSocket.getInputStream());
+			out = new ObjectOutputStream(sslSocket.getOutputStream());
+
+			this.setConnectionState(ConnectionState.LOGIN);
+			//sendMessage("--- Connection Successfull ---");
 			
-					switch (this.getConnectionState()) {
-					case LOGIN:
-//						do {
-							try {
-								message = in.readObject().toString();
-								System.out.println(message);
-								
-								
-								if (message.equals(json))
-									sendMessage("Client authenticated successfully!");
-							} catch (ClassNotFoundException e) {
-								e.printStackTrace();
-							}
-						//} while (!message.equals("bye"));
-						this.setConnectionState(ConnectionState.COMMAND);
-						break;
-					case COMMAND:
-						//System.out.println("test");
-					case LOGOUT:
-						break;
-					default:
-						break;
-					
+			while (this.getConnectionState() != ConnectionState.LOGOUT) {
+				switch (this.getConnectionState()) {
+				case LOGIN:
+
+					try {
+						message = in.readObject().toString();
+						
+						if (validateCredentials(message)) {
+							sendMessage("Client authenticated successfully!");
+							this.setConnectionState(ConnectionState.COMMAND);
+						}
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
 					}
-					
-					
+
+					break;
+				case COMMAND:
+					break;
+				case LOGOUT:
+					break;
+				default:
+					break;
+
 				}
 
-			} catch (Exception e) {
-
-				e.printStackTrace();
-
 			}
-		
+
+		} catch (Exception e) {
+
+			e.printStackTrace();
+
+		}
+
 	}
-	
-	public void sendMessage(String message) {
+
+	private void sendMessage(String message) {
 		try {
 			out.writeObject(message);
 			out.flush();
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private boolean validateCredentials(String creds)
+			throws NoSuchAlgorithmException, InvalidKeySpecException, DecoderException {
+
+		String[] split = creds.split("\\");
+		String username = split[0];
+		String password = split[1];
+		if (username.equals("asd") && PasswordHasher.validateHashedPassword(password, password))
+			return true;
+		return false;
+
+	}
+
+	@Override
+	public Permission getUserPermissionSet() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setUserPermissionSet() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean validateUsername(String username) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean validatePassword(String password) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

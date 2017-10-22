@@ -35,10 +35,10 @@ public class DataBaseTableTest {
 		String tblName = "db_test";
 		String tblName2 = "db2_test";
 
-		db = new DataBaseTable<NewCustomer>(tblName, testDatabasePath, new TypeToken<NewCustomer>() {
+		db = new DataBaseTable<NewCustomer>( testDatabasePath, new TypeToken<NewCustomer>() {
 		});
 
-		db2 = new DataBaseTable<Stock>(tblName2, testDatabasePath, new TypeToken<Stock>() {
+		db2 = new DataBaseTable<Stock>(testDatabasePath, new TypeToken<Stock>() {
 		});
 		
 		s = new Stock("Jeans", "large", "blue", "Versace", 10, 50.0);

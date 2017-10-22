@@ -16,6 +16,10 @@
  ******************************************************************************/
 package com.pa.srv.aaa;
 
-public class AuthorizationModule {
+import java.net.Authenticator;
 
+public interface AuthenticationModule {
+
+	boolean validateUsername(String username);
+	boolean validatePassword(String password);
 }

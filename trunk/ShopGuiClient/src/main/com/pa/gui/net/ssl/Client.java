@@ -17,18 +17,21 @@ public class Client implements Runnable {
 	private static String serverHostname = "localhost";
 	private static SSLSocketFactory clientSecuredSocketFactory;
 	private static SSLSocket clientSecuredSocket;
-	private boolean connectionStatus = true;
-	private ClientGui clientGui;
+	private ClientGui clientGui = null;
 	private ObjectInputStream in;
 	private ObjectOutputStream out;
 	volatile private String message;
+	private boolean authenticated;
+	private Object use;
+	private String username;
+	private String password;
 
-	public Client(String hostName, int port, ClientGui gui) throws IOException {
+	public Client(String hostName, int port, String message) throws IOException {
 
 		Client.serverHostname = hostName;
 		Client.serverPort = port;
-		this.clientGui = gui;
-		
+		this.message = message;
+		setAuthenticated(false);
 		startClient();
 
 	}
@@ -54,8 +57,8 @@ public class Client implements Runnable {
 	}
 
 	private void startClient() throws UnknownHostException, IOException {
-		try {
-			String currentWorkDir = Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "security"
+	
+		String currentWorkDir = Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "security"
 		
 				+ File.separator + "cert" + File.separator;
 		String trustedCertificateStore = "cacerts.jks";
@@ -70,29 +73,29 @@ public class Client implements Runnable {
 		clientSecuredSocket = (SSLSocket) clientSecuredSocketFactory.createSocket(serverHostname, serverPort);
 
 		new Thread(new Client(clientSecuredSocket)).start();
-		this.clientGui.setMessage("Connected Successfully to " + serverHostname + " on port " + serverPort);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		
+		//gui.setMessage("Connected Successfully to " + serverHostname + " on port " + serverPort);
+	
 	}
 
 	@Override
 	public void run() {
 		try {
 			
-			String clientInput = "nice";
-			System.out.println("Sent to server " + clientInput);
-
+		
 			out = new ObjectOutputStream(clientSecuredSocket.getOutputStream());
-			out.flush();
+		
 			in = new ObjectInputStream(clientSecuredSocket.getInputStream());
 			
 			do {
 				try {
+					sendMessage(this.message);
+					System.out.println(message);
 					message = in.readObject().toString();
-					sendMessage(clientInput);
-					
+					System.out.println(message);
+					if (message.equals("Client authenticated successfully!")) {
+						this.setAuthenticated(true);
+					}
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
@@ -102,12 +105,19 @@ public class Client implements Runnable {
 
 			e.printStackTrace();
 
+		} finally {
+			try {
+				clientSecuredSocket.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 	}
 
 	private void setMessage(String message) {
-		// TODO Auto-generated method stub
+		
 		this.message = message;
 	}
 
@@ -125,8 +135,31 @@ public class Client implements Runnable {
 	public String getMessage() {
 		return message;
 	}
-
-	public String sendCredentials(String username, String password) {
-		return "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"";
+	
+	public boolean isAuthenticated() {
+		return authenticated;
 	}
+	
+	public void setAuthenticated(boolean result) {
+		this.authenticated = result;
+	}
+	
+	public void setUsername(String username) {
+		// TODO Auto-generated method stub
+		this.username = username;
+	}
+	public String getUsername() {
+		
+		return username;
+	}
+
+	public void setPassword(String password) {
+		// TODO Auto-generated method stub
+		this.password = password;
+	}
+	public String getPassword() {
+		return password;
+	}
+	
+
 }
