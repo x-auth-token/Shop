@@ -1,32 +1,15 @@
 package com.pa.gui.net.ssl;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.UnknownHostException;
 import java.nio.file.Paths;
-import java.rmi.ConnectException;
-import java.security.cert.Certificate;
-import java.security.cert.X509Certificate;
-
-import javax.net.ServerSocketFactory;
-import javax.net.SocketFactory;
-import javax.net.ssl.SSLServerSocketFactory;
-import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+import com.pa.gui.main.ClientGui;
 
 public class Client implements Runnable {
 
@@ -35,6 +18,20 @@ public class Client implements Runnable {
 	private static SSLSocketFactory clientSecuredSocketFactory;
 	private static SSLSocket clientSecuredSocket;
 	private boolean connectionStatus = true;
+	private ClientGui clientGui;
+	private ObjectInputStream in;
+	private ObjectOutputStream out;
+	volatile private String message;
+
+	public Client(String hostName, int port, ClientGui gui) throws IOException {
+
+		Client.serverHostname = hostName;
+		Client.serverPort = port;
+		this.clientGui = gui;
+		
+		startClient();
+
+	}
 
 	public static int getServerPort() {
 		return serverPort;
@@ -52,20 +49,11 @@ public class Client implements Runnable {
 		Client.serverHostname = serverHostname;
 	}
 
-	public Client(String hostName, int port) throws IOException {
-
-		Client.serverHostname = hostName;
-		Client.serverPort = port;
-
-		startClient();
-
-	}
-
-	public Client(SSLSocket s) {
+	private Client(SSLSocket s) {
 		Client.clientSecuredSocket = s;
 	}
 
-	private void startClient() throws IOException {
+	private void startClient() throws UnknownHostException, IOException {
 		String currentWorkDir = Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "security"
 				+ File.separator + "cert" + File.separator;
 		String trustedCertificateStore = "cacerts.jks";
@@ -79,47 +67,69 @@ public class Client implements Runnable {
 		clientSecuredSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
 		clientSecuredSocket = (SSLSocket) clientSecuredSocketFactory.createSocket(serverHostname, serverPort);
 
-		SSLSession session = clientSecuredSocket.getSession();
+		// SSLSession session = clientSecuredSocket.getSession();
 
-		Certificate[] chain = session.getPeerCertificates();
+		// Certificate[] chain = session.getPeerCertificates();
 
-		System.out.println("The Certificates used by peer");
-		for (Certificate cert : chain) {
-			System.out.println(((X509Certificate) cert).getSubjectDN());
-		}
+		// System.out.println("The Certificates used by peer");
+		// for (Certificate cert : chain) {
+		// System.out.println(((X509Certificate) cert).getSubjectDN());
+		// }
+		
 		new Thread(new Client(clientSecuredSocket)).start();
-		System.out.println("--- Client connected to " + serverHostname + " on port " + serverPort);
-
+		this.clientGui.setMessage("Connected Successfully to " + serverHostname + " on port " + serverPort);
 	}
 
 	@Override
 	public void run() {
-		try (
-			PrintWriter out = new PrintWriter(clientSecuredSocket.getOutputStream(), true);
-			BufferedReader in = new BufferedReader(new InputStreamReader(clientSecuredSocket.getInputStream()));
-			BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-			)
-			{
-			String userInput;
-			while ((userInput = stdIn.readLine()) != null) {
-				out.println(userInput);
-				System.out.println("echo:" + in.readLine());
-			}
-		
-			} catch (Exception e) {
-				
-				
+		try {
+			
+			String clientInput = "nice";
+			System.out.println("Sent to server " + clientInput);
 
-				e.printStackTrace();
+			out = new ObjectOutputStream(clientSecuredSocket.getOutputStream());
+			out.flush();
+			in = new ObjectInputStream(clientSecuredSocket.getInputStream());
+			
+			do {
+				try {
+					message = in.readObject().toString();
+					sendMessage(clientInput);
+					
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+			
+			} while (!message.equals("goodbye"));
+		} catch (Exception e) {
 
-			}
-		
+			e.printStackTrace();
+
+		}
 
 	}
 
-	public static void main(String[] args) throws IOException {
-		Client c = new Client("localhost", 8787);
-
+	private void setMessage(String message) {
+		// TODO Auto-generated method stub
+		this.message = message;
 	}
 
+	public void sendMessage(String message) {
+		try {
+			out.writeObject(message);
+			out.flush();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public String getMessage() {
+		return message;
+	}
+
+	public String sendCredentials(String username, String password) {
+		return "{\"username\":\"" + username + "\",\"password\":\"" + password + "\"";
+	}
 }

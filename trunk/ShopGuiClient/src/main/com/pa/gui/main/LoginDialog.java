@@ -8,8 +8,6 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.pa.gui.net.ssl.*;
-
 import java.awt.GridBagLayout;
 import javax.swing.JTextField;
 import java.awt.GridBagConstraints;
@@ -19,23 +17,43 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 import java.awt.ComponentOrientation;
-import java.awt.EventQueue;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.NetworkInterface;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.awt.event.ActionEvent;
 import java.awt.Component;
+
 import javax.swing.Box;
+
+import com.pa.common.crypto.*;
 
 public class LoginDialog extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -430619037028254038L;
+	/**
+	 * 
+	 */
+	
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtUsername;
-	private JPasswordField passwordField;
+	private JPasswordField txtPasswordField;
 	private JTextField txtBranch;
 	private JTextField txtServerIP;
-	private Client cl;
+	private ClientGui clientGui;
+
+	public ClientGui getClientGui() {
+		return clientGui;
+	}
+
+	public void setClientGui(ClientGui clientGui) {
+		this.clientGui = clientGui;
+	}
+
 	private boolean cancelButtonPressed = false;
+	private JTextField txtPort;
 
 	public LoginDialog() {
 		setResizable(false);
@@ -46,10 +64,10 @@ public class LoginDialog extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_contentPanel = new GridBagLayout();
-		gbl_contentPanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_contentPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
-		gbl_contentPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_contentPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_contentPanel.columnWidths = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		gbl_contentPanel.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0 };
+		gbl_contentPanel.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE };
+		gbl_contentPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		contentPanel.setLayout(gbl_contentPanel);
 		{
 			Component verticalStrut = Box.createVerticalStrut(20);
@@ -95,11 +113,30 @@ public class LoginDialog extends JDialog {
 			txtServerIP.setColumns(10);
 		}
 		{
+			JLabel lblPort = new JLabel("Port");
+			GridBagConstraints gbc_lblPort = new GridBagConstraints();
+			gbc_lblPort.insets = new Insets(0, 0, 5, 5);
+			gbc_lblPort.anchor = GridBagConstraints.EAST;
+			gbc_lblPort.gridx = 3;
+			gbc_lblPort.gridy = 2;
+			contentPanel.add(lblPort, gbc_lblPort);
+		}
+		{
+			txtPort = new JTextField();
+			GridBagConstraints gbc_txtPort = new GridBagConstraints();
+			gbc_txtPort.insets = new Insets(0, 0, 5, 5);
+			gbc_txtPort.fill = GridBagConstraints.HORIZONTAL;
+			gbc_txtPort.gridx = 4;
+			gbc_txtPort.gridy = 2;
+			contentPanel.add(txtPort, gbc_txtPort);
+			txtPort.setColumns(10);
+		}
+		{
 			JLabel lblUsername = new JLabel("Username");
 			GridBagConstraints gbc_lblUsername = new GridBagConstraints();
 			gbc_lblUsername.insets = new Insets(0, 0, 5, 5);
 			gbc_lblUsername.gridx = 3;
-			gbc_lblUsername.gridy = 2;
+			gbc_lblUsername.gridy = 3;
 			contentPanel.add(lblUsername, gbc_lblUsername);
 		}
 		{
@@ -108,7 +145,7 @@ public class LoginDialog extends JDialog {
 			gbc_txtUsername.insets = new Insets(0, 0, 5, 5);
 			gbc_txtUsername.fill = GridBagConstraints.HORIZONTAL;
 			gbc_txtUsername.gridx = 4;
-			gbc_txtUsername.gridy = 2;
+			gbc_txtUsername.gridy = 3;
 			contentPanel.add(txtUsername, gbc_txtUsername);
 			txtUsername.setColumns(10);
 		}
@@ -117,17 +154,17 @@ public class LoginDialog extends JDialog {
 			GridBagConstraints gbc_lblPassword = new GridBagConstraints();
 			gbc_lblPassword.insets = new Insets(0, 0, 5, 5);
 			gbc_lblPassword.gridx = 3;
-			gbc_lblPassword.gridy = 3;
+			gbc_lblPassword.gridy = 4;
 			contentPanel.add(lblPassword, gbc_lblPassword);
 		}
 		{
-			passwordField = new JPasswordField();
+			txtPasswordField = new JPasswordField();
 			GridBagConstraints gbc_passwordField = new GridBagConstraints();
 			gbc_passwordField.insets = new Insets(0, 0, 5, 5);
 			gbc_passwordField.fill = GridBagConstraints.HORIZONTAL;
 			gbc_passwordField.gridx = 4;
-			gbc_passwordField.gridy = 3;
-			contentPanel.add(passwordField, gbc_passwordField);
+			gbc_passwordField.gridy = 4;
+			contentPanel.add(txtPasswordField, gbc_passwordField);
 		}
 		{
 			JLabel lblBranch = new JLabel("Branch");
@@ -135,7 +172,7 @@ public class LoginDialog extends JDialog {
 			GridBagConstraints gbc_lblBranch = new GridBagConstraints();
 			gbc_lblBranch.insets = new Insets(0, 0, 0, 5);
 			gbc_lblBranch.gridx = 3;
-			gbc_lblBranch.gridy = 4;
+			gbc_lblBranch.gridy = 5;
 			contentPanel.add(lblBranch, gbc_lblBranch);
 		}
 		{
@@ -144,7 +181,7 @@ public class LoginDialog extends JDialog {
 			gbc_txtBranch.insets = new Insets(0, 0, 0, 5);
 			gbc_txtBranch.fill = GridBagConstraints.HORIZONTAL;
 			gbc_txtBranch.gridx = 4;
-			gbc_txtBranch.gridy = 4;
+			gbc_txtBranch.gridy = 5;
 			contentPanel.add(txtBranch, gbc_txtBranch);
 			txtBranch.setColumns(10);
 		}
@@ -155,25 +192,61 @@ public class LoginDialog extends JDialog {
 			{
 				JButton okButton = new JButton("OK");
 				okButton.setActionCommand("OK");
-				
+
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent okButtonClicked) {
-						if (okButton.getActionCommand().equals(okButtonClicked.getActionCommand()))
-							try {
-								
-								if (!txtServerIP.getText().isEmpty()) {
-									cl = new Client(txtServerIP.getText(), 8787);
-									dispose();
-								} else {
-									JOptionPane.showMessageDialog(null, "Please provide Server IP or Name");
-								}
-								
-								
-							} catch (IOException e) {
-								JOptionPane.showMessageDialog(null, "Invalid Server Address!");
+						String username = txtUsername.getText();
+						String password = "";
+						try {
+							password = PasswordHasher.generateHashedPassword(txtPasswordField.getPassword().toString());
+						} catch (NoSuchAlgorithmException | InvalidKeySpecException e1) {
+
+							e1.printStackTrace();
+						}
+
+						String branch = txtBranch.getText();
+						String server = txtServerIP.getText();
+						int port = 8787;
+
+						if (okButton.getActionCommand().equals(okButtonClicked.getActionCommand())) {
+
+							if (!txtPort.getText().isEmpty()) {
+								port = Integer.parseInt(txtPort.getText());
 							}
-						
-						
+
+							if (username.isEmpty() || password.isEmpty() || branch.isEmpty() || server.isEmpty()) {
+								JOptionPane.showMessageDialog(null, "All fields except port are mandatory!");
+							} else {
+								// try {
+								clientGui.setUsername(username);
+								clientGui.setPassword(password);
+								clientGui.setBranch(branch);
+								clientGui.setServer(server);
+								clientGui.setPort(port);
+								;
+								// } catch (IOException e) {
+								// // TODO Auto-generated catch block
+								// if (e.toString().contains("UnknownHost")) {
+								// JOptionPane.showMessageDialog(null, "Please
+								// Provide Valid Server IP or Name");
+								// } else if
+								// (e.toString().contains("ConnectException")) {
+								// JOptionPane.showMessageDialog(null,
+								// "Connection Refused! Check if you are allowed
+								// to connect or server running.");
+								// } else {
+								// JOptionPane.showMessageDialog(null, e);
+								// }
+								//
+								// }
+
+								dispose();
+							}
+
+						} else {
+							JOptionPane.showMessageDialog(null, "Please provide Server IP or Name");
+
+						}
 					}
 				});
 				buttonPane.add(okButton);
@@ -182,10 +255,10 @@ public class LoginDialog extends JDialog {
 			{
 				JButton cancelButton = new JButton("Cancel");
 				cancelButton.setActionCommand("Cancel");
-				
+
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent cancelButtonClicked) {
-						//Object event  = cancelButtonClicked.getSource();
+						// Object event = cancelButtonClicked.getSource();
 						if (cancelButton.getActionCommand().equals(cancelButton.getActionCommand())) {
 							cancelButtonPressed = true;
 							dispose();
@@ -202,4 +275,4 @@ public class LoginDialog extends JDialog {
 		return cancelButtonPressed;
 	}
 
-}
+};
