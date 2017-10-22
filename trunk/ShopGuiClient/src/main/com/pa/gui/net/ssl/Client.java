@@ -54,7 +54,9 @@ public class Client implements Runnable {
 	}
 
 	private void startClient() throws UnknownHostException, IOException {
-		String currentWorkDir = Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "security"
+		try {
+			String currentWorkDir = Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "security"
+		
 				+ File.separator + "cert" + File.separator;
 		String trustedCertificateStore = "cacerts.jks";
 		String certificateStore = "keystore-client.jks";
@@ -67,17 +69,12 @@ public class Client implements Runnable {
 		clientSecuredSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
 		clientSecuredSocket = (SSLSocket) clientSecuredSocketFactory.createSocket(serverHostname, serverPort);
 
-		// SSLSession session = clientSecuredSocket.getSession();
-
-		// Certificate[] chain = session.getPeerCertificates();
-
-		// System.out.println("The Certificates used by peer");
-		// for (Certificate cert : chain) {
-		// System.out.println(((X509Certificate) cert).getSubjectDN());
-		// }
-		
 		new Thread(new Client(clientSecuredSocket)).start();
 		this.clientGui.setMessage("Connected Successfully to " + serverHostname + " on port " + serverPort);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	@Override

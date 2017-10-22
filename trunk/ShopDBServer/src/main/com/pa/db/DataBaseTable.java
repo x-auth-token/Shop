@@ -47,15 +47,31 @@ public class DataBaseTable<T> implements DataBase<T> {
 	public DataBaseTable(String tName, TypeToken<T> dataBaseType) {
 		setDataBaseType(dataBaseType);
 		this.folder = new File("db");
-		this.tableName = tName + ".db";
+		// this.tableName = tName + ".db";
+
+		this.tableName = buildTableNameFromType(dataBaseType) + ".db";
 	}
 
 	public DataBaseTable(String tName, String dPath, TypeToken<T> dataBaseType) {
 		setDataBaseType(dataBaseType);
 		this.folder = new File("db");
-		this.tableName = tName + ".db";
+		// this.tableName = tName + ".db";
+		this.tableName = buildTableNameFromType(dataBaseType) + ".db";
 		this.folder = new File(dPath);
 
+	}
+
+	private String buildTableNameFromType(TypeToken<T> dataBaseType) {
+		String temp = dataBaseType.toString();
+		String[] words = temp.split("\\.");
+
+		for (String word : words) {
+			if (Character.isUpperCase(word.charAt(0))) {
+				temp = word;
+			}
+		}
+
+		return temp;
 	}
 
 	public File getFolder() {
@@ -153,6 +169,7 @@ public class DataBaseTable<T> implements DataBase<T> {
 				while (iterator.hasNext()) {
 					temp = (JsonObject) iterator.next();
 					if (temp.has("id") && temp.get("id").getAsString().equals(key)) {
+
 						temp.remove(property);
 						temp.addProperty(property, value);
 					}
@@ -167,6 +184,36 @@ public class DataBaseTable<T> implements DataBase<T> {
 		}
 	}
 
+	// public void update(T oldObject, T newObject) throws IOException {
+	// JsonObject jsonedOld = new
+	// Gson().toJsonTree(oldObject).getAsJsonObject();
+	// JsonObject jsonedNew = new
+	// Gson().toJsonTree(newObject).getAsJsonObject();
+	//
+	// ArrayList<String> collectionOfObjects = new ArrayList<>();
+	// try (Reader reader = new FileReader(table)) {
+	// JsonElement json = new JsonParser().parse(reader);
+	// JsonArray jsonArray = json.getAsJsonArray();
+	// Iterator<JsonElement> iterator = jsonArray.iterator();
+	// JsonObject temp;
+	//
+	// while (iterator.hasNext()) {
+	// temp = (JsonObject) iterator.next();
+	// if (temp.equals(jsonedOld)) {
+	//
+	// delete(oldObject);
+	//
+	// }
+	// collectionOfObjects.add(jsonedNew.toString());
+	// }
+	//
+	// try (Writer writer = new FileWriter(table, false)) {
+	// writer.write(collectionOfObjects.toString());
+	//
+	// }
+	// }
+	// }
+
 	@Override
 	public boolean delete(String key, T object) throws FileNotFoundException, IOException {
 		ArrayList<String> collectionOfObjects = new ArrayList<>();
@@ -180,6 +227,20 @@ public class DataBaseTable<T> implements DataBase<T> {
 		return false;
 	}
 
+	// @Override
+	// public boolean delete(T object) throws FileNotFoundException, IOException
+	// {
+	// ArrayList<String> collectionOfObjects = new ArrayList<>();
+	// copyCurrentCollectionOfObjects(collectionOfObjects);
+	// if (collectionOfObjects.remove(findObject(object).toString())) {
+	// try (Writer writer = new FileWriter(table, false)) {
+	// writer.write(collectionOfObjects.toString());
+	// return true;
+	// }
+	// }
+	// return false;
+	// }
+
 	@Override
 	public T select(String key) throws IOException, NullPointerException {
 
@@ -188,6 +249,25 @@ public class DataBaseTable<T> implements DataBase<T> {
 		object = gson.fromJson(findObjectByKey(key), getDataBaseType().getType());
 		return object;
 
+	}
+
+	private JsonObject findObject(T object) throws FileNotFoundException, IOException {
+		Gson gson = new Gson();
+		JsonObject jsoned = gson.toJsonTree(object).getAsJsonObject();
+		try (Reader reader = new FileReader(table)) {
+			JsonElement json = new JsonParser().parse(reader);
+			JsonArray jsonArray = json.getAsJsonArray();
+			Iterator<JsonElement> iterator = jsonArray.iterator();
+			JsonObject temp;
+			while (iterator.hasNext()) {
+				temp = (JsonObject) iterator.next();
+
+				if (temp.equals(jsoned)) {
+					return temp;
+				}
+			}
+		}
+		return null;
 	}
 
 	private JsonObject findObjectByKey(String key) throws FileNotFoundException, IOException {

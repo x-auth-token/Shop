@@ -7,6 +7,9 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/ShopCommon"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.10.jar"/>
 	<classpathentry kind="lib" path="lib/mockito-core-2.11.0.jar"/>
+	<classpathentry kind="lib" path="lib/gson-2.8.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/gson-2.8.2-sources.jar"/>
+	<classpathentry kind="lib" path="lib/gson-2.8.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ShopDBServer"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -16,11 +16,16 @@ import org.junit.rules.ExpectedException;
 import org.junit.runners.MethodSorters;
 import com.google.gson.reflect.TypeToken;
 import com.pa.common.customer.*;
+import com.pa.common.branch.*;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class DataBaseTableTest {
 
 	static DataBaseTable<NewCustomer> db;
+	static DataBaseTable<Stock> db2;
+	static Stock s;
+	static Stock s2;
+	static ArrayList<Stock> stock = new ArrayList<Stock>();
 	static String currentWorkingPath = Paths.get(".").toAbsolutePath().normalize().toString();
 	static String testDatabasePath = Paths.get(currentWorkingPath, "db", "db_test_folder").toString();
 
@@ -28,10 +33,18 @@ public class DataBaseTableTest {
 	public static void setUPClass() throws SecurityException, IOException {
 
 		String tblName = "db_test";
+		String tblName2 = "db2_test";
 
 		db = new DataBaseTable<NewCustomer>(tblName, testDatabasePath, new TypeToken<NewCustomer>() {
 		});
 
+		db2 = new DataBaseTable<Stock>(tblName2, testDatabasePath, new TypeToken<Stock>() {
+		});
+		
+		s = new Stock("Jeans", "large", "blue", "Versace", 10, 50.0);
+		s2 = new Stock("Jeans", "extralarge", "red", "KC", 10, 19.20);
+		stock.add(s);
+		stock.add(s2);
 	}
 
 	@Rule
@@ -40,6 +53,7 @@ public class DataBaseTableTest {
 	@Test
 	public void testDataBaseTableCreate() throws SecurityException, IOException {
 		db.create();
+		db2.create();
 		Assert.assertTrue(new File(db.getDBPath() + db.getTableName()).exists());
 	}
 
@@ -60,6 +74,18 @@ public class DataBaseTableTest {
 				e.getMessage();
 			}
 		}
+
+		
+
+		for (Stock st : stock) {
+			try {
+				db2.insert(st.getId(), st);
+				//
+			} catch (Exception e) {
+
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Test
@@ -75,6 +101,8 @@ public class DataBaseTableTest {
 	@Test
 	public void testDataBaseTableUpdateMethod() throws IOException {
 		db.update("123456789", "phoneNumber", "0549144667");
+		
+		db2.update(s.getId(), "vendor", "DG");
 		NewCustomer c = db.select("123456789");
 		Assert.assertEquals(c.getPersonPhoneNumber(), "0549144667");
 	}
@@ -93,7 +121,7 @@ public class DataBaseTableTest {
 	@Test
 	public void testDataBaseTableRemoveObjectedMethod() throws FileNotFoundException, IOException {
 		NewCustomer p3 = new NewCustomer("asd", "asdasd", "male", "123456787", "0549002020");
-		Assert.assertTrue(db.delete("123456787", p3));
+		Assert.assertTrue(db.delete(p3.getPersonId(), p3));
 
 	}
 

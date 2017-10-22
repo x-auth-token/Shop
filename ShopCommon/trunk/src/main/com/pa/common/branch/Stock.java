@@ -2,15 +2,18 @@ package com.pa.common.branch;
 
 
 import static com.pa.common.Validators.validateOnlyLettersUsed;
+
+import java.util.UUID;
+
 import static com.pa.common.Constants.*;
 
 
 public class Stock {
-	private Id itemId;
-	private String itemType;
-	private String itemSize;
-	private double itemPrice;
-	private String itemVendor;
+	private String id;
+	private String type;
+	private String size;
+	private double price;
+	private String vendor;
 	private String colour;
 	private int quantity;
 	
@@ -20,78 +23,55 @@ public class Stock {
 	}
 
 	public Stock(String iType, String iSize, String colour,String iVendor, int Quantity,double price) {
-		switch (iType){
-		case "Jeans": 
-			setItemID(Id.JEANS);
-			break;
-		case "ShortPants":
-			setItemID(Id.SHORT_PANTS);
-			break;
-		case "TailoredPants" :
-			setItemID(Id.TAILORED_PANTS);
-			break;
-		case "Tshirt":
-			setItemID(Id.TSHIRT);
-			break;
-		case "LongSleeveShirt":
-			setItemID(Id.LONG_SLEEVE_SHIRT);
-			break;
-		case "Coat":
-			setItemID(Id.COAT);
-			break;
-		case "Sweater":
-			setItemID(Id.SWEATER);
-			break;
-		default:
-			break;
-		}
-		setItemType(iType);
-		setItemSize(iSize);
+
+		this.id = UUID.randomUUID().toString();
+		setType(iType);
+		setSize(iSize);
 		setColour(colour);
-		setItemVendor(iVendor);
-		setItemQuantity(Quantity);
-		setItemPrice(price);
+		setVendor(iVendor);
+		setQuantity(Quantity);
+		setPrice(price);
 	
 		
 
 	}
 
-	private void setItemID(Id id) {
-		// TODO Auto-generated method stub
-		this.itemId = id;
+//	private void setItemID(Id id) {
+//		// TODO Auto-generated method stub
+//		this.itemId = id;
+//	}
+
+	public String getSize() {
+		return size;
 	}
 
-	public String getItemSize() {
-		return itemSize;
-	}
-
-	public void setItemSize(String itemSize) throws IllegalArgumentException {
+	public void setSize(String itemSize) throws IllegalArgumentException {
 		if (!validateOnlyLettersUsed(itemSize))
 			throw new IllegalArgumentException(
 					"Wrong input! itemSize should contain only letters like : small medium..");
 		else {
-			this.itemSize = itemSize;
+			this.size = itemSize;
 		}
 	}
 
-	public String getItemVendor() {
-		return itemVendor;
+	public String getVendor() {
+		return vendor;
 	}
 
-	public void setItemVendor(String itemVendor) throws IllegalArgumentException {
+	public void setVendor(String itemVendor) throws IllegalArgumentException {
 		if (!validateOnlyLettersUsed(itemVendor))
 			throw new IllegalArgumentException(
 					"Wrong input! itemVendor should contain only letters like : adidas nike..");
 		else {
-			this.itemVendor = itemVendor;
+			this.vendor = itemVendor;
 		}
 	}
 
-	public int getItemQuantity() {
+	public int getQuantity() {
 		return quantity;
 	}
 
-	public void setItemQuantity(int itemQuantity) {
+	public void setQuantity(int itemQuantity) {
 
 		this.quantity = itemQuantity;
 	}
@@ -108,35 +88,34 @@ public class Stock {
 			this.colour = colour;
 	}
 
-	public String getItemType() {
-		return itemType;
+	public final String getId() {
+		return id;
 	}
 
-	public void setItemType(String itemType) {
-		this.itemType = itemType;
+	public String getType() {
+		return type;
+	}
+	public void setType(String itemtType) {
+		this.type = itemtType;
 	}
 
-	public double getItemPrice() {
-		return itemPrice;
+	public double getPrice() {
+		return price;
 	}
 
-	public void setItemPrice(double itemPrice) {
-		this.itemPrice = itemPrice;
+	public void setPrice(double itemPrice) {
+		this.price = itemPrice;
 	}
 
-	public Id getItemId() {
-		return itemId;
-	}
 
-	public void setItemId(Id itemId) {
-		this.itemId = itemId;
-	}
 	@Override
 	public String toString() 
 	{
 		// TODO Auto-generated method stub
-		return "itemId: "+getItemId()+" itemSize: "+getItemSize()+" itemPrice:"+getItemPrice()+
-				" itemVendor: "+getItemVendor()+" itemcolour:"+getColour()+" itemQuantity:"+getItemQuantity();
+		return "id: "+getId()+" itemSize: "+getSize()+" itemPrice:"+getPrice()+
+				" itemVendor: "+getVendor()+" itemcolour:"+getColour()+" itemQuantity:"+getQuantity();
 	}
+	
+
 
 }

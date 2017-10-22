@@ -18,6 +18,8 @@ import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 import java.awt.ComponentOrientation;
 import java.awt.event.ActionListener;
+import java.beans.PropertyVetoException;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.awt.event.ActionEvent;
@@ -25,7 +27,9 @@ import java.awt.Component;
 
 import javax.swing.Box;
 
+import com.pa.common.User;
 import com.pa.common.crypto.*;
+import com.pa.gui.net.ssl.Client;
 
 public class LoginDialog extends JDialog {
 
@@ -36,7 +40,7 @@ public class LoginDialog extends JDialog {
 	/**
 	 * 
 	 */
-	
+
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtUsername;
 	private JPasswordField txtPasswordField;
@@ -195,10 +199,14 @@ public class LoginDialog extends JDialog {
 
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent okButtonClicked) {
+						
 						String username = txtUsername.getText();
 						String password = "";
 						try {
-							password = PasswordHasher.generateHashedPassword(txtPasswordField.getPassword().toString());
+							if (!txtPasswordField.getPassword().toString().isEmpty()) {
+								password = PasswordHasher
+										.generateHashedPassword(txtPasswordField.getPassword().toString());
+							}
 						} catch (NoSuchAlgorithmException | InvalidKeySpecException e1) {
 
 							e1.printStackTrace();
@@ -209,38 +217,45 @@ public class LoginDialog extends JDialog {
 						int port = 8787;
 
 						if (okButton.getActionCommand().equals(okButtonClicked.getActionCommand())) {
+							
+								if (!txtPort.getText().isEmpty()) {
+									port = Integer.parseInt(txtPort.getText());
+								}
 
-							if (!txtPort.getText().isEmpty()) {
-								port = Integer.parseInt(txtPort.getText());
-							}
+								if (username.isEmpty() || password.isEmpty() || branch.isEmpty() || server.isEmpty()) {
+									JOptionPane.showMessageDialog(null, "All fields except port are mandatory!");
+								} else {
+									// try {
+									clientGui.setUsername(username);
+									clientGui.setPassword(password);
+									clientGui.setBranch(branch);
+									clientGui.setServer(server);
+									clientGui.setPort(port);
+									Client client = null;
+									try {
+										client = new Client(server, port, clientGui);
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										if (e.toString().contains("UnknownHost")) {
+											JOptionPane.showMessageDialog(null,
+													"Please Provide Valid Server IP or Name");
+										} else if (e.toString().contains("ConnectException")) {
+											JOptionPane.showMessageDialog(null,
+													"Connection Refused! Check if you are allowed to connect or server running.");
+										} else {
+											JOptionPane.showMessageDialog(null, e);
+										}
 
-							if (username.isEmpty() || password.isEmpty() || branch.isEmpty() || server.isEmpty()) {
-								JOptionPane.showMessageDialog(null, "All fields except port are mandatory!");
-							} else {
-								// try {
-								clientGui.setUsername(username);
-								clientGui.setPassword(password);
-								clientGui.setBranch(branch);
-								clientGui.setServer(server);
-								clientGui.setPort(port);
-								;
-								// } catch (IOException e) {
-								// // TODO Auto-generated catch block
-								// if (e.toString().contains("UnknownHost")) {
-								// JOptionPane.showMessageDialog(null, "Please
-								// Provide Valid Server IP or Name");
-								// } else if
-								// (e.toString().contains("ConnectException")) {
-								// JOptionPane.showMessageDialog(null,
-								// "Connection Refused! Check if you are allowed
-								// to connect or server running.");
-								// } else {
-								// JOptionPane.showMessageDialog(null, e);
-								// }
-								//
-								// }
+									}
+									String json = "{\"username\":\"asd\",\"password\":\"asd\"}";
+									JOptionPane.showMessageDialog(null, "Sending to server :" + json);
+									client.sendMessage(json);
+									clientGui.setClient(client);
+									clientGui.setAuthenticated(client.getMessage().equals("Client authenticated successfully!"));
+									dispose();
 
-								dispose();
+		
+								
 							}
 
 						} else {

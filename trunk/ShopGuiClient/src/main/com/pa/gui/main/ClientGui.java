@@ -3,6 +3,7 @@ package com.pa.gui.main;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.WindowEvent;
+import java.beans.PropertyVetoException;
 import java.io.IOException;
 
 import javax.security.auth.spi.LoginModule;
@@ -20,6 +21,11 @@ import javax.swing.JMenu;
 import java.awt.GridBagLayout;
 import javax.swing.JTable;
 import java.awt.GridBagConstraints;
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ClientGui extends JFrame {
 
@@ -33,9 +39,9 @@ public class ClientGui extends JFrame {
 	private String password;
 	private String branch;
 	private String server;
-	private String result = null;
+	private boolean authenticated = false;
 	private int port;
-	private JTable table;
+	private JDesktopPane desktopPane;
 
 	/**
 	 * Launch the application.
@@ -46,6 +52,7 @@ public class ClientGui extends JFrame {
 				try {
 					ClientGui gc = new ClientGui();
 					LoginDialog login = new LoginDialog();
+					
 					gc.pack();
 					gc.setVisible(true);
 					login.setLocationRelativeTo(null);
@@ -57,9 +64,22 @@ public class ClientGui extends JFrame {
 						
 					}
 					
-					client = new Client(gc.getServer(), gc.port, gc);
-					gc.getMessage();;
+					//gc.getMessage();
 					
+						
+					//String json = "{\"username\":\"" + gc.getUsername() + "\",\"password\":\"" + gc.getPassword() + "\"}";
+//					String json = "{\"username\":\"" + gc.getUsername() + "\",\"password\":\"abc\"}";
+//					JOptionPane.showMessageDialog(null, "Sending to server :" + json);
+//					client.sendMessage(json);
+					//gc.getMessage();
+					
+					
+					
+					CashierInteface cs = new CashierInteface("Cashier");
+					gc.getDesktopPane().add(cs);
+					cs.setMaximum(true);
+					cs.setSelected(true);
+					gc.revalidate();
 					
 					
 					
@@ -93,13 +113,31 @@ public class ClientGui extends JFrame {
 		gridBagLayout.rowWeights = new double[]{1.0, Double.MIN_VALUE};
 		getContentPane().setLayout(gridBagLayout);
 		
-		table = new JTable();
-		GridBagConstraints gbc_table = new GridBagConstraints();
-		gbc_table.fill = GridBagConstraints.BOTH;
-		gbc_table.gridx = 0;
-		gbc_table.gridy = 0;
-		getContentPane().add(table, gbc_table);
+		desktopPane = new JDesktopPane();
+		GridBagConstraints gbc_desktopPane = new GridBagConstraints();
+		gbc_desktopPane.fill = GridBagConstraints.BOTH;
+		gbc_desktopPane.gridx = 0;
+		gbc_desktopPane.gridy = 0;
+		getContentPane().add(desktopPane, gbc_desktopPane);
+		
+//		JInternalFrame internalFrame = new JInternalFrame("New JInternalFrame");
+//		
+//		internalFrame.setBounds(120, 74, 150, 65);
+//		desktopPane.add(internalFrame);
+//		internalFrame.setVisible(true);
+//		try {
+//			internalFrame.setMaximum(true);
+//		} catch (PropertyVetoException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
+	public JDesktopPane getDesktopPane() {
+		return desktopPane;
+	}
+
+
+
 	public void connect(String username, String password, String branch, String serverIp, int port) throws IOException {
 		this.setClient(new Client(serverIp, port, this));
 		client.sendCredentials(username, password);
@@ -181,15 +219,13 @@ public class ClientGui extends JFrame {
 	}
 
 
-
-	public String getResult() {
-		return result;
+	public boolean isAuthenticated() {
+		return authenticated;
 	}
 
 
 
-	public void setResult(String result) {
-		this.result = result;
+	public void setAuthenticated(boolean authenticated) {
+		this.authenticated = authenticated;
 	}
-
 }
