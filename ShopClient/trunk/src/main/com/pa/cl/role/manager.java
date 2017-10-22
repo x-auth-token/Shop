@@ -15,6 +15,8 @@ import java.awt.event.ActionEvent;
 import com.pa.cl.register.*;
 import com.sun.glass.ui.Screen;
 import com.pa.cl.cashRegister.cashRegister;
+import com.pa.cl.customer.customerList;
+import com.pa.cl.employeeInfo.employeeInfo;
 import com.pa.cl.items.*;
 
 
@@ -57,7 +59,7 @@ public class manager extends JFrame {
 		setLocationRelativeTo(null);
 		cpManager.setLayout(null);
 		
-		JButton btnRegister = new JButton("new employee register");
+		JButton btnRegister = new JButton("employee register");
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
@@ -85,6 +87,13 @@ public class manager extends JFrame {
 		cpManager.add(btnReports);
 		
 		JButton btnCustomerInfo = new JButton("customer info");
+		btnCustomerInfo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				customerList cl=new customerList();
+				cl.setVisible(true);
+			}
+		});
 		btnCustomerInfo.setBounds(229, 229, 215, 33);
 		cpManager.add(btnCustomerInfo);
 		
@@ -111,6 +120,13 @@ public class manager extends JFrame {
 		cpManager.add(btnGetInventory);
 		
 		JButton btnEmployeeInfo = new JButton("employee info");
+		btnEmployeeInfo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e)
+			{
+				employeeInfo emp= new employeeInfo();
+				emp.setVisible(true);
+			}
+		});
 		btnEmployeeInfo.setBounds(229, 273, 215, 33);
 		cpManager.add(btnEmployeeInfo);
 		

@@ -49,7 +49,6 @@ public class salesman extends JFrame {
 			{
 				updateItems item=new updateItems();
 				item.setVisible(true);
-				dispose();
 				
 			}
 		});

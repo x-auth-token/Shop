@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.pa.common.branch.Stock;
 import com.pa.cl.cashRegister.cashRegister;
+import com.pa.cl.customer.customerList;
 import com.pa.cl.items.*;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -59,6 +60,13 @@ public class cashier extends JFrame {
 		contentPane.add(btncashRegister);
 		
 		JButton btnCustomerInfo = new JButton("customer info");
+		btnCustomerInfo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				customerList cl=new customerList();
+				cl.setVisible(true);
+			}
+		});
 		btnCustomerInfo.setBounds(106, 162, 223, 31);
 		contentPane.add(btnCustomerInfo);
 		
