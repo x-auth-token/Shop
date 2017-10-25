@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.Frame;
 
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.GroupLayout;
@@ -24,43 +25,29 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class CashRegisterInterface extends JFrame {
+public class CashRegisterInterface extends JInternalFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4636527186366116564L;
 	private JPanel contentPane;
 	private JTable table;
 	private JTextField textQuantity;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CashRegisterInterface frame = new CashRegisterInterface();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	
 	/**
 	 * Create the frame.
 	 */
-	public CashRegisterInterface() {
-		setTitle("cashRegister");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		setBounds(100, 100, 450, 300);
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
+	public CashRegisterInterface(String name) {
+		setTitle(name);
+		setResizable(false);
+		setVisible(true);
+		setBounds(0, 0, 450, 260);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		
-		JComboBox cmbItems = new JComboBox();
+		JComboBox<String> cmbItems = new JComboBox<String>();
 		cmbItems.addItem("ShortPants");
 		cmbItems.addItem("Jeans");
 		cmbItems.addItem("TailoredPants");
@@ -69,13 +56,13 @@ public class CashRegisterInterface extends JFrame {
 		cmbItems.addItem("Coat");
 		cmbItems.addItem("Sweater");
 		
-		JComboBox cmbSize = new JComboBox();
+		JComboBox<String> cmbSize = new JComboBox<String>();
 		cmbSize.addItem("small");
 		cmbSize.addItem("medium");
 		cmbSize.addItem("large");
 		cmbSize.addItem("extraLarge");
 		
-		JComboBox cmbCtype = new JComboBox();
+		JComboBox<String> cmbCtype = new JComboBox<String>();
 		cmbCtype.addItem("NewCustomer");
 		cmbCtype.addItem("ReturningCustomer");
 		cmbCtype.addItem("VipCustomer");
@@ -145,7 +132,7 @@ public class CashRegisterInterface extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
-				RegisterCustomerInterface cr=new RegisterCustomerInterface();
+				RegisterCustomerInterface cr=new RegisterCustomerInterface(name);
 				cr.setVisible(true);
 			}
 		});
@@ -154,7 +141,7 @@ public class CashRegisterInterface extends JFrame {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
-				CustomerListInterface cl=new CustomerListInterface();
+				CustomerListInterface cl=new CustomerListInterface(name);
 				cl.setVisible(true);
 			}
 		});

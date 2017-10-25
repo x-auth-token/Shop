@@ -18,6 +18,7 @@ import javax.swing.JPasswordField;
 import javax.swing.SwingConstants;
 import java.awt.ComponentOrientation;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -43,14 +44,14 @@ public class LoginDialog extends JDialog {
 	private JPasswordField txtPasswordField;
 	private JTextField txtBranch;
 	private JTextField txtServerIP;
-	private ClientGui clientGui;
+	private ClientGui guiClient;
 
 	public ClientGui getClientGui() {
-		return clientGui;
+		return guiClient;
 	}
 
-	public void setClientGui(ClientGui clientGui) {
-		this.clientGui = clientGui;
+	public void setClientGui(ClientGui guiClient) {
+		this.guiClient = guiClient;
 	}
 
 	private boolean cancelButtonPressed = false;
@@ -124,6 +125,7 @@ public class LoginDialog extends JDialog {
 		}
 		{
 			txtPort = new JTextField();
+			txtPort.setText("8787");
 			GridBagConstraints gbc_txtPort = new GridBagConstraints();
 			gbc_txtPort.insets = new Insets(0, 0, 5, 5);
 			gbc_txtPort.fill = GridBagConstraints.HORIZONTAL;
@@ -131,6 +133,7 @@ public class LoginDialog extends JDialog {
 			gbc_txtPort.gridy = 2;
 			contentPanel.add(txtPort, gbc_txtPort);
 			txtPort.setColumns(10);
+			
 		}
 		{
 			JLabel lblUsername = new JLabel("Username");
@@ -195,46 +198,73 @@ public class LoginDialog extends JDialog {
 				okButton.setActionCommand("OK");
 
 				okButton.addActionListener(new ActionListener() {
+					private int failedLoginCounter;
+
+					@SuppressWarnings("deprecation")
 					public void actionPerformed(ActionEvent okButtonClicked) {
 
 						String username = txtUsername.getText();
 						String password = "";
-						try {
-							if (!txtPasswordField.getPassword().toString().isEmpty()) {
-								password = PasswordHasher
-										.generateHashedPassword(txtPasswordField.getPassword().toString());
-							}
-						} catch (NoSuchAlgorithmException | InvalidKeySpecException e1) {
-
-							e1.printStackTrace();
+						if (!txtPasswordField.getPassword().toString().isEmpty()) {
+							password = txtPasswordField.getText();
 						}
 
 						String branch = txtBranch.getText();
 						String server = txtServerIP.getText();
 						int port = 8787;
+						
+					
 
 						if (okButton.getActionCommand().equals(okButtonClicked.getActionCommand())) {
 
 							if (!txtPort.getText().isEmpty()) {
 								port = Integer.parseInt(txtPort.getText());
+								txtPort.setText(String.valueOf(port));
+								
 							}
 
 							if (username.isEmpty() || password.isEmpty() || branch.isEmpty() || server.isEmpty()) {
 								JOptionPane.showMessageDialog(null, "All fields except port are mandatory!");
 							} else {
 								
-								clientGui.setUsername(username);
-								clientGui.setPassword(password);
-								clientGui.setBranch(branch);
-								clientGui.setServer(server);
-								clientGui.setPort(port);
+								guiClient.setUsername(username);
+								guiClient.setPassword(password);
+								guiClient.setBranch(branch);
+								guiClient.setServer(server);
+								guiClient.setPort(port);
+								
+								try {
+									guiClient.startClient(username, password, branch, server, port);
+									
+									if (guiClient.isAuthenticated()) {
+										dispose();
+									} else {
+										
+										failedLoginCounter++;
+										
+										if (failedLoginCounter == 3) {
+											guiClient.dispatchEvent(new WindowEvent(guiClient, WindowEvent.WINDOW_CLOSING));
+										} else {
+											JOptionPane.showMessageDialog(null, "Invalid username or password! Please try again");
+										}
+										
+										
+									}
+								} catch (ClassNotFoundException | IOException e) {
+									if (e.toString().contains("UnknownHost")) {
+										JOptionPane.showMessageDialog(null, "Please Provide Valid Server IP or Name");
+									} else if (e.toString().contains("ConnectException")) {
+										JOptionPane.showMessageDialog(null, "Connection Refused! Check if you are allowed to connect or server running.");
+									} else {
+										JOptionPane.showMessageDialog(null, e);
+									}
+								}
 							}
-
 						} else {
 							JOptionPane.showMessageDialog(null, "Please provide Server IP or Name");
 
 						}
-						dispose();
+				
 					}
 				});
 				buttonPane.add(okButton);
@@ -246,7 +276,7 @@ public class LoginDialog extends JDialog {
 
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent cancelButtonClicked) {
-						// Object event = cancelButtonClicked.getSource();
+						
 						if (cancelButton.getActionCommand().equals(cancelButton.getActionCommand())) {
 							cancelButtonPressed = true;
 

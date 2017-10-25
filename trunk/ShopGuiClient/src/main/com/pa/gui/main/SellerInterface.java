@@ -4,50 +4,37 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class SalesmanInterface extends JFrame {
+public class SellerInterface extends JInternalFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1732726058568782502L;
 	private JPanel contentPane;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					SalesmanInterface frame = new SalesmanInterface();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the frame.
+	 * @param string 
 	 */
-	public SalesmanInterface() {
-		setTitle("salesman");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		setLocationRelativeTo(null);
-		contentPane.setLayout(null);
+	
+	public SellerInterface(String name) {
+		setTitle(name);
+		setResizable(false);
+		setVisible(true);
+		setBounds(0, 0, 450, 260);
 		
-		JButton btnInventory = new JButton("update inventory");
+		JButton btnInventory = new JButton("Update inventory");
 		btnInventory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				UpdateStockInterface item=new UpdateStockInterface();
+				UpdateStockInterface item=new UpdateStockInterface(name);
 				item.setVisible(true);
 				
 			}
@@ -55,11 +42,11 @@ public class SalesmanInterface extends JFrame {
 		btnInventory.setBounds(98, 43, 220, 33);
 		contentPane.add(btnInventory);
 		
-		JButton btnGetInventory = new JButton("get inventory");
+		JButton btnGetInventory = new JButton("Get inventory");
 		btnGetInventory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				ProductStockInterface st=new ProductStockInterface();
+				ProductStockInterface st=new ProductStockInterface(name);
 				st.setVisible(true);
 				
 			}

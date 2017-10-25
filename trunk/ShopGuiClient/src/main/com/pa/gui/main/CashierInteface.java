@@ -1,16 +1,19 @@
 package com.pa.gui.main;
 
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyVetoException;
 
 import javax.swing.JButton;
-import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 
 public class CashierInteface extends JInternalFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5723551450669661039L;
+	
 	JPanel contentPane = new JPanel();
 	public CashierInteface(String name) {
 		setTitle(name);
@@ -19,16 +22,19 @@ public class CashierInteface extends JInternalFrame {
 		setBounds(0, 0, 450, 260);
 	
 		
-//		JButton btncashRegister = new JButton("cash register");
-//		btncashRegister.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0)
-//			{
-//				cashRegister cr=new cashRegister();
-//				cr.setVisible(true);
-//			}
-//		});
-//		btncashRegister.setBounds(106, 33, 223, 30);
-//		contentPane.add(btncashRegister);
+		JButton btncashRegister = new JButton("cash register");
+		btncashRegister.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0)
+			{
+				CashRegisterInterface cr = new CashRegisterInterface("Cashier - Cach Register");
+				contentPane.add(cr);
+				cr.setVisible(true);
+				getParent().add(cr);
+				
+			}
+		});
+		btncashRegister.setBounds(106, 33, 223, 30);
+		contentPane.add(btncashRegister);
 		
 		JButton btnCustomerInfo = new JButton("customer info");
 		btnCustomerInfo.setBounds(106, 162, 223, 31);
@@ -38,8 +44,8 @@ public class CashierInteface extends JInternalFrame {
 		btnStoreInventory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
-				//updateItems uit=new updateItems();
-				//uit.setVisible(true);
+				UpdateStockInterface uit=new UpdateStockInterface("Cashier - Update Stock");
+				uit.setVisible(true);
 			}
 		});
 		
@@ -52,8 +58,8 @@ public class CashierInteface extends JInternalFrame {
 		btnGetInventory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
-//				productInStock pis=new productInStock();
-//				pis.setVisible(true);
+				ProductStockInterface pis=new ProductStockInterface("Cashier - Products Stock");
+				pis.setVisible(true);
 			}
 		});
 		btnGetInventory.setBounds(106, 118, 223, 33);

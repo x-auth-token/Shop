@@ -11,40 +11,54 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ClientGui gc = new ClientGui();
+					ClientGui guiClient = new ClientGui();
 					LoginDialog login = new LoginDialog();
 
-					gc.pack();
-					gc.setVisible(true);
+					guiClient.pack();
+					guiClient.setVisible(true);
 
 					login.setLocationRelativeTo(null);
-					login.setClientGui(gc);
+					login.setClientGui(guiClient);
 					login.setVisible(true);
 					if (login.isCanceled()) {
 						JOptionPane.showMessageDialog(null, "You should login first!. Closing");
-						gc.dispatchEvent(new WindowEvent(gc, WindowEvent.WINDOW_CLOSING));
+						guiClient.dispatchEvent(new WindowEvent(guiClient, WindowEvent.WINDOW_CLOSING));
 
 					}
 
-					gc.startClient(gc.getUsername(), gc.getPassword(), gc.getBranch(), gc.getServer(), gc.getPort());
+					//gc.startClient(gc.getUsername(), gc.getPassword(), gc.getBranch(), gc.getServer(), gc.getPort());
 
-					if (gc.isAuthenticated()) {
-
-						switch (gc.getUserPermissionSet()) {
+					if (guiClient.isAuthenticated()) {
+						//login.dispose();
+						switch (guiClient.getPermission()) {
 						case CASHIER:
-							CashierInteface cs = new CashierInteface("Cashier");
-							gc.getDesktopPane().add(cs);
-							cs.setMaximum(true);
-							cs.setSelected(true);
-							gc.revalidate();
+							CashierInteface cashierInterface = new CashierInteface("Cashier");
+							guiClient.getDesktopPane().add(cashierInterface);
+							cashierInterface.setMaximum(true);
+							cashierInterface.setSelected(true);
+							cashierInterface.revalidate();
 							break;
 						case SELLER:
+							SellerInterface sellereInterface = new SellerInterface("Seller");
+							guiClient.getDesktopPane().add(sellereInterface);
+							sellereInterface.setMaximum(true);
+							sellereInterface.setSelected(true);
+							guiClient.revalidate();
 							break;
+						
 						case MANAGER:
+							ManagerInterface managerInterface = new ManagerInterface("Manager");
+							guiClient.getDesktopPane().add(managerInterface);
+							managerInterface.setMaximum(true);
+							managerInterface.setSelected(true);
+							guiClient.revalidate();
 							break;
+						
 						default:
 							break;
 						}
+					}  else {
+						JOptionPane.showMessageDialog(null, "Invalid username or password! PLease try again.");
 					}
 
 				} catch (Exception e) {

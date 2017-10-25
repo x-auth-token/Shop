@@ -16,6 +16,7 @@ public class PasswordHasherTest {
 	
 	public static final String pass = "password";
 	public static final String pass2 = "password2";
+	public static final String pass3 = "password3";
 	
 	@Rule
 	public final ExpectedException thrown = ExpectedException.none();
@@ -37,7 +38,8 @@ public class PasswordHasherTest {
 	public void testValidateHashedPassword() {
 		
 		try {
-			final String saltedPass = PasswordHasher.generateHashedPassword(pass);
+			final String saltedPass = PasswordHasher.generateHashedPassword(pass3);
+			System.out.println(saltedPass);
 			Assert.assertTrue(PasswordHasher.validateHashedPassword(pass, saltedPass));
 		} catch (DecoderException | InvalidKeySpecException | NoSuchAlgorithmException e) {
 			e.printStackTrace();

@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -20,7 +21,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Window.Type;
-public class UpdateStockInterface extends JFrame {
+public class UpdateStockInterface extends JInternalFrame {
 
 	private JPanel contentPane;
 	private JTextField textVendor;
@@ -29,36 +30,15 @@ public class UpdateStockInterface extends JFrame {
 	private JTextField textPrice;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					UpdateStockInterface frame = new UpdateStockInterface();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the frame.
 	 */
-	public UpdateStockInterface() {
-		setType(Type.POPUP);
-		setTitle("items");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		setLocationRelativeTo(null);
-		contentPane.setLayout(null);
+	public UpdateStockInterface(String name) {
+		setTitle(name);
+		setResizable(false);
+		setVisible(true);
+		setBounds(0, 0, 450, 260);
 		
-		JComboBox cmbItems = new JComboBox();
+		JComboBox<String> cmbItems = new JComboBox<String>();
 		cmbItems.addItem("ShortPants");
 		cmbItems.addItem("Jeans");
 		cmbItems.addItem("TailoredPants");
@@ -104,7 +84,7 @@ public class UpdateStockInterface extends JFrame {
 		lblQuantity.setBounds(77, 140, 107, 14);
 		contentPane.add(lblQuantity);
 		
-		JComboBox cmbSize = new JComboBox();
+		JComboBox<String> cmbSize = new JComboBox<String>();
 		cmbSize.addItem("small");
 		cmbSize.addItem("medium");
 		cmbSize.addItem("large");

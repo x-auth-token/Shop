@@ -16,7 +16,10 @@
  ******************************************************************************/
 package com.pa.srv.net.ssl;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -33,12 +36,13 @@ import javax.net.ssl.SSLSocket;
 import org.apache.commons.codec.DecoderException;
 
 import com.google.gson.Gson;
-import com.pa.common.Permission;
 import com.pa.common.crypto.*;
 import com.pa.srv.aaa.AuthenticationModule;
 import com.pa.srv.aaa.AuthorizationModule;
+import com.pa.srv.aaa.Permissions;
+import com.pa.srv.aaa.Permissions.*;
 
-public class Server implements Runnable, AuthenticationModule, AuthorizationModule {
+public class Server implements Runnable {
 	enum ConnectionState {
 		LOGIN, COMMAND, LOGOUT
 	};
@@ -52,6 +56,7 @@ public class Server implements Runnable, AuthenticationModule, AuthorizationModu
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
 	private String message;
+	private String currentWorkDir = Paths.get(".").toAbsolutePath().normalize().toString() + File.separator;
 
 	public ConnectionState getConnectionState() {
 		return connectionState;
@@ -68,19 +73,18 @@ public class Server implements Runnable, AuthenticationModule, AuthorizationModu
 	private Server(SSLSocket s) {
 
 		sslSocket = s;
-		// this.setConnectionState(ConnectionState.LOGIN);
+
 	}
 
 	private void serverListnerStart() throws IOException, SSLException, SocketException {
-		String currentWorkDir = Paths.get(".").toAbsolutePath().normalize().toString() + File.separator + "security"
-				+ File.separator + "cert" + File.separator;
+		String certPath = currentWorkDir + "security" + File.separator + "cert" + File.separator;
 		String certificateStore = "keystore-server.jks";
 		String trustedCertificateStore = "cacerts.jks";
 
 		try {
-			System.setProperty("javax.net.ssl.keyStore", currentWorkDir + certificateStore);
+			System.setProperty("javax.net.ssl.keyStore", certPath + certificateStore);
 			System.setProperty("javax.net.ssl.keyStorePassword", "guessmeifyoucan");
-			System.setProperty("javax.net.ssl.trustStore", currentWorkDir + trustedCertificateStore);
+			System.setProperty("javax.net.ssl.trustStore", certPath + trustedCertificateStore);
 			System.setProperty("javax.net.ssl.trustStorePassword", "guessmeifyoucan");
 			serverSocketFactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
 
@@ -91,7 +95,6 @@ public class Server implements Runnable, AuthenticationModule, AuthorizationModu
 				this.setConnectionState(ConnectionState.LOGIN);
 				sslSocket = (SSLSocket) securedSocket.accept();
 				sslSocket.setEnableSessionCreation(true);
-				// sslSocket.setSoTimeout(600);
 				sslSocket.setNeedClientAuth(true);
 
 				new Thread(new Server(sslSocket)).start();
@@ -102,9 +105,7 @@ public class Server implements Runnable, AuthenticationModule, AuthorizationModu
 
 			e.printStackTrace();
 		}
-		// } finally {
-		// sslSocket.close();
-		// }
+
 	}
 
 	@Override
@@ -114,18 +115,21 @@ public class Server implements Runnable, AuthenticationModule, AuthorizationModu
 			out = new ObjectOutputStream(sslSocket.getOutputStream());
 
 			this.setConnectionState(ConnectionState.LOGIN);
-			//sendMessage("--- Connection Successfull ---");
-			
+
 			while (this.getConnectionState() != ConnectionState.LOGOUT) {
 				switch (this.getConnectionState()) {
 				case LOGIN:
 
 					try {
-						message = in.readObject().toString();
-						
+						message = (String) in.readObject();
+					
 						if (validateCredentials(message)) {
-							sendMessage("Client authenticated successfully!");
+					
+							sendMessage("0:" + getUserPermission(message).toString());
+						
 							this.setConnectionState(ConnectionState.COMMAND);
+						} else {
+							sendMessage("-1");
 						}
 					} catch (ClassNotFoundException e) {
 						e.printStackTrace();
@@ -161,40 +165,51 @@ public class Server implements Runnable, AuthenticationModule, AuthorizationModu
 		}
 	}
 
-	private boolean validateCredentials(String creds)
-			throws NoSuchAlgorithmException, InvalidKeySpecException, DecoderException {
+	private boolean validateCredentials(String creds) throws NoSuchAlgorithmException, InvalidKeySpecException,
+			DecoderException, FileNotFoundException, IOException {
 
-		String[] split = creds.split("\\");
-		String username = split[0];
-		String password = split[1];
-		if (username.equals("asd") && PasswordHasher.validateHashedPassword(password, password))
-			return true;
+		String[] splittedProvidedCredentials = creds.split(":");
+		String username = splittedProvidedCredentials[0];
+		String password = splittedProvidedCredentials[1];
+
+		try (BufferedReader br = new BufferedReader(new FileReader(currentWorkDir + "db" + File.separator + "users"))) {
+			for (String s; (s = br.readLine()) != null;) {
+				String[] splittedStoredCredentials = s.split(":");
+				String storedUsername = splittedStoredCredentials[0];
+				String storedPassword = splittedStoredCredentials[2] + ":" + splittedStoredCredentials[3] + ":" + splittedStoredCredentials[4];
+				System.out.println(storedPassword);
+				if (username.equals(storedUsername)
+						&& PasswordHasher.validateHashedPassword(password, storedPassword)) {
+					return true;
+				}
+			}
+
+		}
+
 		return false;
-
 	}
 
-	@Override
-	public Permission getUserPermissionSet() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setUserPermissionSet() {
-		// TODO Auto-generated method stub
+	private Permission getUserPermission(String creds) throws FileNotFoundException, IOException {
+		String[] splittedProvidedCredentials = creds.split(":");
+		String username = splittedProvidedCredentials[0];
 		
-	}
+		try (BufferedReader br = new BufferedReader(new FileReader(currentWorkDir + "db" + File.separator + "users"))) {
+			for (String s; (s = br.readLine()) != null;) {
+				String[] splittedStoredCredentials = s.split(":");
+				String storedUsername = splittedStoredCredentials[0];
+				String storedPermission = splittedStoredCredentials[1];
 
-	@Override
-	public boolean validateUsername(String username) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+				if (username.equals(storedUsername)) {
+					br.close();
+					return Permissions.toPermission(storedPermission);
+				}
+				
+			}
+			br.close();
+		}
+		
+		return null;
 
-	@Override
-	public boolean validatePassword(String password) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }

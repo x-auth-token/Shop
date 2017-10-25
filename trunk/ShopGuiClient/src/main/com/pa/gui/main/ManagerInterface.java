@@ -1,7 +1,5 @@
 package com.pa.gui.main;
 
-import java.awt.EventQueue;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,6 +8,10 @@ import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 
 public class ManagerInterface extends JInternalFrame {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6268309166836831121L;
 	private JPanel cpManager = new JPanel();;
 	
 	/**
@@ -29,7 +31,7 @@ public class ManagerInterface extends JInternalFrame {
 				btnRegister.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) 
 					{
-						RegisterEmployee reg=new RegisterEmployee();
+						RegisterEmployee reg=new RegisterEmployee(name);
 						reg.setVisible(true);
 					}
 				});
@@ -41,7 +43,7 @@ public class ManagerInterface extends JInternalFrame {
 				btnstoreINventory.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0)
 					{
-						UpdateStockInterface itm=new UpdateStockInterface();
+						UpdateStockInterface itm=new UpdateStockInterface(name);
 						itm.setVisible(true);
 					}
 				});
@@ -56,7 +58,7 @@ public class ManagerInterface extends JInternalFrame {
 				btnCustomerInfo.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) 
 					{
-						CustomerListInterface cl=new CustomerListInterface();
+						CustomerListInterface cl=new CustomerListInterface(name);
 						cl.setVisible(true);
 					}
 				});
@@ -67,7 +69,7 @@ public class ManagerInterface extends JInternalFrame {
 				btncashRegister.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e)
 					{
-						CashRegisterInterface cr=new CashRegisterInterface();
+						CashRegisterInterface cr=new CashRegisterInterface(name);
 						cr.setVisible(true);
 					}
 				});
@@ -78,7 +80,7 @@ public class ManagerInterface extends JInternalFrame {
 				btnGetInventory.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e)
 					{
-						ProductStockInterface stk=new ProductStockInterface();
+						ProductStockInterface stk=new ProductStockInterface(name);
 						stk.setVisible(true);
 					}
 				});
@@ -89,7 +91,7 @@ public class ManagerInterface extends JInternalFrame {
 				btnEmployeeInfo.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e)
 					{
-						EmpoyeeInfoInterface emp= new EmpoyeeInfoInterface();
+						EmpoyeeInfoInterface emp= new EmpoyeeInfoInterface(name);
 						emp.setVisible(true);
 					}
 				});

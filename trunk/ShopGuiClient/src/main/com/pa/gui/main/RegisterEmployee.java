@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
@@ -19,7 +20,7 @@ import java.awt.event.ActionEvent;
 
 //import com.pa.common.Validators.validateOnlyLettersUsed;
 
-public class RegisterEmployee extends JFrame {
+public class RegisterEmployee extends JInternalFrame {
 
 	private JPanel cpRegister;
 	private JTextField textfullName;
@@ -29,34 +30,15 @@ public class RegisterEmployee extends JFrame {
 	private JTextField textbranchID;
 	private JPasswordField passwordField;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RegisterEmployee frame = new RegisterEmployee();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 	/**
 	 * Create the frame.
 	 */
-	public RegisterEmployee() {
-		setTitle("register");
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
-		cpRegister = new JPanel();
-		cpRegister.setToolTipText("");
-		cpRegister.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(cpRegister);
-		setLocationRelativeTo(null);
-		cpRegister.setLayout(null);
+	public RegisterEmployee(String name) {
+		setTitle(name);
+		setResizable(false);
+		setVisible(true);
+		setBounds(0, 0, 450, 260);
 		
 		JLabel lblFullName = new JLabel("full name :");
 		lblFullName.setBounds(103, 25, 110, 14);

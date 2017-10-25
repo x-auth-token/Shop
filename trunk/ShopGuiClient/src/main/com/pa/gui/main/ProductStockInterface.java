@@ -1,54 +1,38 @@
 package com.pa.gui.main;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class ProductStockInterface extends JFrame {
+public class ProductStockInterface extends JInternalFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2904959173320700748L;
 	private JPanel contentPane;
 	private JTable table;
 	private JButton btnNewButton;
 	private JButton btnClose;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ProductStockInterface frame = new ProductStockInterface();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+	
 	/**
 	 * Create the frame.
 	 */
-	public ProductStockInterface() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		setBounds(100, 100, 450, 300);
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		contentPane = new JPanel();
-		contentPane.setBorder(null);
-		setContentPane(contentPane);
+	public ProductStockInterface(String name) {
+		setTitle(name);
+		setResizable(false);
+		setVisible(true);
+		setBounds(0, 0, 450, 260);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		

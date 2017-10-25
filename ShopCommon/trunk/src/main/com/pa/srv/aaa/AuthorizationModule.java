@@ -16,9 +16,11 @@
  ******************************************************************************/
 package com.pa.srv.aaa;
 
-import com.pa.common.Permission;
+import com.pa.srv.aaa.Permissions.Permission;
+
 public interface AuthorizationModule {
 	
-	Permission getUserPermissionSet();
-	void setUserPermissionSet();
+	Permission getUserPermissionSet(String username);
+	void setUserPermissionSet(Permission perm);
+
 }

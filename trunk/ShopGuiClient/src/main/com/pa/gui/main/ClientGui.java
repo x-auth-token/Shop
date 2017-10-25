@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.nio.file.Paths;
 
@@ -12,25 +11,30 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
-import javax.swing.JOptionPane;
 
-import com.pa.common.Permission;
-import com.pa.srv.aaa.AuthenticationModule;
-import com.pa.srv.aaa.AuthorizationModule;
+
+import com.pa.srv.aaa.Permissions;
+import com.pa.srv.aaa.Permissions.Permission;
 
 import javax.swing.JMenu;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
-import javax.swing.JDesktopPane;
 
-public class ClientGui extends JFrame implements AuthenticationModule, AuthorizationModule {
+import javax.swing.JButton;
+import javax.swing.JDesktopPane;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class ClientGui extends JFrame {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private String message;
-	// private static Client client;
 	private String username;
 	private String password;
 	private String branch;
@@ -40,12 +44,9 @@ public class ClientGui extends JFrame implements AuthenticationModule, Authoriza
 	private JDesktopPane desktopPane;
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
+	private String permission;
 	private static SSLSocketFactory clientSecuredSocketFactory;
 	private static SSLSocket clientSecuredSocket;
-
-	/**
-	 * Launch the application.
-	 */
 
 	/**
 	 * Create the frame.
@@ -62,8 +63,24 @@ public class ClientGui extends JFrame implements AuthenticationModule, Authoriza
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
-		JMenu mnTest = new JMenu("Test");
+		JMenu mnTest = new JMenu("File");
 		menuBar.add(mnTest);
+
+		JMenuItem mntmExit = new JMenuItem("Exit");
+		mntmExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent exitButtonClicked) {
+				
+				if (mntmExit.getActionCommand().equals(exitButtonClicked.getActionCommand())) {
+					
+					int dialogButton = JOptionPane.YES_NO_OPTION;
+					int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Warning", dialogButton);
+					
+					if (result == JOptionPane.YES_OPTION)
+						dispose();
+				}
+			}
+		});
+		mnTest.add(mntmExit);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 0, 0 };
 		gridBagLayout.rowHeights = new int[] { 0, 0 };
@@ -78,28 +95,13 @@ public class ClientGui extends JFrame implements AuthenticationModule, Authoriza
 		gbc_desktopPane.gridy = 0;
 		getContentPane().add(desktopPane, gbc_desktopPane);
 
-		// JInternalFrame internalFrame = new JInternalFrame("New
-		// JInternalFrame");
-		//
-		// internalFrame.setBounds(120, 74, 150, 65);
-		// desktopPane.add(internalFrame);
-		// internalFrame.setVisible(true);
-		// try {
-		// internalFrame.setMaximum(true);
-		// } catch (PropertyVetoException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
 	}
-
-	// private ClientGui(SSLSocket clientSecuredSocket) {
-	// ClientGui.clientSecuredSocket = clientSecuredSocket;
-	// }
 
 	public JDesktopPane getDesktopPane() {
 		return desktopPane;
 	}
-
+	
+	// Connects to server abd checks credentials
 	public void startClient(String user, String pass, String branch, String server, int port)
 			throws UnknownHostException, IOException, ClassNotFoundException {
 
@@ -115,24 +117,21 @@ public class ClientGui extends JFrame implements AuthenticationModule, Authoriza
 
 		clientSecuredSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
 		clientSecuredSocket = (SSLSocket) clientSecuredSocketFactory.createSocket(server, port);
-		
 
 		out = new ObjectOutputStream(clientSecuredSocket.getOutputStream());
 
 		in = new ObjectInputStream(clientSecuredSocket.getInputStream());
-	
-	
-			
-			sendMessage(user + "\\" + pass);
-			
-			message = (String)in.readObject();
-			System.out.println(message);
-			if (message.equals("Client authenticated successfully!")) {
-				this.setAuthenticated(true);
 
-			}
-	
-		
+		String credentials = user + ":" + pass;
+
+		sendMessage(credentials);
+
+		message = in.readObject().toString();
+		System.out.println(message);
+		if (isValidCredentials(message)) {
+			this.setAuthenticated(true);
+		}
+
 	}
 
 	public void setMessage(String message) {
@@ -187,36 +186,33 @@ public class ClientGui extends JFrame implements AuthenticationModule, Authoriza
 		return authenticated;
 	}
 
-	public void setAuthenticated(boolean authenticated) {
+	private void setAuthenticated(boolean authenticated) {
 		this.authenticated = authenticated;
 	}
 
-	private synchronized void sendMessage(String message) throws IOException {
+	private void sendMessage(String message) throws IOException {
 		out.writeObject(message);
 		out.flush();
 	}
 
-	@Override
-	public Permission getUserPermissionSet() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	private boolean isValidCredentials(String serverResponce) {
+		String[] splittedResponce = serverResponce.split(":");
 
-	@Override
-	public void setUserPermissionSet() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean validateUsername(String username) {
-		// TODO Auto-generated method stub
+		if (splittedResponce[0].equals("0")) {
+			this.setPermission(splittedResponce[1]);
+			return true;
+		}
 		return false;
 	}
 
-	@Override
-	public boolean validatePassword(String password) {
-		// TODO Auto-generated method stub
-		return false;
+	private void setPermission(String permission) {
+		this.permission = permission;
+
 	}
+
+	public Permission getPermission() {
+
+		return Permissions.toPermission(permission);
+	}
+
 }
