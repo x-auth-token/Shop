@@ -61,7 +61,7 @@ public class RegisterCustomerInterface extends JInternalFrame {
 		contentPane.add(textField_2);
 		textField_2.setColumns(10);
 		
-		JComboBox cmbCustType = new JComboBox();
+		JComboBox<String> cmbCustType = new JComboBox<String>();
 		cmbCustType.addItem("NewCustomer");
 		cmbCustType.addItem("ReturningCustomer");
 		cmbCustType.addItem("VipCustomer");

@@ -24,6 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Rectangle;
 
 public class CashRegisterInterface extends JInternalFrame {
 
@@ -31,9 +32,9 @@ public class CashRegisterInterface extends JInternalFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 4636527186366116564L;
-	private JPanel contentPane;
-	private JTable table;
-	private JTextField textQuantity;
+	private JPanel contentPane = new JPanel();
+	private JTable table = new JTable();
+	private JTextField textQuantity = new JTextField();
 
 	
 	/**
@@ -46,6 +47,8 @@ public class CashRegisterInterface extends JInternalFrame {
 		setBounds(0, 0, 450, 260);
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(new Rectangle(0, 0, 450, 260));
+		contentPane.add(scrollPane);
 		
 		JComboBox<String> cmbItems = new JComboBox<String>();
 		cmbItems.addItem("ShortPants");
@@ -55,12 +58,14 @@ public class CashRegisterInterface extends JInternalFrame {
 		cmbItems.addItem("LongSleeveShirt");
 		cmbItems.addItem("Coat");
 		cmbItems.addItem("Sweater");
+		//contentPane.add(cmbItems);
 		
 		JComboBox<String> cmbSize = new JComboBox<String>();
 		cmbSize.addItem("small");
 		cmbSize.addItem("medium");
 		cmbSize.addItem("large");
 		cmbSize.addItem("extraLarge");
+		//contentPane.add(cmbSize);
 		
 		JComboBox<String> cmbCtype = new JComboBox<String>();
 		cmbCtype.addItem("NewCustomer");
@@ -235,5 +240,6 @@ public class CashRegisterInterface extends JInternalFrame {
 		table.getColumnModel().getColumn(4).setPreferredWidth(89);
 		scrollPane.setViewportView(table);
 		contentPane.setLayout(gl_contentPane);
+		
 	}
 }

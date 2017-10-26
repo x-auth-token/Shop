@@ -27,9 +27,19 @@ public class CashierInteface extends JInternalFrame {
 			public void actionPerformed(ActionEvent arg0)
 			{
 				CashRegisterInterface cr = new CashRegisterInterface("Cashier - Cach Register");
-				contentPane.add(cr);
+				getContentPane().add(cr);
 				cr.setVisible(true);
-				getParent().add(cr);
+				
+				try {
+					cr.setSelected(true);
+					cr.setMaximum(true);
+				} catch (PropertyVetoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				cr.validate();
+				
+				
 				
 			}
 		});
