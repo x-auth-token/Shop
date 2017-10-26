@@ -16,15 +16,18 @@ public class Main {
 
 					guiClient.pack();
 					guiClient.setVisible(true);
+					guiClient.loginInterfaceStart();
 
-					login.setLocationRelativeTo(null);
-					login.setClientGui(guiClient);
-					login.setVisible(true);
-					if (login.isCanceled()) {
-						JOptionPane.showMessageDialog(null, "You should login first!. Closing");
-						guiClient.dispatchEvent(new WindowEvent(guiClient, WindowEvent.WINDOW_CLOSING));
-
-					}
+//					login.setLocationRelativeTo(null);
+//					login.setClientGui(guiClient);
+//					login.setVisible(true);
+//					if (login.isCanceled()) {
+//						JOptionPane.showMessageDialog(null, "You should login first!. Closing");
+//						guiClient.dispatchEvent(new WindowEvent(guiClient, WindowEvent.WINDOW_CLOSING));
+//
+//					}
+					
+					
 
 					//gc.startClient(gc.getUsername(), gc.getPassword(), gc.getBranch(), gc.getServer(), gc.getPort());
 

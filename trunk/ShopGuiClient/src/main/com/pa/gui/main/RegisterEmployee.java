@@ -22,13 +22,13 @@ import java.awt.event.ActionEvent;
 
 public class RegisterEmployee extends JInternalFrame {
 
-	private JPanel cpRegister;
-	private JTextField textfullName;
-	private JTextField textphoneNumber;
-	private JTextField textemployeeID;
-	private JTextField textacountNumber;
-	private JTextField textbranchID;
-	private JPasswordField passwordField;
+	private JPanel cpRegister = new JPanel();
+	private JTextField textfullName  = new JTextField();
+	private JTextField textphoneNumber  = new JTextField();
+	private JTextField textemployeeID  = new JTextField();
+	private JTextField textacountNumber  = new JTextField();
+	private JTextField textbranchID  = new JTextField();
+	private JPasswordField passwordField = new JPasswordField();
 
 
 	/**

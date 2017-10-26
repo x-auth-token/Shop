@@ -17,7 +17,7 @@ public class SellerInterface extends JInternalFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = -1732726058568782502L;
-	private JPanel contentPane;
+	private JPanel contentPane = new JPanel();
 
 	/**
 	 * Create the frame.

@@ -16,10 +16,10 @@ import java.awt.event.ActionEvent;
 
 public class RegisterCustomerInterface extends JInternalFrame {
 
-	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
+	private JPanel contentPane = new JPanel();
+	private JTextField textField  = new JTextField();
+	private JTextField textField_1  = new JTextField();
+	private JTextField textField_2  = new JTextField();
 
 	/**
 	 * Create the frame.

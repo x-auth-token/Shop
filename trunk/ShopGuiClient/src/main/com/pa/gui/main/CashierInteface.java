@@ -27,8 +27,8 @@ public class CashierInteface extends JInternalFrame {
 			public void actionPerformed(ActionEvent arg0)
 			{
 				CashRegisterInterface cr = new CashRegisterInterface("Cashier - Cach Register");
-				getContentPane().add(cr);
-				cr.setVisible(true);
+				getParent().add(cr);
+				
 				
 				try {
 					cr.setSelected(true);
@@ -37,7 +37,11 @@ public class CashierInteface extends JInternalFrame {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				cr.validate();
+				
+				
+				cr.setVisible(true);
+				revalidate();
+				getParent().revalidate();
 				
 				
 				
@@ -47,43 +51,88 @@ public class CashierInteface extends JInternalFrame {
 		contentPane.add(btncashRegister);
 		
 		JButton btnCustomerInfo = new JButton("customer info");
+		btnCustomerInfo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				CustomerListInterface cl=new CustomerListInterface("Cashier - Customers List");
+				getParent().add(cl);
+				
+				
+				try {
+					cl.setSelected(true);
+					cl.setMaximum(true);
+				} catch (PropertyVetoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+				cl.setVisible(true);
+				revalidate();
+				getParent().revalidate();
+			}
+		});
 		btnCustomerInfo.setBounds(106, 162, 223, 31);
 		contentPane.add(btnCustomerInfo);
 		
 		JButton btnStoreInventory = new JButton("update inventory");
 		btnStoreInventory.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) 
+			public void actionPerformed(ActionEvent btnStoreInventoryClicked) 
 			{
 				UpdateStockInterface uit=new UpdateStockInterface("Cashier - Update Stock");
+				getParent().add(uit);
+				
+				
+				try {
+					uit.setSelected(true);
+					uit.setMaximum(true);
+				} catch (PropertyVetoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
 				uit.setVisible(true);
+				revalidate();
+				getParent().revalidate();	
 			}
 		});
-		
-		JButton btnNewButton = new JButton("New button");
-		contentPane.add(btnNewButton);
 		btnStoreInventory.setBounds(106, 74, 223, 33);
 		contentPane.add(btnStoreInventory);
 		
 		JButton btnGetInventory = new JButton("get inventory");
 		btnGetInventory.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e)
+			public void actionPerformed(ActionEvent btnGetInventoryClicked)
 			{
 				ProductStockInterface pis=new ProductStockInterface("Cashier - Products Stock");
+				getParent().add(pis);
+				
+				
+				try {
+					pis.setSelected(true);
+					pis.setMaximum(true);
+				} catch (PropertyVetoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
 				pis.setVisible(true);
+				revalidate();
+				getParent().revalidate();
 			}
 		});
 		btnGetInventory.setBounds(106, 118, 223, 33);
 		contentPane.add(btnGetInventory);
 		
-		this.add(contentPane);
+		getContentPane().add(contentPane);
 		
-//		JButton btnExit = new JButton("Exit");
-//		btnExit.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) 
-//			{
-//				dispose();
-//			}
-//		});
+		JButton btnExit = new JButton("Exit");
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) 
+			{
+				dispose();
+			}
+		});
 
 	}
 

@@ -240,6 +240,9 @@ public class CashRegisterInterface extends JInternalFrame {
 		table.getColumnModel().getColumn(4).setPreferredWidth(89);
 		scrollPane.setViewportView(table);
 		contentPane.setLayout(gl_contentPane);
+		getContentPane().add(contentPane);
+		
+		
 		
 	}
 }

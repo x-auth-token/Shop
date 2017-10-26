@@ -20,8 +20,8 @@ import java.awt.event.ActionEvent;
 
 public class EmpoyeeInfoInterface extends JInternalFrame {
 
-	private JPanel contentPane;
-	private JTable table;
+	private JPanel contentPane = new JPanel();
+	private JTable table = new JTable();
 	
 	/**
 	 * Create the frame.

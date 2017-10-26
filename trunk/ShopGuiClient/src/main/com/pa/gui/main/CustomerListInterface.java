@@ -19,8 +19,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class CustomerListInterface extends JInternalFrame {
 
-	private JPanel contentPane;
-	private JTable table;
+	private JPanel contentPane = new JPanel();
+	private JTable table = new JTable();
 	
 	/**
 	 * Create the frame.
@@ -30,6 +30,7 @@ public class CustomerListInterface extends JInternalFrame {
 		setResizable(false);
 		setVisible(true);
 		setBounds(0, 0, 450, 260);
+		getContentPane().add(contentPane);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		

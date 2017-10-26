@@ -20,10 +20,11 @@ public class ProductStockInterface extends JInternalFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = -2904959173320700748L;
-	private JPanel contentPane;
-	private JTable table;
-	private JButton btnNewButton;
-	private JButton btnClose;
+	private JPanel contentPane = new JPanel();
+	private JTable table = new JTable();
+	private JButton btnNewButton = new JButton();
+	private JButton btnClose = new JButton();
+	
 	
 	/**
 	 * Create the frame.
@@ -33,7 +34,7 @@ public class ProductStockInterface extends JInternalFrame {
 		setResizable(false);
 		setVisible(true);
 		setBounds(0, 0, 450, 260);
-		
+		getContentPane().add(contentPane);
 		JScrollPane scrollPane = new JScrollPane();
 		
 		btnNewButton = new JButton("Update");

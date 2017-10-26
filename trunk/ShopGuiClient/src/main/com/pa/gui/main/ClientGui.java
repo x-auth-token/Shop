@@ -26,6 +26,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.awt.event.ActionEvent;
 
 public class ClientGui extends JFrame {
@@ -77,9 +78,26 @@ public class ClientGui extends JFrame {
 					
 					if (result == JOptionPane.YES_OPTION)
 						dispose();
+					
+					LoginDialog login = new LoginDialog();
+					
 				}
 			}
 		});
+		
+		JMenuItem mntmLogOut = new JMenuItem("Log out");
+		mntmLogOut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int dialogButton = JOptionPane.YES_NO_OPTION;
+				int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to logout?", "Warning", dialogButton);
+				
+				if (result == JOptionPane.YES_OPTION)
+					getDesktopPane().getSelectedFrame().dispose();
+				
+				loginInterfaceStart();
+			}
+		});
+		mnTest.add(mntmLogOut);
 		mnTest.add(mntmExit);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 0, 0 };
@@ -214,5 +232,16 @@ public class ClientGui extends JFrame {
 
 		return Permissions.toPermission(permission);
 	}
+	
+	public void loginInterfaceStart() {
+		LoginDialog login = new LoginDialog();
+		login.setLocationRelativeTo(null);
+		login.setClientGui(this);
+		login.setVisible(true);
+		if (login.isCanceled()) {
+			JOptionPane.showMessageDialog(null, "You should login first!. Closing");
+			this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 
+		}
+	}
 }

@@ -23,11 +23,11 @@ import java.awt.event.ActionEvent;
 import java.awt.Window.Type;
 public class UpdateStockInterface extends JInternalFrame {
 
-	private JPanel contentPane;
-	private JTextField textVendor;
-	private JTextField textColour;
-	private JTextField textQuantity;
-	private JTextField textPrice;
+	private JPanel contentPane = new JPanel();
+	private JTextField textVendor = new JTextField();
+	private JTextField textColour  = new JTextField();
+	private JTextField textQuantity  = new JTextField();
+	private JTextField textPrice  = new JTextField();
 
 	/**
 	 * Create the frame.
@@ -128,5 +128,6 @@ public class UpdateStockInterface extends JInternalFrame {
 		textPrice.setColumns(10);
 		textPrice.setBounds(157, 169, 165, 20);
 		contentPane.add(textPrice);
+		getContentPane().add(contentPane);
 	}
 }
