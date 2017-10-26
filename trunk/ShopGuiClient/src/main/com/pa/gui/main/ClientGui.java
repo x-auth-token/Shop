@@ -98,6 +98,7 @@ public class ClientGui extends JFrame {
 				int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to logout?", "Warning", dialogButton);
 				
 				if (result == JOptionPane.YES_OPTION)
+				
 					getDesktopPane().getSelectedFrame().dispose();
 				try {
 					clientSecuredSocket.close();
@@ -105,6 +106,7 @@ public class ClientGui extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				
 				loginInterfaceStart();
 				
 				try {
