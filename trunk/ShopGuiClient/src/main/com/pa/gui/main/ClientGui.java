@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.UnknownHostException;
+import java.nio.channels.ClosedByInterruptException;
 import java.nio.file.Paths;
 
 import javax.net.ssl.SSLSocket;
@@ -76,10 +77,15 @@ public class ClientGui extends JFrame {
 					int dialogButton = JOptionPane.YES_NO_OPTION;
 					int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Warning", dialogButton);
 					
-					if (result == JOptionPane.YES_OPTION)
+					if (result == JOptionPane.YES_OPTION) {
+						try {
+							clientSecuredSocket.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						dispose();
-					
-					LoginDialog login = new LoginDialog();
+					}
 					
 				}
 			}
@@ -93,8 +99,61 @@ public class ClientGui extends JFrame {
 				
 				if (result == JOptionPane.YES_OPTION)
 					getDesktopPane().getSelectedFrame().dispose();
-				
+				try {
+					clientSecuredSocket.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				loginInterfaceStart();
+				
+				try {
+					if (isAuthenticated()) {
+						// login.dispose();
+						switch (getPermission()) {
+						case CASHIER:
+							CashierInteface cashierInterface = new CashierInteface("Cashier");
+							getDesktopPane().add(cashierInterface);
+							cashierInterface.setMaximum(true);
+							cashierInterface.setSelected(true);
+							cashierInterface.revalidate();
+							break;
+						case SELLER:
+							SellerInterface sellereInterface = new SellerInterface("Seller");
+							getDesktopPane().add(sellereInterface);
+							sellereInterface.setMaximum(true);
+							sellereInterface.setSelected(true);
+							revalidate();
+							break;
+
+						case MANAGER:
+							ManagerInterface managerInterface = new ManagerInterface("Manager");
+							getDesktopPane().add(managerInterface);
+							managerInterface.setMaximum(true);
+							managerInterface.setSelected(true);
+							revalidate();
+							break;
+
+						default:
+							break;
+						}
+
+					} else {
+						JOptionPane.showMessageDialog(null, "Invalid username or password! PLease try again.");
+					}
+				} catch (Exception e) {
+					if (e.toString().contains("UnknownHost")) {
+
+						JOptionPane.showMessageDialog(null, "Please Provide Valid Server IP or Name");
+					} else if (e.toString().contains("ConnectException")) {
+						JOptionPane.showMessageDialog(null,
+								"Connection Refused! Check if you are allowed to connect or server running.");
+					} else {
+						JOptionPane.showMessageDialog(null, e);
+					}
+
+				}
+
 			}
 		});
 		mnTest.add(mntmLogOut);
