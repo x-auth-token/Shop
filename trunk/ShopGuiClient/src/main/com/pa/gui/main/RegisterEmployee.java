@@ -39,6 +39,7 @@ public class RegisterEmployee extends JInternalFrame {
 		setResizable(false);
 		setVisible(true);
 		setBounds(0, 0, 450, 260);
+		getContentPane().add(cpRegister);
 		
 		JLabel lblFullName = new JLabel("full name :");
 		lblFullName.setBounds(103, 25, 110, 14);

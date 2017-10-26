@@ -139,6 +139,7 @@ public class Server implements Runnable {
 				case COMMAND:
 					break;
 				case LOGOUT:
+					sslSocket.close();
 					break;
 				default:
 					break;
@@ -177,7 +178,7 @@ public class Server implements Runnable {
 				String[] splittedStoredCredentials = s.split(":");
 				String storedUsername = splittedStoredCredentials[0];
 				String storedPassword = splittedStoredCredentials[2] + ":" + splittedStoredCredentials[3] + ":" + splittedStoredCredentials[4];
-				System.out.println(storedPassword);
+				
 				if (username.equals(storedUsername)
 						&& PasswordHasher.validateHashedPassword(password, storedPassword)) {
 					return true;

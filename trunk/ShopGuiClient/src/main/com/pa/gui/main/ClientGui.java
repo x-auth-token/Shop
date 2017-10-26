@@ -13,7 +13,6 @@ import javax.net.ssl.SSLSocketFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 
-
 import com.pa.srv.aaa.Permissions;
 import com.pa.srv.aaa.Permissions.Permission;
 
@@ -27,8 +26,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.event.ActionEvent;
+import java.awt.Dimension;
 
 public class ClientGui extends JFrame {
 
@@ -57,11 +59,28 @@ public class ClientGui extends JFrame {
 	 * @throws UnknownHostException
 	 */
 	public ClientGui() throws UnknownHostException, IOException {
+		
 		setTitle("MyShop");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
+		setMinimumSize(new Dimension(0,0));
 		setExtendedState(MAXIMIZED_BOTH);
-
+		
+		
+		
+		
+		addWindowListener(new WindowAdapter() {
+			@Override
+		    public void windowClosing(WindowEvent e) {
+		        try {
+		        	sendMessage("LOGOUT");
+					clientSecuredSocket.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+		    }
+		});
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
@@ -71,14 +90,16 @@ public class ClientGui extends JFrame {
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mntmExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent exitButtonClicked) {
-				
+
 				if (mntmExit.getActionCommand().equals(exitButtonClicked.getActionCommand())) {
-					
+
 					int dialogButton = JOptionPane.YES_NO_OPTION;
-					int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Warning", dialogButton);
-					
+					int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Warning",
+							dialogButton);
+
 					if (result == JOptionPane.YES_OPTION) {
 						try {
+							sendMessage("LOGOUT");
 							clientSecuredSocket.close();
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
@@ -86,76 +107,82 @@ public class ClientGui extends JFrame {
 						}
 						dispose();
 					}
-					
+
 				}
 			}
 		});
-		
+
 		JMenuItem mntmLogOut = new JMenuItem("Log out");
 		mntmLogOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int dialogButton = JOptionPane.YES_NO_OPTION;
-				int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to logout?", "Warning", dialogButton);
-				
-				if (result == JOptionPane.YES_OPTION)
-				
-					getDesktopPane().getSelectedFrame().dispose();
-				try {
-					clientSecuredSocket.close();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-				loginInterfaceStart();
-				
-				try {
-					if (isAuthenticated()) {
-						// login.dispose();
-						switch (getPermission()) {
-						case CASHIER:
-							CashierInteface cashierInterface = new CashierInteface("Cashier");
-							getDesktopPane().add(cashierInterface);
-							cashierInterface.setMaximum(true);
-							cashierInterface.setSelected(true);
-							cashierInterface.revalidate();
-							break;
-						case SELLER:
-							SellerInterface sellereInterface = new SellerInterface("Seller");
-							getDesktopPane().add(sellereInterface);
-							sellereInterface.setMaximum(true);
-							sellereInterface.setSelected(true);
-							revalidate();
-							break;
+				int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to logout?", "Warning",
+						dialogButton);
 
-						case MANAGER:
-							ManagerInterface managerInterface = new ManagerInterface("Manager");
-							getDesktopPane().add(managerInterface);
-							managerInterface.setMaximum(true);
-							managerInterface.setSelected(true);
-							revalidate();
-							break;
+				if (result == JOptionPane.YES_OPTION) {
 
-						default:
-							break;
+					getDesktopPane().removeAll();
+					getDesktopPane().revalidate();
+					setAuthenticated(false);
+					try {
+						sendMessage("LOGOUT");
+						clientSecuredSocket.close();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+					
+
+					try {
+						loginInterfaceStart();
+						if (isAuthenticated()) {
+							// login.dispose();
+							switch (getPermission()) {
+							case CASHIER:
+								CashierInteface cashierInterface = new CashierInteface("Cashier");
+								getDesktopPane().add(cashierInterface);
+								cashierInterface.setMaximum(true);
+								cashierInterface.setSelected(true);
+								cashierInterface.revalidate();
+								break;
+							case SELLER:
+								SellerInterface sellereInterface = new SellerInterface("Seller");
+								getDesktopPane().add(sellereInterface);
+								sellereInterface.setMaximum(true);
+								sellereInterface.setSelected(true);
+								revalidate();
+								break;
+
+							case MANAGER:
+								ManagerInterface managerInterface = new ManagerInterface("Manager");
+								getDesktopPane().add(managerInterface);
+								managerInterface.setMaximum(true);
+								managerInterface.setSelected(true);
+								revalidate();
+								break;
+
+							default:
+								break;
+							}
+
+						} else {
+							JOptionPane.showMessageDialog(null, "Invalid username or password! PLease try again.");
+						}
+					} catch (Exception e) {
+						if (e.toString().contains("UnknownHost")) {
+
+							JOptionPane.showMessageDialog(null, "Please Provide Valid Server IP or Name");
+						} else if (e.toString().contains("ConnectException")) {
+							JOptionPane.showMessageDialog(null,
+									"Connection Refused! Check if you are allowed to connect or server running.");
+						} else {
+							JOptionPane.showMessageDialog(null, e);
 						}
 
-					} else {
-						JOptionPane.showMessageDialog(null, "Invalid username or password! PLease try again.");
-					}
-				} catch (Exception e) {
-					if (e.toString().contains("UnknownHost")) {
-
-						JOptionPane.showMessageDialog(null, "Please Provide Valid Server IP or Name");
-					} else if (e.toString().contains("ConnectException")) {
-						JOptionPane.showMessageDialog(null,
-								"Connection Refused! Check if you are allowed to connect or server running.");
-					} else {
-						JOptionPane.showMessageDialog(null, e);
 					}
 
 				}
-
 			}
 		});
 		mnTest.add(mntmLogOut);
@@ -179,7 +206,7 @@ public class ClientGui extends JFrame {
 	public JDesktopPane getDesktopPane() {
 		return desktopPane;
 	}
-	
+
 	// Connects to server abd checks credentials
 	public void startClient(String user, String pass, String branch, String server, int port)
 			throws UnknownHostException, IOException, ClassNotFoundException {
@@ -293,7 +320,7 @@ public class ClientGui extends JFrame {
 
 		return Permissions.toPermission(permission);
 	}
-	
+
 	public void loginInterfaceStart() {
 		LoginDialog login = new LoginDialog();
 		login.setLocationRelativeTo(null);

@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class Main {
@@ -12,24 +13,11 @@ public class Main {
 			public void run() {
 				try {
 					ClientGui guiClient = new ClientGui();
-					LoginDialog login = new LoginDialog();
-
+					//LoginDialog login = new LoginDialog();
+					guiClient.setExtendedState(JFrame.MAXIMIZED_BOTH);
 					guiClient.pack();
 					guiClient.setVisible(true);
 					guiClient.loginInterfaceStart();
-
-//					login.setLocationRelativeTo(null);
-//					login.setClientGui(guiClient);
-//					login.setVisible(true);
-//					if (login.isCanceled()) {
-//						JOptionPane.showMessageDialog(null, "You should login first!. Closing");
-//						guiClient.dispatchEvent(new WindowEvent(guiClient, WindowEvent.WINDOW_CLOSING));
-//
-//					}
-					
-					
-
-					//gc.startClient(gc.getUsername(), gc.getPassword(), gc.getBranch(), gc.getServer(), gc.getPort());
 
 					if (guiClient.isAuthenticated()) {
 						//login.dispose();
